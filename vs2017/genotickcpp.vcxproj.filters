@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{a9fbc668-0b82-4444-81c8-05b481a1c53b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{06a90049-dc8b-4faa-a94b-570fc9484c84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\jdk">
+      <UniqueIdentifier>{459a19cb-cc5f-406f-99d7-064f0df8a092}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\jni">
+      <UniqueIdentifier>{d3e6f514-0940-4612-a593-c65546019d2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\jdk\win32">
+      <UniqueIdentifier>{d7ab8711-7e79-47dd-bbb7-43aa9273ab28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\jdk\win32\bridge">
+      <UniqueIdentifier>{0c782c64-0826-4951-a07d-b1fdc50b1871}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\jdk\classfile_constants.h">
+      <Filter>src\jdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jdk\jawt.h">
+      <Filter>src\jdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jdk\jdwpTransport.h">
+      <Filter>src\jdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jdk\jni.h">
+      <Filter>src\jdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jdk\jvmti.h">
+      <Filter>src\jdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jdk\jvmticmlr.h">
+      <Filter>src\jdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jdk\win32\jawt_md.h">
+      <Filter>src\jdk\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jdk\win32\jni_md.h">
+      <Filter>src\jdk\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jdk\win32\bridge\AccessBridgeCallbacks.h">
+      <Filter>src\jdk\win32\bridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jdk\win32\bridge\AccessBridgeCalls.h">
+      <Filter>src\jdk\win32\bridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jdk\win32\bridge\AccessBridgePackages.h">
+      <Filter>src\jdk\win32\bridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\array.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\arraylike.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\class.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\constructor.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\errors.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\field.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\functions.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\jni.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\make.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\method.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\native_method.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\npe.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\object.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\ownership.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\pointer_to_value.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\static_field.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\static_method.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\string.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\tagging.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\traits.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\type_signature.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\typed_methods.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\types.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\wrapping.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\utils.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\igenotick.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\java_loader.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni_genotick.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\igenotick_destructable.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni_helpers.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni_error.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick_error.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\dllmain.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\exports.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\java_loader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\jni_genotick.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\msvc_codecvt_fix.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
