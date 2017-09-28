@@ -16,6 +16,8 @@ namespace jni
        {
         private:
             jmethodID& method;
+            using MethodType = R (Args...);
+            using ReturnType = R;
 
         public:
             using TagType = TheTag;
