@@ -1,6 +1,5 @@
 .*
 !/.gitignore
 
-*.sln
 *.VC.db
 *.user
