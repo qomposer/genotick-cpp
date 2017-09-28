@@ -16,11 +16,11 @@ namespace jni
        {
         private:
             jmethodID& method;
-            using MethodType = R (Args...);
-            using ReturnType = R;
 
         public:
             using TagType = TheTag;
+            using MethodType = R (Args...);
+            using ReturnType = R;
 
             Method(JNIEnv& env, const Class<TagType>& clazz, const char* name)
               : method(GetMethodID(env, clazz, name, TypeSignature<R (Args...)>()()))
