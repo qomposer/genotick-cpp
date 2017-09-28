@@ -21,22 +21,31 @@ int main(int argc, char** argv)
 	(void)argv;
 
 	IGenotick* pInstance = nullptr;
-	SGenotickJvmSettings jvmSettings;
+	SGenotickJvmSettings jvmSettings = { 0 };
 	jvmSettings.jvmDllPath = JVM_PATH;
 	jvmSettings.javaClassPath = JAVA_CLASS_PATH;
 
-	if (LoadGenotick(&pInstance, &jvmSettings) == eGenotickResult_Success)
+	EGenotickResult result = LoadGenotick(&pInstance, &jvmSettings);
+
+	if (result == eGenotickResult_Success)
 	{
-		const char* arguments[] = {
+		const char* arguments[] =
+		{
 			"input=external",
 			"outdir=" GENOTICK_OUTDIR,
 		};
-		SGenotickStartSettings startSettings;
+
+		EGenotickResult result;
+		SGenotickMainSettings mainSettings = { 0 };
+		SGenotickStartSettings startSettings = { 0 };
 		startSettings.parameters = arguments;
 		startSettings.parameterCount = GetArrayLength(arguments);
 
-		jint_t version = pInstance->GetInterfaceVersion();
-		EGenotickResult result = pInstance->Start(&startSettings);
+		TGenotickInt32 version = pInstance->GetInterfaceVersion();
+		result = pInstance->GetSettings(&mainSettings);
+		result = pInstance->ChangeSettings(&mainSettings);
+		result = pInstance->Start(&startSettings);
+
 		SAFE_RELEASE(pInstance);
 	}
 

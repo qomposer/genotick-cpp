@@ -16,9 +16,6 @@
     <Filter Include="src\jdk\win32">
       <UniqueIdentifier>{d7ab8711-7e79-47dd-bbb7-43aa9273ab28}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\jdk\win32\bridge">
-      <UniqueIdentifier>{0c782c64-0826-4951-a07d-b1fdc50b1871}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\jdk\classfile_constants.h">
@@ -44,15 +41,6 @@
     </ClInclude>
     <ClInclude Include="..\src\jdk\win32\jni_md.h">
       <Filter>src\jdk\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\jdk\win32\bridge\AccessBridgeCallbacks.h">
-      <Filter>src\jdk\win32\bridge</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\jdk\win32\bridge\AccessBridgeCalls.h">
-      <Filter>src\jdk\win32\bridge</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\jdk\win32\bridge\AccessBridgePackages.h">
-      <Filter>src\jdk\win32\bridge</Filter>
     </ClInclude>
     <ClInclude Include="..\src\jni\array.hpp">
       <Filter>src\jni</Filter>
@@ -147,7 +135,25 @@
     <ClInclude Include="..\src\jni_error.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\genotick_error.h">
+    <ClInclude Include="..\src\jni_genotick_error.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni_genotick_interface.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni_genotick_settings.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni_genotick_chart_mode.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni_genotick_inherited_weight_mode.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni_genotick_timepoint.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni_genotick_weight_mode.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

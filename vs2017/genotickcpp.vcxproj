@@ -253,7 +253,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\include\igenotick.h" />
-    <ClInclude Include="..\src\genotick_error.h" />
+    <ClInclude Include="..\src\jni_genotick_chart_mode.h" />
+    <ClInclude Include="..\src\jni_genotick_error.h" />
+    <ClInclude Include="..\src\jni_genotick_inherited_weight_mode.h" />
+    <ClInclude Include="..\src\jni_genotick_interface.h" />
+    <ClInclude Include="..\src\jni_genotick_settings.h" />
     <ClInclude Include="..\src\jni_error.h" />
     <ClInclude Include="..\src\igenotick_destructable.h" />
     <ClInclude Include="..\src\jni_genotick.h" />
@@ -263,9 +267,6 @@
     <ClInclude Include="..\src\jdk\jni.h" />
     <ClInclude Include="..\src\jdk\jvmti.h" />
     <ClInclude Include="..\src\jdk\jvmticmlr.h" />
-    <ClInclude Include="..\src\jdk\win32\bridge\AccessBridgeCallbacks.h" />
-    <ClInclude Include="..\src\jdk\win32\bridge\AccessBridgeCalls.h" />
-    <ClInclude Include="..\src\jdk\win32\bridge\AccessBridgePackages.h" />
     <ClInclude Include="..\src\jdk\win32\jawt_md.h" />
     <ClInclude Include="..\src\jdk\win32\jni_md.h" />
     <ClInclude Include="..\src\jni\array.hpp" />
@@ -293,6 +294,8 @@
     <ClInclude Include="..\src\jni\type_signature.hpp" />
     <ClInclude Include="..\src\jni\wrapping.hpp" />
     <ClInclude Include="..\src\java_loader.h" />
+    <ClInclude Include="..\src\jni_genotick_timepoint.h" />
+    <ClInclude Include="..\src\jni_genotick_weight_mode.h" />
     <ClInclude Include="..\src\jni_helpers.h" />
     <ClInclude Include="..\src\utils.h" />
   </ItemGroup>

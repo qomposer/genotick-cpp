@@ -1,4 +1,4 @@
-// Author: pascalx
+
 // Genotick interface for C & C++
 // Supports lib, dll, Win32, x64
 
@@ -28,8 +28,6 @@
 extern "C" {
 #endif
 
-typedef long jint_t;
-
 struct IGenotickFunctions_;
 struct IGenotick_;
 
@@ -39,9 +37,54 @@ typedef IGenotick_ IGenotick;
 typedef const struct IGenotickFunctions_* IGenotick;
 #endif
 
-typedef enum
+typedef signed long      TGenotickInt32;
+typedef signed long long TGenotickInt64;
+typedef unsigned char    TGenotickBoolean;
+typedef signed char      TGenotickByte;
+typedef unsigned short   TGenotickChar;
+typedef signed short     TGenotickShort;
+typedef float            TGenotickFloat;
+typedef double           TGenotickDouble;
+typedef TGenotickInt64   TGenotickTimePoint;
+
+const TGenotickBoolean GenotickFalse = 0;
+const TGenotickBoolean GenotickTrue = 1;
+
+typedef struct TGenotickString
 {
-	eGenotickResult_Success,
+	char* buffer;
+	unsigned long capacity;
+} TGenotickString;
+
+typedef enum EGenotickWeightMode
+{
+	eGenotickWeightMode_WinCount = 0,
+	eGenotickWeightMode_WinRate,
+	eGenotickWeightMode_ProfitCount,
+	eGenotickWeightMode_ProfitFactor,
+} EGenotickWeightMode;
+
+typedef enum EGenotickInheritedWeightMode
+{
+	eGenotickInheritedWeightMode_Parents = 0,
+	eGenotickInheritedWeightMode_Ancestors,
+	eGenotickInheritedWeightMode_AncestorsLog,
+} EGenotickInheritedWeightMode;
+
+typedef enum EGenotickChartMode
+{
+	eGenotickChartMode_None                 = 0,
+	eGenotickChartMode_Draw                 = 1<<0,
+	eGenotickChartMode_Save                 = 1<<1,
+	eGenotickChartMode_JFreeChart           = 1<<2,
+	eGenotickChartMode_JFreeChart_Draw      = eGenotickChartMode_JFreeChart | eGenotickChartMode_Draw,
+	eGenotickChartMode_JFreeChart_Save      = eGenotickChartMode_JFreeChart | eGenotickChartMode_Save,
+	eGenotickChartMode_JFreeChart_Draw_Save = eGenotickChartMode_JFreeChart | eGenotickChartMode_Draw | eGenotickChartMode_Save,
+} EGenotickChartMode;
+
+typedef enum EGenotickResult
+{
+	eGenotickResult_Success = 0,
 	eGenotickResult_InvalidArgument,
 	eGenotickResult_JvmDllNotFound,
 	eGenotickResult_JvmExportsNotFound,
@@ -61,7 +104,43 @@ typedef enum
 	eGenotickResult_ErrorUnknown,
 } EGenotickResult;
 
-typedef struct
+typedef struct SGenotickMainSettings
+{
+	TGenotickTimePoint  startTimePoint;
+	TGenotickTimePoint  endTimePoint;
+	TGenotickInt32      populationDesiredSize;
+	TGenotickString     populationDAO;
+	TGenotickBoolean    performTraining;
+	TGenotickString     dataDirectory;
+	TGenotickInt32      minimumRobotInstructions;
+	TGenotickInt32      maximumRobotInstructions;
+	TGenotickInt32      maximumProcessorInstructionFactor;
+	TGenotickDouble     maximumDeathByAge;
+	TGenotickDouble     maximumDeathByWeight;
+	TGenotickDouble     probabilityOfDeathByAge;
+	TGenotickDouble     probabilityOfDeathByWeight;
+	EGenotickWeightMode weightMode;
+	TGenotickDouble     weightExponent;
+	TGenotickDouble     inheritedChildWeight;
+	EGenotickInheritedWeightMode inheritedChildWeightMode;
+	TGenotickInt32      maximumDataOffset;
+	TGenotickInt32      protectRobotsUntilOutcomes;
+	TGenotickDouble     newInstructionProbability;
+	TGenotickDouble     instructionMutationProbability;
+	TGenotickDouble     skipInstructionProbability;
+	TGenotickInt32      minimumOutcomesToAllowBreeding;
+	TGenotickInt32      minimumOutcomesBetweenBreeding;
+	TGenotickBoolean    killNonPredictingRobots;
+	TGenotickDouble     randomRobotsAtEachUpdate;
+	TGenotickDouble     protectBestRobots;
+	TGenotickBoolean    requireSymmetricalRobots;
+	TGenotickDouble     resultThreshold;
+	TGenotickInt32      ignoreColumns;
+	TGenotickInt64      randomSeed;
+	EGenotickChartMode  chartMode;
+} SGenotickMainSettings;
+
+typedef struct SGenotickStartSettings
 {
 	const char** parameters;
 	unsigned int parameterCount;
@@ -69,7 +148,9 @@ typedef struct
 
 struct IGenotickFunctions_
 {
-	jint_t(GENOTICK_CALL* GetInterfaceVersion)(IGenotick* pThis);
+	TGenotickInt32(GENOTICK_CALL* GetInterfaceVersion)(IGenotick* pThis);
+	EGenotickResult(GENOTICK_CALL* GetSettings)(IGenotick* pThis, SGenotickMainSettings* pSettings);
+	EGenotickResult(GENOTICK_CALL* ChangeSettings)(IGenotick* pThis, const SGenotickMainSettings* pSettings);
 	EGenotickResult(GENOTICK_CALL* Start)(IGenotick* pThis, const SGenotickStartSettings* pSettings);
 	EGenotickResult(GENOTICK_CALL* Release)(IGenotick* pThis);
 };
@@ -78,8 +159,14 @@ struct IGenotick_
 {
 	const struct IGenotickFunctions_* functions;
 #ifdef __cplusplus
-	jint_t GetInterfaceVersion() {
+	TGenotickInt32 GetInterfaceVersion() {
 		return functions->GetInterfaceVersion(this);
+	}
+	EGenotickResult GetSettings(SGenotickMainSettings* pSettings) {
+		return functions->GetSettings(this, pSettings);
+	}
+	EGenotickResult ChangeSettings(const SGenotickMainSettings* pSettings) {
+		return functions->ChangeSettings(this, pSettings);
 	}
 	EGenotickResult Start(const SGenotickStartSettings* pSettings) {
 		return functions->Start(this, pSettings);

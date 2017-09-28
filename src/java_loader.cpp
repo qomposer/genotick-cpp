@@ -8,7 +8,16 @@
 #include <assert.h>
 #include <filesystem>
 
-static_assert(sizeof(jint_t) == sizeof(jint), "Mismatching Data Type Found");
+#define MISMATCH_MESSAGE "Mismatching Data Type Found"
+static_assert(sizeof(TGenotickInt32)   == sizeof(jni::jint)    , MISMATCH_MESSAGE);
+static_assert(sizeof(TGenotickInt64)   == sizeof(jni::jlong)   , MISMATCH_MESSAGE);
+static_assert(sizeof(TGenotickByte)    == sizeof(jni::jbyte)   , MISMATCH_MESSAGE);
+static_assert(sizeof(TGenotickBoolean) == sizeof(jni::jboolean), MISMATCH_MESSAGE);
+static_assert(sizeof(TGenotickChar)    == sizeof(jni::jchar)   , MISMATCH_MESSAGE);
+static_assert(sizeof(TGenotickShort)   == sizeof(jni::jshort)  , MISMATCH_MESSAGE);
+static_assert(sizeof(TGenotickFloat)   == sizeof(jni::jfloat)  , MISMATCH_MESSAGE);
+static_assert(sizeof(TGenotickDouble)  == sizeof(jni::jdouble) , MISMATCH_MESSAGE);
+#undef MISMATCH_MESSAGE
 
 namespace
 {
@@ -65,7 +74,7 @@ EGenotickResult CJavaLoader::LoadGenotick(IGenotick** ppInstance, const SGenotic
 			assert(pEnv);
 			try
 			{
-				CJniGenotick* pNewInstance = new CJniGenotick(this, pJvm, pEnv);
+				jni::genotick::CGenotick* pNewInstance = new jni::genotick::CGenotick(this, pJvm, pEnv);
 				m_instances.push_back(TGenotickPtr(pNewInstance));
 				*ppInstance = pNewInstance;
 			}

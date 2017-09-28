@@ -1,38 +1,65 @@
 
 #include "jni_genotick.h"
 #include "jni_error.h"
-#include "genotick_error.h"
+#include "jni_genotick_error.h"
+#include "jni_genotick_settings.h"
 #include "java_loader.h"
 #include "utils.h"
 #include <string>
 
-CJniGenotick::CJniGenotick(CJavaLoader* pJavaLoader, JavaVM* pJavaVM, JNIEnv* pJavaEnv)
+namespace jni {
+namespace genotick {
+
+CGenotick::CGenotick(CJavaLoader* pJavaLoader, jni::JavaVM* pJavaVM, jni::JNIEnv* pJavaEnv)
 	: m_javaLoader(*static_cast<CJavaLoaderGenotick*>(pJavaLoader))
 	, m_javaVM(*pJavaVM)
 	, m_javaEnv(*pJavaEnv)
-	, m_mainInterfaceClass(TMainInterfaceClass::Find(m_javaEnv).NewGlobalRef(m_javaEnv))
-	, m_stringClass(TJavaStringClass::Find(m_javaEnv).NewGlobalRef(m_javaEnv))
-	, m_getInterfaceVersionMethod(m_mainInterfaceClass->GetStaticMethod<TGetInterfaceVersionMethodType>(m_javaEnv, "getInterfaceVersion"))
-	, m_startMethod(m_mainInterfaceClass->GetStaticMethod<TStartMethodType>(m_javaEnv, "start"))
+	, m_stringClass(jni::StringClass::Find(m_javaEnv).NewGlobalRef(m_javaEnv))
+	, m_mainInterface(pJavaEnv)
+	, m_mainSettings(pJavaEnv)
 {
 	functions = new IGenotickFunctions_;
-	struct IGenotickFunctions_* mutableFunctions = const_cast<IGenotickFunctions_*>(functions);
+	IGenotickFunctions_* mutableFunctions = const_cast<IGenotickFunctions_*>(functions);
 	mutableFunctions->GetInterfaceVersion = GetInterfaceVersionThis;
+	mutableFunctions->GetSettings = GetSettingsThis;
+	mutableFunctions->ChangeSettings = ChangeSettingsThis;
 	mutableFunctions->Start = StartThis;
 	mutableFunctions->Release = ReleaseThis;
 }
 
-CJniGenotick::~CJniGenotick()
+CGenotick::~CGenotick()
 {
 	SAFE_DELETE(functions);
 }
 
-jint_t CJniGenotick::GetInterfaceVersionInternal() const
+TGenotickInt32 CGenotick::GetInterfaceVersionInternal()
 {
-	return m_mainInterfaceClass->Call(m_javaEnv, m_getInterfaceVersionMethod);
+	return m_mainInterface.GetInterfaceVersion();
 }
 
-EGenotickResult CJniGenotick::StartInternal(const SGenotickStartSettings* pSettings) const
+EGenotickResult CGenotick::GetSettingsInternal(SGenotickMainSettings* pSettings)
+{
+	if (!pSettings)
+		return eGenotickResult_InvalidArgument;
+
+
+
+
+	return eGenotickResult_Success;
+}
+
+EGenotickResult CGenotick::ChangeSettingsInternal(const SGenotickMainSettings* pSettings)
+{
+	if (!pSettings)
+		return eGenotickResult_InvalidArgument;
+
+
+
+
+	return eGenotickResult_Success;
+}
+
+EGenotickResult CGenotick::StartInternal(const SGenotickStartSettings* pSettings)
 {
 	if (!pSettings)
 		return eGenotickResult_InvalidArgument;
@@ -40,26 +67,23 @@ EGenotickResult CJniGenotick::StartInternal(const SGenotickStartSettings* pSetti
 	try
 	{
 		const jni::jsize length = pSettings->parameterCount;
-		TJavaArrayOfStrings args = TJavaArrayOfStrings::New(m_javaEnv, length, *m_stringClass.get());
+		jni::StringArray args = jni::StringArray::New(m_javaEnv, length, *m_stringClass.get());
 		for (jni::jsize i = 0; i < length; ++i)
 		{
 			const char* parameter = pSettings->parameters[i];
 			jni::String newString = jni::Make<jni::String>(m_javaEnv, parameter);
 			args.Set(m_javaEnv, i, newString);
 		}
-		const jni::jint error = m_mainInterfaceClass->Call(m_javaEnv, m_startMethod, args);
-		return genotick::ErrorCodeToGenotickResult(error);
+		const jni::jint error = m_mainInterface.Start(args);
+		return jni::genotick::ErrorCodeToGenotickResult(error);
 	}
 	catch (jni::PendingJavaException)
 	{
-		jni::Throwable exception(jni::ExceptionOccurred(m_javaEnv)); // TODO get and store exception description
-		jni::ExceptionDescribe(m_javaEnv);
-		jni::ExceptionClear(m_javaEnv);
-		return eGenotickResult_JavaException;
+		return HandleJavaException();
 	}
 }
 
-EGenotickResult CJniGenotick::ReleaseInternal() const
+EGenotickResult CGenotick::ReleaseInternal()
 {
 	const jint jniResult = m_javaVM.DestroyJavaVM();
 	assert(jniResult == JNI_OK);
@@ -69,3 +93,14 @@ EGenotickResult CJniGenotick::ReleaseInternal() const
 	}
 	return jni::JniErrorToGenotickResult(jniResult);
 }
+
+EGenotickResult CGenotick::HandleJavaException()
+{
+	jni::Throwable exception(jni::ExceptionOccurred(m_javaEnv)); // TODO get and store exception description
+	jni::ExceptionDescribe(m_javaEnv);
+	jni::ExceptionClear(m_javaEnv);
+	return eGenotickResult_JavaException;
+}
+
+} // namespace genotick
+} // namespace jni
