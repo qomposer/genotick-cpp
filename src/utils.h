@@ -8,6 +8,11 @@
 #undef SAFE_DELETE
 #define SAFE_DELETE(p) if (p) { delete p; p = nullptr; }
 
+#undef STRINGIFY
+#undef STRINGIFY_
+#define STRINGIFY_(x) #x
+#define STRINGIFY(x) STRINGIFY_(x)
+
 namespace utils
 {
 	template<typename T, int size>
