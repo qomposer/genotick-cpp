@@ -9,22 +9,14 @@
 #include "jni_genotick_weight_mode.h"
 #include "jni_genotick_inherited_weight_mode.h"
 #include "jni_genotick_chart_mode.h"
+#include "jni_genotick_exceptions.h"
 #include "strlcpy.h"
-#include <exception>
 
 class CJavaLoaderGenotick;
 class CJavaLoader;
 
 namespace jni {
 namespace genotick {
-
-class EnumMismatchException : public std::exception
-{
-public:
-	explicit EnumMismatchException(char const* const message)
-		: std::exception(message)
-	{}
-};
 
 class CGenotick : public IGenotickDestructable
 {

@@ -256,6 +256,7 @@
     <ClInclude Include="..\src\jni_enum.h" />
     <ClInclude Include="..\src\jni_genotick_chart_mode.h" />
     <ClInclude Include="..\src\jni_genotick_error.h" />
+    <ClInclude Include="..\src\jni_genotick_exceptions.h" />
     <ClInclude Include="..\src\jni_genotick_inherited_weight_mode.h" />
     <ClInclude Include="..\src\jni_genotick_interface.h" />
     <ClInclude Include="..\src\jni_genotick_settings.h" />
