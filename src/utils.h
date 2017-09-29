@@ -15,8 +15,8 @@
 
 namespace utils
 {
-	template<typename T, int size>
-	int GetArrayLength(T(&)[size])
+	template<typename T, unsigned int size>
+	unsigned int GetArrayLength(T(&)[size])
 	{
 		return size;
 	}

@@ -3,7 +3,7 @@
 
 #include <igenotick.h>
 
-struct IGenotickDestructable : public IGenotick_
+struct IGenotickDestructable : public IGenotick
 {
 	virtual ~IGenotickDestructable() {};
 };

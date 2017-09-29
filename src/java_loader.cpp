@@ -3,21 +3,9 @@
 #include "jni_genotick.h"
 #include "jni_error.h"
 #include "utils.h"
-#include <string>
+#include "utf8.h"
 #include <array>
 #include <assert.h>
-#include <filesystem>
-
-#define MISMATCH_MESSAGE "Mismatching Data Type Found"
-static_assert(sizeof(TGenotickInt32)   == sizeof(jni::jint)    , MISMATCH_MESSAGE);
-static_assert(sizeof(TGenotickInt64)   == sizeof(jni::jlong)   , MISMATCH_MESSAGE);
-static_assert(sizeof(TGenotickByte)    == sizeof(jni::jbyte)   , MISMATCH_MESSAGE);
-static_assert(sizeof(TGenotickBoolean) == sizeof(jni::jboolean), MISMATCH_MESSAGE);
-static_assert(sizeof(TGenotickChar)    == sizeof(jni::jchar)   , MISMATCH_MESSAGE);
-static_assert(sizeof(TGenotickShort)   == sizeof(jni::jshort)  , MISMATCH_MESSAGE);
-static_assert(sizeof(TGenotickFloat)   == sizeof(jni::jfloat)  , MISMATCH_MESSAGE);
-static_assert(sizeof(TGenotickDouble)  == sizeof(jni::jdouble) , MISMATCH_MESSAGE);
-#undef MISMATCH_MESSAGE
 
 namespace
 {
@@ -25,11 +13,6 @@ namespace
 	F GetProcAddressT(HMODULE hmod, const char* name)
 	{
 		return reinterpret_cast<F>(::GetProcAddress(hmod, name));
-	}
-
-	std::string GetJavaOptionString(const char* option, const char* value)
-	{
-		return ::stl::string_format("%s=%s", option, value);
 	}
 }
 
@@ -51,10 +34,10 @@ EGenotickResult CJavaLoader::LoadGenotick(IGenotick** ppInstance, const SGenotic
 	if (!ppInstance || !pSettings)
 		return eGenotickResult_InvalidArgument;
 
-	EGenotickResult result = LoadJvmModule(pSettings->jvmDllPath);
+	EGenotickResult result = LoadJvmModule(pSettings->utf8_jvmDllPath);
 	if (result == eGenotickResult_Success)
 	{
-		const std::string javaClassPathOption = GetJavaOptionString("-Djava.class.path", pSettings->javaClassPath);
+		const std::string javaClassPathOption = MakeJavaOptionString("-Djava.class.path", pSettings->utf8_javaClassPath);
 
 		JavaVM* pJvm = nullptr;
 		JNIEnv* pEnv = nullptr;
@@ -100,12 +83,13 @@ void CJavaLoader::RemoveInstance(const IGenotick* pInstance)
 	}
 }
 
-EGenotickResult CJavaLoader::LoadJvmModule(const wchar_t* jvmDllPath)
+EGenotickResult CJavaLoader::LoadJvmModule(const char* path)
 {
 	if (JvmModuleLoaded())
 		return eGenotickResult_Success;
 
-	m_jvmModule = ::LoadLibraryW(jvmDllPath);
+	const std::wstring wpath = utf8::to_ucs2(path);
+	m_jvmModule = ::LoadLibraryW(wpath.c_str());
 
 	if (!JvmModuleLoaded())
 		return eGenotickResult_JvmDllNotFound;
@@ -145,4 +129,9 @@ EGenotickResult CJavaLoader::ReleaseAllJvmInstances()
 		assert(result == eGenotickResult_Success);
 	}
 	return jni::JniErrorToGenotickResult(result);
+}
+
+std::string CJavaLoader::MakeJavaOptionString(const char* option, const char* value)
+{
+	return ::stl::string_format("%s=%s", option, value);
 }

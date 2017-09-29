@@ -6,15 +6,19 @@
 #include "jni/jni.hpp"
 #pragma warning(default: 4018 4063 4624 4800)
 #include <vector>
-
-// Because the JNI wrapper is not enough...
-// Add additional JNI helper functionality here
+#include "utils.h"
 
 #define GENOTICK_UNROLL_MEMBER_DECLARATIONS(TYPE, NAME) \
 TYPE m_##NAME;
 
 #define GENOTICK_UNROLL_FIELD_INITIALIZERS(TYPE, NAME) \
 , m_##NAME(this->m_uniqueClass->GetField<typename TYPE::FieldType>(m_javaEnv, STRINGIFY(NAME)))
+
+#define GENOTICK_UNROLL_STATIC_FIELD_INITIALIZERS(TYPE, NAME) \
+, m_##NAME(this->m_uniqueClass->GetStaticField<typename TYPE::FieldType>(m_javaEnv, STRINGIFY(NAME)))
+
+#define GENOTICK_UNROLL_METHOD_INITIALIZERS(TYPE, NAME) \
+, m_##NAME(this->m_uniqueClass->GetMethod<typename TYPE::MethodType>(m_javaEnv, STRINGIFY(NAME)))
 
 #define GENOTICK_UNROLL_STATIC_METHOD_INITIALIZERS(TYPE, NAME) \
 , m_##NAME(this->m_uniqueClass->GetStaticMethod<typename TYPE::MethodType>(m_javaEnv, STRINGIFY(NAME)))
@@ -58,12 +62,15 @@ namespace jni
 	}
 
 	struct ThrowableTag { static constexpr auto Name() { return "java/lang/Throwable"; } };
-	template <> struct UntaggedObjectType<ThrowableTag> { using Type = jthrowable; };
-	using Throwable = Object<ThrowableTag>;
+	struct ClassTag { static constexpr auto Name() { return "java/lang/Class"; } };
+	template <> struct UntaggedObjectType<ThrowableTag> { using Type = jni::jthrowable; };
+	template <> struct UntaggedObjectType<ClassTag> { using Type = jni::jclass; };
+	using ThrowableObject = jni::Object<ThrowableTag>;
+	using ClassObject = jni::Object<ClassTag>;
 
 	using StringArray = jni::Array<jni::String>;
 	using StringClass = jni::Class<jni::StringTag>;
-	using UniqueStringClass = jni::UniqueClass<StringClass::TagType>;
+	using UniqueStringClass = jni::UniqueClass<jni::StringTag>;
 
 	template <class ClassTag> using IntField = jni::Field<ClassTag, jni::jint>;
 	template <class ClassTag> using LongField = jni::Field<ClassTag, jni::jlong>;

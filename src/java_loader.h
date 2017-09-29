@@ -20,10 +20,11 @@ protected:
 	void RemoveInstance(const IGenotick* pInstance);
 
 private:
-	EGenotickResult LoadJvmModule(const wchar_t* jvmDllPath);
+	EGenotickResult LoadJvmModule(const char* path);
 	void FreeJvmModule();
 	EGenotickResult ReleaseAllJvmInstances();
 	
+	static std::string MakeJavaOptionString(const char* option, const char* value);
 	inline bool JvmModuleLoaded() { return m_jvmModule != 0; }
 
 	typedef jint (JNICALL *pJNI_GetDefaultJavaVMInitArgs)(void *args);

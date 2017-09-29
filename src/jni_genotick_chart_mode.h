@@ -2,27 +2,34 @@
 #pragma once
 
 #include "jni_helpers.h"
+#include "jni_enum.h"
 
 namespace jni {
 namespace genotick {
 
-class CChartMode
+struct SChartModeTagType { static constexpr auto Name() { return "com/alphatica/genotick/chart/GenoChartMode"; } };
+
+class CChartMode : public CDerivedEnum<SChartModeTagType>
 {
 public:
+	using TValueMethod = jni::Method<TagType, jni::jint()>;
+
+#define GENOTICK_CHARTMODE_METHODS(f) \
+	f(TValueMethod, value) \
+
 	explicit CChartMode(jni::JNIEnv* pJavaEnv)
-		: m_javaEnv(*pJavaEnv)
-		, m_uniqueClass(TClass::Find(m_javaEnv).NewGlobalRef(m_javaEnv))
+		: CDerivedEnum(pJavaEnv)
+		GENOTICK_CHARTMODE_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
 	}
 
-	struct TagType { static constexpr auto Name() { return "com/alphatica/genotick/chart/GenoChartMode"; } };
-	using TClass = jni::Class<TagType>;
-	using TUniqueClass = jni::UniqueClass<TagType>;
-	using TObject = jni::Object<TagType>;
+	inline typename TValueMethod::ReturnType value(const TObject& object) const
+	{
+		return object.Call(m_javaEnv, m_value);
+	}
 
 private:
-	jni::JNIEnv& m_javaEnv;
-	TUniqueClass m_uniqueClass;
+	GENOTICK_CHARTMODE_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 };
 
 } // namespace genotick

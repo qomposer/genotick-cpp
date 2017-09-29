@@ -19,7 +19,7 @@ public:
 	using TStartMethod = jni::StaticMethod<TagType, jni::jint(jni::StringArray)>;
 	using TGetSettingsMethod = jni::StaticMethod<TagType, CMainSettings::TObject()>;
 
-#define GENOTICK_MAININTERFACE_METHODS(f) \
+#define GENOTICK_MAININTERFACE_STATIC_METHODS(f) \
 	f(TGetInterfaceVersionMethod, getInterfaceVersion) \
 	f(TStartMethod              , start              ) \
 	f(TGetSettingsMethod        , getSettings        ) \
@@ -27,20 +27,20 @@ public:
 	explicit CMainInterface(jni::JNIEnv* pJavaEnv)
 		: m_javaEnv(*pJavaEnv)
 		, m_uniqueClass(TClass::Find(m_javaEnv).NewGlobalRef(m_javaEnv))
-		GENOTICK_MAININTERFACE_METHODS(GENOTICK_UNROLL_STATIC_METHOD_INITIALIZERS)
+		GENOTICK_MAININTERFACE_STATIC_METHODS(GENOTICK_UNROLL_STATIC_METHOD_INITIALIZERS)
 	{}
 
-	inline jni::jint CMainInterface::GetInterfaceVersion() const
+	inline typename TGetInterfaceVersionMethod::ReturnType getInterfaceVersion() const
 	{
 		return m_uniqueClass->Call(m_javaEnv, m_getInterfaceVersion);
 	}
 
-	inline jni::jint CMainInterface::Start(const jni::StringArray& array) const
+	inline typename TStartMethod::ReturnType start(const jni::StringArray& array) const
 	{
 		return m_uniqueClass->Call(m_javaEnv, m_start, array);
 	}
 
-	inline CMainSettings::TObject CMainInterface::GetSettings() const
+	inline typename TGetSettingsMethod::ReturnType getSettings() const
 	{
 		return m_uniqueClass->Call(m_javaEnv, m_getSettings);
 	}
@@ -48,7 +48,7 @@ public:
 private:
 	jni::JNIEnv& m_javaEnv;
 	TUniqueClass m_uniqueClass;
-	GENOTICK_MAININTERFACE_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
+	GENOTICK_MAININTERFACE_STATIC_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 };
 
 } // namespace genotick

@@ -1,9 +1,10 @@
 
 // Genotick interface for C & C++
 // Supports lib, dll, Win32, x64
+// All given strings are expected to be null-terminated
 
-#ifndef _I_GENOTICK_H_
-#define _I_GENOTICK_H_
+#ifndef I_GENOTICK_H
+#define I_GENOTICK_H
 
 #define GENOTICK_INTERFACE_VERSION 1
 
@@ -28,13 +29,13 @@
 extern "C" {
 #endif
 
-struct IGenotickFunctions_;
-struct IGenotick_;
+struct IGenotickFunctions;
+struct IGenotick;
 
 #ifdef __cplusplus
-typedef IGenotick_ IGenotick;
+typedef struct IGenotick IGenotick;
 #else
-typedef const struct IGenotickFunctions_* IGenotick;
+typedef const struct IGenotickFunctions* IGenotick;
 #endif
 
 typedef signed long      TGenotickInt32;
@@ -52,7 +53,7 @@ const TGenotickBoolean GenotickTrue = 1;
 
 typedef struct TGenotickString
 {
-	char* buffer;
+	char* utf8_buffer;
 	unsigned long capacity;
 } TGenotickString;
 
@@ -95,6 +96,7 @@ typedef enum EGenotickResult
 	eGenotickResult_JniExists,
 	eGenotickResult_JniInvalidArgument,
 	eGenotickResult_JavaClassMismatch,
+	eGenotickResult_JavaEnumMismatch,
 	eGenotickResult_JavaException,
 	eGenotickResult_ErrorContinue,
 	eGenotickResult_ErrorNoError,
@@ -146,7 +148,7 @@ typedef struct SGenotickStartSettings
 	unsigned int parameterCount;
 } SGenotickStartSettings;
 
-struct IGenotickFunctions_
+struct IGenotickFunctions
 {
 	TGenotickInt32(GENOTICK_CALL* GetInterfaceVersion)(IGenotick* pThis);
 	EGenotickResult(GENOTICK_CALL* GetSettings)(IGenotick* pThis, SGenotickMainSettings* pSettings);
@@ -155,9 +157,9 @@ struct IGenotickFunctions_
 	EGenotickResult(GENOTICK_CALL* Release)(IGenotick* pThis);
 };
 
-struct IGenotick_
+struct IGenotick
 {
-	const struct IGenotickFunctions_* functions;
+	const struct IGenotickFunctions* functions;
 #ifdef __cplusplus
 	TGenotickInt32 GetInterfaceVersion() {
 		return functions->GetInterfaceVersion(this);
@@ -175,15 +177,15 @@ struct IGenotick_
 		return functions->Release(this);
 	}
 protected:
-	IGenotick_() {}
-	virtual ~IGenotick_() {}
+	IGenotick() {}
+	virtual ~IGenotick() {}
 #endif
 };
 
 typedef struct
 {
-	const wchar_t* jvmDllPath;
-	const char* javaClassPath;
+	const char* utf8_jvmDllPath;
+	const char* utf8_javaClassPath;
 } SGenotickJvmSettings;
 
 // Unfortunately as of Java 8, JNI allows for one JavaVM instance per process only - ever.
@@ -195,4 +197,4 @@ GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL LoadGenotick(IGenotick**
 }
 #endif
 
-#endif // _I_GENOTICK_H_
+#endif // I_GENOTICK_H

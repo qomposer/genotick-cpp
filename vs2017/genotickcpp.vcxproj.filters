@@ -156,6 +156,15 @@
     <ClInclude Include="..\src\jni_genotick_weight_mode.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\utf8.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\strlcpy.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni_enum.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\dllmain.cpp">
