@@ -19,14 +19,16 @@ public:
 	using TOrdinalMethod = jni::Method<TagType, jni::jint()>;
 	using TGetDeclaringClassMethod = jni::Method<TagType, jni::ClassObject()>;
 	using TValuesMethod = jni::StaticMethod<TagType, TObjectArray()>;
+	using TValueOfMethod = jni::StaticMethod<TagType, TObject(jni::String)>;
 
 #define JAVA_ENUM_METHODS(f) \
-	f(TNameMethod             , name             ) \
-	f(TOrdinalMethod          , ordinal          ) \
+	f(TNameMethod, name) \
+	f(TOrdinalMethod, ordinal) \
 	f(TGetDeclaringClassMethod, getDeclaringClass) \
 
 #define JAVA_ENUM_STATIC_METHODS(f) \
 	f(TValuesMethod, values) \
+	f(TValueOfMethod, valueOf) \
 
 	explicit CDerivedEnum(jni::JNIEnv* pJavaEnv)
 		: m_javaEnv(*pJavaEnv)
@@ -54,6 +56,11 @@ public:
 	inline typename TValuesMethod::ReturnType values() const
 	{
 		return m_uniqueClass->Call(m_javaEnv, m_values);
+	}
+
+	inline typename TValueOfMethod::ReturnType valueOf(const jni::String& enumName) const
+	{
+		return m_uniqueClass->Call(m_javaEnv, m_values, enumName);
 	}
 
 protected:
