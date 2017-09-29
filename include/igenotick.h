@@ -26,6 +26,14 @@
 #define SAFE_RELEASE(p) if(p) { p->Release(); p = 0; }
 
 #ifdef __cplusplus
+#define GENOTICK_OPEN_ENUM(name) enum class name {
+#define GENOTICK_CLOSE_ENUM(name) };
+#else
+#define GENOTICK_DEFINE_ENUM(name, values) typedef enum name {
+#define GENOTICK_CLOSE_ENUM(name) } name;
+#endif
+
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -57,54 +65,50 @@ typedef struct TGenotickString
 	unsigned long capacity;
 } TGenotickString;
 
-typedef enum EGenotickWeightMode
-{
-	eGenotickWeightMode_WinCount = 0,
-	eGenotickWeightMode_WinRate,
-	eGenotickWeightMode_ProfitCount,
-	eGenotickWeightMode_ProfitFactor,
-} EGenotickWeightMode;
+GENOTICK_OPEN_ENUM(EGenotickWeightMode)
+	WinCount = 0,
+	WinRate,
+	ProfitCount,
+	ProfitFactor,
+GENOTICK_CLOSE_ENUM(EGenotickWeightMode)
 
-typedef enum EGenotickInheritedWeightMode
-{
-	eGenotickInheritedWeightMode_Parents = 0,
-	eGenotickInheritedWeightMode_Ancestors,
-	eGenotickInheritedWeightMode_AncestorsLog,
-} EGenotickInheritedWeightMode;
+GENOTICK_OPEN_ENUM(EGenotickInheritedWeightMode)
+	Parents = 0,
+	Ancestors,
+	AncestorsLog,
+GENOTICK_CLOSE_ENUM(EGenotickInheritedWeightMode)
 
-typedef enum EGenotickChartMode
-{
-	eGenotickChartMode_None                 = 0,
-	eGenotickChartMode_Draw                 = 1<<0,
-	eGenotickChartMode_Save                 = 1<<1,
-	eGenotickChartMode_JFreeChart           = 1<<2,
-	eGenotickChartMode_JFreeChart_Draw      = eGenotickChartMode_JFreeChart | eGenotickChartMode_Draw,
-	eGenotickChartMode_JFreeChart_Save      = eGenotickChartMode_JFreeChart | eGenotickChartMode_Save,
-	eGenotickChartMode_JFreeChart_Draw_Save = eGenotickChartMode_JFreeChart | eGenotickChartMode_Draw | eGenotickChartMode_Save,
-} EGenotickChartMode;
+GENOTICK_OPEN_ENUM(EGenotickChartMode)
+	None                 = 0,
+	Draw                 = 1<<0,
+	Save                 = 1<<1,
+	JFreeChart           = 1<<2,
+	JFreeChart_Draw      = JFreeChart | Draw,
+	JFreeChart_Save      = JFreeChart | Save,
+	JFreeChart_Draw_Save = JFreeChart | Draw | Save,
+GENOTICK_CLOSE_ENUM(EGenotickChartMode)
 
-typedef enum EGenotickResult
-{
-	eGenotickResult_Success = 0,
-	eGenotickResult_InvalidArgument,
-	eGenotickResult_JvmDllNotFound,
-	eGenotickResult_JvmExportsNotFound,
-	eGenotickResult_JniError,
-	eGenotickResult_JniDetached,
-	eGenotickResult_JniVersionMismatch,
-	eGenotickResult_JniNoMemory,
-	eGenotickResult_JniExists,
-	eGenotickResult_JniInvalidArgument,
-	eGenotickResult_JavaClassMismatch,
-	eGenotickResult_JavaEnumMismatch,
-	eGenotickResult_JavaException,
-	eGenotickResult_ErrorContinue,
-	eGenotickResult_ErrorNoError,
-	eGenotickResult_ErrorNoInput,
-	eGenotickResult_ErrorNoOutput,
-	eGenotickResult_ErrorUnknownArgument,
-	eGenotickResult_ErrorUnknown,
-} EGenotickResult;
+GENOTICK_OPEN_ENUM(EGenotickResult)
+	Success = 0,
+	InvalidArgument,
+	JvmDllNotFound,
+	JvmExportsNotFound,
+	JniError,
+	JniDetached,
+	JniVersionMismatch,
+	JniNoMemory,
+	JniExists,
+	JniInvalidArgument,
+	JavaClassMismatch,
+	JavaEnumMismatch,
+	JavaException,
+	ErrorContinue,
+	ErrorNoError,
+	ErrorNoInput,
+	ErrorNoOutput,
+	ErrorUnknownArgument,
+	ErrorUnknown,
+GENOTICK_CLOSE_ENUM(EGenotickResult)
 
 typedef struct SGenotickMainSettings
 {

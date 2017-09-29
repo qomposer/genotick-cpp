@@ -19,6 +19,7 @@ static_assert(sizeof(TGenotickDouble) == sizeof(jni::jdouble), MISMATCH_MESSAGE)
 static_assert(sizeof(EGenotickWeightMode) == sizeof(jni::jint), MISMATCH_MESSAGE);
 static_assert(sizeof(EGenotickInheritedWeightMode) == sizeof(jni::jint), MISMATCH_MESSAGE);
 static_assert(sizeof(EGenotickChartMode) == sizeof(jni::jint), MISMATCH_MESSAGE);
+static_assert(sizeof(EGenotickResult) == sizeof(jni::jint), MISMATCH_MESSAGE);
 #undef MISMATCH_MESSAGE
 
 namespace jni {
@@ -65,13 +66,13 @@ this->m_mainSettings.Set_##NAME(settingsObject, value); }
 EGenotickResult CGenotick::GetSettingsInternal(SGenotickMainSettings* pSettings)
 {
 	if (!pSettings)
-		return eGenotickResult_InvalidArgument;
+		return EGenotickResult::InvalidArgument;
 
 	try
 	{
 		const jni::genotick::CMainSettings::TObject settingsObject = m_mainInterface.getSettings();
 		GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_FIELDS_TO_NATIVE);
-		return eGenotickResult_Success;
+		return EGenotickResult::Success;
 	}
 	catch (jni::PendingJavaException)
 	{
@@ -86,13 +87,13 @@ EGenotickResult CGenotick::GetSettingsInternal(SGenotickMainSettings* pSettings)
 EGenotickResult CGenotick::ChangeSettingsInternal(const SGenotickMainSettings* pSettings)
 {
 	if (!pSettings)
-		return eGenotickResult_InvalidArgument;
+		return EGenotickResult::InvalidArgument;
 
 	try
 	{
 		const jni::genotick::CMainSettings::TObject settingsObject = m_mainInterface.getSettings();
 		GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_FIELDS_TO_JAVA);
-		return eGenotickResult_Success;
+		return EGenotickResult::Success;
 	}
 	catch (jni::PendingJavaException)
 	{
@@ -110,7 +111,7 @@ EGenotickResult CGenotick::ChangeSettingsInternal(const SGenotickMainSettings* p
 EGenotickResult CGenotick::StartInternal(const SGenotickStartSettings* pSettings)
 {
 	if (!pSettings)
-		return eGenotickResult_InvalidArgument;
+		return EGenotickResult::InvalidArgument;
 
 	try
 	{
@@ -147,12 +148,12 @@ EGenotickResult CGenotick::HandleJavaException()
 	jni::ThrowableObject exception(jni::ExceptionOccurred(m_javaEnv)); // TODO get and store exception description
 	jni::ExceptionDescribe(m_javaEnv);
 	jni::ExceptionClear(m_javaEnv);
-	return eGenotickResult_JavaException;
+	return EGenotickResult::JavaException;
 }
 
 EGenotickResult CGenotick::HandleEnumMismatchException()
 {
-	return eGenotickResult_JavaEnumMismatch;
+	return EGenotickResult::JavaEnumMismatch;
 }
 
 } // namespace genotick

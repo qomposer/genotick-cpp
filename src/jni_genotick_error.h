@@ -23,12 +23,12 @@ inline EGenotickResult ErrorCodeToGenotickResult(const jni::jint error)
 {
 	switch (error)
 	{
-	case EErrorCode::CONTINUE: return eGenotickResult_ErrorContinue;
-	case EErrorCode::NO_ERROR: return eGenotickResult_ErrorNoError;
-	case EErrorCode::NO_INPUT: return eGenotickResult_ErrorNoInput;
-	case EErrorCode::NO_OUTPUT: return eGenotickResult_ErrorNoOutput;
-	case EErrorCode::UNKNOWN_ARGUMENT: return eGenotickResult_ErrorUnknownArgument;
-	default: assert(0); return eGenotickResult_ErrorUnknown;
+	case EErrorCode::CONTINUE: return EGenotickResult::ErrorContinue;
+	case EErrorCode::NO_ERROR: return EGenotickResult::ErrorNoError;
+	case EErrorCode::NO_INPUT: return EGenotickResult::ErrorNoInput;
+	case EErrorCode::NO_OUTPUT: return EGenotickResult::ErrorNoOutput;
+	case EErrorCode::UNKNOWN_ARGUMENT: return EGenotickResult::ErrorUnknownArgument;
+	default: assert(0); return EGenotickResult::ErrorUnknown;
 	}
 }
 

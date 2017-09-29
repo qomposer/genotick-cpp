@@ -10,13 +10,13 @@ namespace jni
 	{
 		switch (error)
 		{
-		case JNI_OK: return eGenotickResult_Success;
-		case JNI_ERR: default: return eGenotickResult_JniError;
-		case JNI_EDETACHED: return eGenotickResult_JniDetached;
-		case JNI_EVERSION: return eGenotickResult_JniVersionMismatch;
-		case JNI_ENOMEM: return eGenotickResult_JniNoMemory;
-		case JNI_EEXIST: return eGenotickResult_JniExists;
-		case JNI_EINVAL: return eGenotickResult_JniInvalidArgument;
+		case JNI_OK: return EGenotickResult::Success;
+		case JNI_ERR: default: return EGenotickResult::JniError;
+		case JNI_EDETACHED: return EGenotickResult::JniDetached;
+		case JNI_EVERSION: return EGenotickResult::JniVersionMismatch;
+		case JNI_ENOMEM: return EGenotickResult::JniNoMemory;
+		case JNI_EEXIST: return EGenotickResult::JniExists;
+		case JNI_EINVAL: return EGenotickResult::JniInvalidArgument;
 		}
 	}
 }

@@ -41,7 +41,7 @@ int main(int argc, char** argv)
 
 	EGenotickResult result = LoadGenotick(&pInstance, &jvmSettings);
 
-	if (result == eGenotickResult_Success)
+	if (result == EGenotickResult::Success)
 	{
 		TGenotickInt32 version = pInstance->GetInterfaceVersion();
 
