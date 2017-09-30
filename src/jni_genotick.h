@@ -64,15 +64,15 @@ private:
 	}
 
 	template <> void ToNative(EGenotickWeightMode& dst, const jni::genotick::CWeightMode::TObject src) {
-		dst = static_cast<EGenotickWeightMode>(m_weightMode.ordinal(src));
+		dst = static_cast<EGenotickWeightMode>(m_weightMode.GetEnumValue(src));
 	}
 
 	template <> void ToNative(EGenotickInheritedWeightMode& dst, const jni::genotick::CInheritedWeightMode::TObject src) {
-		dst = static_cast<EGenotickInheritedWeightMode>(m_inheritedWeightMode.ordinal(src));
+		dst = static_cast<EGenotickInheritedWeightMode>(m_inheritedWeightMode.GetEnumValue(src));
 	}
 
 	template <> void ToNative(EGenotickChartMode& dst, const jni::genotick::CChartMode::TObject src) {
-		dst = static_cast<EGenotickChartMode>(m_chartMode.value(src));
+		dst = static_cast<EGenotickChartMode>(m_chartMode.GetEnumValue(src));
 	}
 
 	template <class D, class S> D ToJava(const S src) {
@@ -89,37 +89,15 @@ private:
 	}
 
 	template <> jni::genotick::CWeightMode::TObject ToJava(const EGenotickWeightMode src) {
-		const auto enumValues = m_weightMode.values();
-		const auto index = static_cast<jni::jsize>(src);
-		const auto length = enumValues.Length(m_javaEnv);
-		if (index < length) {
-			return enumValues.Get(m_javaEnv, index);
-		}
-		throw EnumMismatchException("Mismatch");
+		return m_weightMode.GetEnumObject(static_cast<jni::jint>(src));
 	}
 
 	template <> jni::genotick::CInheritedWeightMode::TObject ToJava(const EGenotickInheritedWeightMode src) {
-		const auto enumValues = m_inheritedWeightMode.values();
-		const auto index = static_cast<jni::jsize>(src);
-		const auto length = enumValues.Length(m_javaEnv);
-		if (index < length) {
-			return enumValues.Get(m_javaEnv, index);
-		}
-		throw EnumMismatchException("Mismatch");
+		return m_inheritedWeightMode.GetEnumObject(static_cast<jni::jint>(src));
 	}
 
 	template <> jni::genotick::CChartMode::TObject ToJava(const EGenotickChartMode src) {
-		const jni::genotick::CChartMode::TObjectArray enumValues = m_chartMode.values();
-		const jni::jsize length = enumValues.Length(m_javaEnv);
-		const jni::jint expectedValue = static_cast<jni::jint>(src);
-		for (jni::jsize i = 0; i < length; ++i) {
-			const jni::genotick::CChartMode::TObject enumValue = enumValues.Get(m_javaEnv, i);
-			const jni::jint givenValue = m_chartMode.value(enumValue);
-			if (expectedValue == givenValue) {
-				return enumValue;
-			}
-		}
-		throw EnumMismatchException("Mismatch");
+		return m_chartMode.GetEnumObject(static_cast<jni::jint>(src));
 	}
 
 	CJavaLoaderGenotick& m_javaLoader;

@@ -25,17 +25,69 @@
 #undef SAFE_RELEASE
 #define SAFE_RELEASE(p) if(p) { p->Release(); p = 0; }
 
-#ifdef __cplusplus
-#define GENOTICK_OPEN_ENUM(name) enum class name {
-#define GENOTICK_CLOSE_ENUM(name) };
-#else
-#define GENOTICK_DEFINE_ENUM(name, values) typedef enum name {
+#define GENOTICK_OPEN_ENUM(name) typedef enum name {
 #define GENOTICK_CLOSE_ENUM(name) } name;
-#endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#define GENOTICK_UNROLL_ENUM_NAME(cppEnumName, ...)                                    cppEnumName,
+#define GENOTICK_UNROLL_ENUM_NAME_AND_VALUE(cppEnumName, javaEnumName, enumValue, ...) cppEnumName = enumValue,
+#define GENOTICK_UNROLL_ENUM_DUMMY_NAME(cppEnumName, ...)                              eDummy_##cppEnumName,
+
+#define GENOTICK_DEFINE_ENUM(name, list) \
+	GENOTICK_OPEN_ENUM(name) list(GENOTICK_UNROLL_ENUM_NAME) GENOTICK_CLOSE_ENUM(name)
+
+#define GENOTICK_DEFINE_ENUM_WITH_VALUE(name, list) \
+	GENOTICK_OPEN_ENUM(name) list(GENOTICK_UNROLL_ENUM_NAME_AND_VALUE) GENOTICK_CLOSE_ENUM(name)
+
+#define GENOTICK_DEFINE_ENUM_WITH_COUNT(name, list, count) \
+	GENOTICK_OPEN_ENUM(name) list(GENOTICK_UNROLL_ENUM_NAME) count, GENOTICK_CLOSE_ENUM(name)
+
+#define GENOTICK_DEFINE_ENUM_WITH_VALUE_COUNT(name, list, count) \
+	GENOTICK_OPEN_ENUM(name) list(GENOTICK_UNROLL_ENUM_DUMMY_NAME) count, list(GENOTICK_UNROLL_ENUM_NAME_AND_VALUE) GENOTICK_CLOSE_ENUM(name)
+
+#define GENOTICK_ENUM_WEIGHT_MODE(f) \
+	f(eGenotickWeightMode_WinCount     , WIN_COUNT    ) \
+	f(eGenotickWeightMode_WinRate      , WIN_RATE     ) \
+	f(eGenotickWeightMode_ProfitCount  , PROFIT_COUNT ) \
+	f(eGenotickWeightMode_ProfitFactor , PROFIT_FACTOR) \
+
+#define GENOTICK_ENUM_INHERITED_WEIGHT_MODE(f) \
+	f(eGenotickInheritedWeightMode_Parents      , PARENTS      ) \
+	f(eGenotickInheritedWeightMode_Ancestors    , ANCESTORS    ) \
+	f(eGenotickInheritedWeightMode_AncestorsLog , ANCESTORS_LOG) \
+
+#define GENOTICK_ENUM_CHART_MODE(f) \
+	f(eGenotickChartMode_None                 , NONE                 , (0)                                                                                ) \
+	f(eGenotickChartMode_Draw                 , DRAW                 , (1 << 0)                                                                           ) \
+	f(eGenotickChartMode_Save                 , SAVE                 , (1 << 1)                                                                           ) \
+	f(eGenotickChartMode_JFreeChart           , JFREECHART           , (1 << 2)                                                                           ) \
+	f(eGenotickChartMode_JFreeChart_Draw      , JFREECHART_DRAW      , (eGenotickChartMode_JFreeChart | eGenotickChartMode_Draw)                          ) \
+	f(eGenotickChartMode_JFreeChart_Save      , JFREECHART_SAVE      , (eGenotickChartMode_JFreeChart | eGenotickChartMode_Save)                          ) \
+	f(eGenotickChartMode_JFreeChart_Draw_Save , JFREECHART_DRAW_SAVE , (eGenotickChartMode_JFreeChart | eGenotickChartMode_Draw | eGenotickChartMode_Save)) \
+
+GENOTICK_DEFINE_ENUM_WITH_COUNT(EGenotickWeightMode, GENOTICK_ENUM_WEIGHT_MODE, eGenotickWeightMode_Count)
+GENOTICK_DEFINE_ENUM_WITH_COUNT(EGenotickInheritedWeightMode, GENOTICK_ENUM_INHERITED_WEIGHT_MODE, eGenotickInheritedWeightMode_Count)
+GENOTICK_DEFINE_ENUM_WITH_VALUE_COUNT(EGenotickChartMode, GENOTICK_ENUM_CHART_MODE, eGenotickChartMode_Count)
+
+GENOTICK_OPEN_ENUM(EGenotickResult)
+	eGenotickResult_Success = 0,
+	eGenotickResult_InvalidArgument,
+	eGenotickResult_JvmDllNotFound,
+	eGenotickResult_JvmExportsNotFound,
+	eGenotickResult_JniError,
+	eGenotickResult_JniDetached,
+	eGenotickResult_JniVersionMismatch,
+	eGenotickResult_JniNoMemory,
+	eGenotickResult_JniExists,
+	eGenotickResult_JniInvalidArgument,
+	eGenotickResult_JavaClassMismatch,
+	eGenotickResult_JavaEnumMismatch,
+	eGenotickResult_JavaException,
+	eGenotickResult_ErrorContinue,
+	eGenotickResult_ErrorNoError,
+	eGenotickResult_ErrorNoInput,
+	eGenotickResult_ErrorNoOutput,
+	eGenotickResult_ErrorUnknownArgument,
+GENOTICK_CLOSE_ENUM(EGenotickResult)
 
 struct IGenotickFunctions;
 struct IGenotick;
@@ -64,50 +116,6 @@ typedef struct TGenotickString
 	char* utf8_buffer;
 	unsigned long capacity;
 } TGenotickString;
-
-GENOTICK_OPEN_ENUM(EGenotickWeightMode)
-	WinCount = 0,
-	WinRate,
-	ProfitCount,
-	ProfitFactor,
-GENOTICK_CLOSE_ENUM(EGenotickWeightMode)
-
-GENOTICK_OPEN_ENUM(EGenotickInheritedWeightMode)
-	Parents = 0,
-	Ancestors,
-	AncestorsLog,
-GENOTICK_CLOSE_ENUM(EGenotickInheritedWeightMode)
-
-GENOTICK_OPEN_ENUM(EGenotickChartMode)
-	None                 = 0,
-	Draw                 = 1<<0,
-	Save                 = 1<<1,
-	JFreeChart           = 1<<2,
-	JFreeChart_Draw      = JFreeChart | Draw,
-	JFreeChart_Save      = JFreeChart | Save,
-	JFreeChart_Draw_Save = JFreeChart | Draw | Save,
-GENOTICK_CLOSE_ENUM(EGenotickChartMode)
-
-GENOTICK_OPEN_ENUM(EGenotickResult)
-	Success = 0,
-	InvalidArgument,
-	JvmDllNotFound,
-	JvmExportsNotFound,
-	JniError,
-	JniDetached,
-	JniVersionMismatch,
-	JniNoMemory,
-	JniExists,
-	JniInvalidArgument,
-	JavaClassMismatch,
-	JavaEnumMismatch,
-	JavaException,
-	ErrorContinue,
-	ErrorNoError,
-	ErrorNoInput,
-	ErrorNoOutput,
-	ErrorUnknownArgument,
-GENOTICK_CLOSE_ENUM(EGenotickResult)
 
 typedef struct SGenotickMainSettings
 {
@@ -190,6 +198,10 @@ typedef struct
 	const char* utf8_jvmDllPath;
 	const char* utf8_javaClassPath;
 } SGenotickJvmSettings;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 // Unfortunately as of Java 8, JNI allows for one JavaVM instance per process only - ever.
 // After releasing a JavaVM, you cannot even start a new one (shame).

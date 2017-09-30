@@ -14,21 +14,15 @@ class CChartMode : public CDerivedEnum<SChartModeTagType>
 public:
 	using TValueMethod = jni::Method<TagType, jni::jint()>;
 
-#define GENOTICK_CHARTMODE_METHODS(f) \
+#define GENOTICK_CHART_MODE_METHODS(f) \
 	f(TValueMethod, value) \
 
 	explicit CChartMode(jni::JNIEnv* pJavaEnv)
 		: CDerivedEnum(pJavaEnv)
-		GENOTICK_CHARTMODE_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
+		GENOTICK_CHART_MODE_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
-		VerifyEnumValue(EGenotickChartMode::None, "NONE");
-		VerifyEnumValue(EGenotickChartMode::Draw, "DRAW");
-		VerifyEnumValue(EGenotickChartMode::Save, "SAVE");
-		VerifyEnumValue(EGenotickChartMode::JFreeChart, "JFREECHART");
-		VerifyEnumValue(EGenotickChartMode::JFreeChart_Draw, "JFREECHART_DRAW");
-		VerifyEnumValue(EGenotickChartMode::JFreeChart_Save, "JFREECHART_SAVE");
-		VerifyEnumValue(EGenotickChartMode::JFreeChart_Draw_Save, "JFREECHART_DRAW_SAVE");
-		VerifyEnumValueCount(7);
+		GENOTICK_ENUM_CHART_MODE(GENOTICK_UNROLL_VERIFY_ENUM_VALUE);
+		VerifyEnumValueCount(EGenotickChartMode::eGenotickChartMode_Count);
 	}
 
 	jni::jint value(const TObject& object) const
@@ -41,8 +35,13 @@ public:
 		return value(object);
 	}
 
+	TObject GetEnumObject(const jni::jint value) const override final
+	{
+		return GetEnumObjectBySearch(value);
+	}
+
 private:
-	GENOTICK_CHARTMODE_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
+	GENOTICK_CHART_MODE_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 };
 
 } // namespace genotick

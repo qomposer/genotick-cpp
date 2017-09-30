@@ -41,40 +41,69 @@ public:
 	}
 
 	virtual jni::jint GetEnumValue(const TObject& object) const = 0;
+	virtual TObject GetEnumObject(const jni::jint value) const = 0;
 
-	typename TNameMethod::ReturnType name(const TObject& object) const
+	jni::String name(const TObject& object) const
 	{
 		return object.Call(m_javaEnv, m_name);
 	}
 
-	typename TOrdinalMethod::ReturnType ordinal(const TObject& object) const
+	jni::jint ordinal(const TObject& object) const
 	{
 		return object.Call(m_javaEnv, m_ordinal);
 	}
 
-	typename TGetDeclaringClassMethod::ReturnType getDeclaringClass(const TObject& object) const
+	jni::ClassObject getDeclaringClass(const TObject& object) const
 	{
 		return object.Call(m_javaEnv, m_getDeclaringClass);
 	}
 
-	typename TValuesMethod::ReturnType values() const
+	TObjectArray values() const
 	{
 		return m_uniqueClass->Call(m_javaEnv, m_values);
 	}
 
-	typename TValueOfMethod::ReturnType valueOf(const jni::String& enumName) const
+	TObject valueOf(const jni::String& enumName) const
 	{
 		return m_uniqueClass->Call(m_javaEnv, m_valueOf, enumName);
 	}
 
 protected:
+	TObject GetEnumObjectBySearch(const jni::jint value) const
+	{
+		const TObjectArray enumObjects = values();
+		const jni::jsize length = enumObjects.Length(m_javaEnv);
+		for (jni::jsize i = 0; i < length; ++i)
+		{
+			const TObject enumObject = enumObjects.Get(m_javaEnv, i);
+			const jni::jint givenValue = GetEnumValue(enumObject);
+			if (value == givenValue)
+			{
+				return enumObject;
+			}
+		}
+		throw EnumMismatchException(stl::string_format(
+			"Enum constant of enum class '%s' with value %d was not found", TagType::Name(), value));
+	}
+
+	TObject GetEnumObjectByOrdinal(const jni::jint value) const
+	{
+		const TObjectArray enumValues = values();
+		const jni::jsize length = enumValues.Length(m_javaEnv);
+		if (static_cast<jni::jsize>(value) < length) {
+			return enumValues.Get(m_javaEnv, value);
+		}
+		throw EnumMismatchException(stl::string_format(
+			"Enum constant of enum class '%s' with value %d was not found", TagType::Name(), value));
+	}
+
 	template <class NativeEnumValue>
 	void VerifyEnumValue(NativeEnumValue nativeValue, const char* javaValue)
 	{
 		const jni::String javaValueString = jni::Make<jni::String>(m_javaEnv, javaValue);
-		const TObject javaEnumObject = this->valueOf(javaValueString);
+		const TObject enumObject = valueOf(javaValueString);
 		const jni::jint expectedValue = static_cast<jni::jint>(nativeValue);
-		const jni::jint actualValue = this->GetEnumValue(javaEnumObject);
+		const jni::jint actualValue = GetEnumValue(enumObject);
 		if (expectedValue != actualValue)
 		{
 			throw EnumMismatchException(stl::string_format(
@@ -85,8 +114,8 @@ protected:
 
 	void VerifyEnumValueCount(jni::jsize expectedLength)
 	{
-		const TObjectArray values = this->values();
-		const jni::jsize actualLength = values.Length(m_javaEnv);
+		const TObjectArray enumObjects = values();
+		const jni::jsize actualLength = enumObjects.Length(m_javaEnv);
 		if (expectedLength != actualLength)
 		{
 			throw jni::EnumMismatchException(stl::string_format(
@@ -94,6 +123,9 @@ protected:
 				TagType::Name(), expectedLength, actualLength));
 		}
 	}
+
+#define GENOTICK_UNROLL_VERIFY_ENUM_VALUE(cppEnumValue, javaEnumValue, ...) \
+	this->VerifyEnumValue(cppEnumValue, STRINGIFY(javaEnumValue));
 
 	jni::JNIEnv& m_javaEnv;
 	TUniqueClass m_uniqueClass;

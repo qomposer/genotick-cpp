@@ -65,13 +65,13 @@ this->m_mainSettings.Set_##NAME(settingsObject, value); }
 EGenotickResult CGenotick::GetSettingsInternal(SGenotickMainSettings* pSettings)
 {
 	if (!pSettings)
-		return EGenotickResult::InvalidArgument;
+		return EGenotickResult::eGenotickResult_InvalidArgument;
 
 	try
 	{
 		const jni::genotick::CMainSettings::TObject settingsObject = m_mainInterface.getSettings();
 		GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_FIELDS_TO_NATIVE);
-		return EGenotickResult::Success;
+		return EGenotickResult::eGenotickResult_Success;
 	}
 	catch (const jni::PendingJavaException& exception)
 	{
@@ -86,13 +86,13 @@ EGenotickResult CGenotick::GetSettingsInternal(SGenotickMainSettings* pSettings)
 EGenotickResult CGenotick::ChangeSettingsInternal(const SGenotickMainSettings* pSettings)
 {
 	if (!pSettings)
-		return EGenotickResult::InvalidArgument;
+		return EGenotickResult::eGenotickResult_InvalidArgument;
 
 	try
 	{
 		const jni::genotick::CMainSettings::TObject settingsObject = m_mainInterface.getSettings();
 		GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_FIELDS_TO_JAVA);
-		return EGenotickResult::Success;
+		return EGenotickResult::eGenotickResult_Success;
 	}
 	catch (const jni::PendingJavaException& exception)
 	{
@@ -110,7 +110,7 @@ EGenotickResult CGenotick::ChangeSettingsInternal(const SGenotickMainSettings* p
 EGenotickResult CGenotick::StartInternal(const SGenotickStartSettings* pSettings)
 {
 	if (!pSettings)
-		return EGenotickResult::InvalidArgument;
+		return EGenotickResult::eGenotickResult_InvalidArgument;
 
 	try
 	{

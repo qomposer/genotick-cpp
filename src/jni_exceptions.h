@@ -28,14 +28,14 @@ inline EGenotickResult HandleJavaException(jni::JNIEnv& env, const PendingJavaEx
 	//jni::ThrowableObject throwableObj(jni::ExceptionOccurred(env));
 	jni::ExceptionDescribe(env);
 	jni::ExceptionClear(env);
-	return EGenotickResult::JavaException;
+	return EGenotickResult::eGenotickResult_JavaException;
 }
 
 inline EGenotickResult HandleEnumMismatchException(const EnumMismatchException& exception)
 {
 	(void)exception;
 	// TODO store and print exception
-	return EGenotickResult::JavaEnumMismatch;
+	return EGenotickResult::eGenotickResult_JavaEnumMismatch;
 }
 
 } // namespace jni

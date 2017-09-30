@@ -15,16 +15,18 @@ public:
 	explicit CWeightMode(jni::JNIEnv* pJavaEnv)
 		: CDerivedEnum(pJavaEnv)
 	{
-		VerifyEnumValue(EGenotickWeightMode::WinCount, "WIN_COUNT");
-		VerifyEnumValue(EGenotickWeightMode::WinRate, "WIN_RATE");
-		VerifyEnumValue(EGenotickWeightMode::ProfitCount, "PROFIT_COUNT");
-		VerifyEnumValue(EGenotickWeightMode::ProfitFactor, "PROFIT_FACTOR");
-		VerifyEnumValueCount(4);
+		GENOTICK_ENUM_WEIGHT_MODE(GENOTICK_UNROLL_VERIFY_ENUM_VALUE);
+		VerifyEnumValueCount(EGenotickWeightMode::eGenotickWeightMode_Count);
 	}
 
 	jni::jint GetEnumValue(const TObject& object) const override final
 	{
 		return ordinal(object);
+	}
+
+	TObject GetEnumObject(const jni::jint value) const override final
+	{
+		return GetEnumObjectByOrdinal(value);
 	}
 };
 
