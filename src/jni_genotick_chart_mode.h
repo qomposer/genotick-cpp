@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "jni_helpers.h"
 #include "jni_enum.h"
+#include <igenotick.h>
 
 namespace jni {
 namespace genotick {
@@ -21,11 +21,24 @@ public:
 		: CDerivedEnum(pJavaEnv)
 		GENOTICK_CHARTMODE_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
+		VerifyEnumValue(EGenotickChartMode::None, "NONE");
+		VerifyEnumValue(EGenotickChartMode::Draw, "DRAW");
+		VerifyEnumValue(EGenotickChartMode::Save, "SAVE");
+		VerifyEnumValue(EGenotickChartMode::JFreeChart, "JFREECHART");
+		VerifyEnumValue(EGenotickChartMode::JFreeChart_Draw, "JFREECHART_DRAW");
+		VerifyEnumValue(EGenotickChartMode::JFreeChart_Save, "JFREECHART_SAVE");
+		VerifyEnumValue(EGenotickChartMode::JFreeChart_Draw_Save, "JFREECHART_DRAW_SAVE");
+		VerifyEnumValueCount(7);
 	}
 
-	inline typename TValueMethod::ReturnType value(const TObject& object) const
+	jni::jint value(const TObject& object) const
 	{
 		return object.Call(m_javaEnv, m_value);
+	}
+
+	jni::jint GetEnumValue(const TObject& object) const override final
+	{
+		return value(object);
 	}
 
 private:

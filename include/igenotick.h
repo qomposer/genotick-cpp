@@ -107,7 +107,6 @@ GENOTICK_OPEN_ENUM(EGenotickResult)
 	ErrorNoInput,
 	ErrorNoOutput,
 	ErrorUnknownArgument,
-	ErrorUnknown,
 GENOTICK_CLOSE_ENUM(EGenotickResult)
 
 typedef struct SGenotickMainSettings

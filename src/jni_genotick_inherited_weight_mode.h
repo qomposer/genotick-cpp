@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "jni_helpers.h"
 #include "jni_enum.h"
+#include <igenotick.h>
 
 namespace jni {
 namespace genotick {
@@ -15,6 +15,15 @@ public:
 	explicit CInheritedWeightMode(jni::JNIEnv* pJavaEnv)
 		: CDerivedEnum(pJavaEnv)
 	{
+		VerifyEnumValue(EGenotickInheritedWeightMode::Parents, "PARENTS");
+		VerifyEnumValue(EGenotickInheritedWeightMode::Ancestors, "ANCESTORS");
+		VerifyEnumValue(EGenotickInheritedWeightMode::AncestorsLog, "ANCESTORS_LOG");
+		VerifyEnumValueCount(3);
+	}
+
+	jni::jint GetEnumValue(const TObject& object) const override final
+	{
+		return ordinal(object);
 	}
 };
 

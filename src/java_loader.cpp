@@ -61,11 +61,13 @@ EGenotickResult CJavaLoader::LoadGenotick(IGenotick** ppInstance, const SGenotic
 				m_instances.push_back(TGenotickPtr(pNewInstance));
 				*ppInstance = pNewInstance;
 			}
-			catch (jni::PendingJavaException)
+			catch (const jni::PendingJavaException& exception)
 			{
-				jni::ExceptionDescribe(*pEnv);
-				jni::ExceptionClear(*pEnv);
-				result = EGenotickResult::JavaClassMismatch;
+				result = jni::HandleJavaException(*pEnv, exception);
+			}
+			catch (const jni::EnumMismatchException& exception)
+			{
+				result = jni::HandleEnumMismatchException(exception);
 			}
 		}
 	}

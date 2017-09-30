@@ -24,7 +24,7 @@ TYPE m_##NAME;
 , m_##NAME(this->m_uniqueClass->GetStaticMethod<typename TYPE::MethodType>(m_javaEnv, STRINGIFY(NAME)))
 
 #define GENOTICK_UNROLL_SET_FIELD_INLINE_FUNCTIONS(TYPE, NAME) \
-inline void Set_##NAME(const TObject& object, const typename TYPE::FieldType& value) const { \
+void Set_##NAME(const TObject& object, const typename TYPE::FieldType& value) const { \
 	object.Set(m_javaEnv, this->m_##NAME, value); }
 
 #define GENOTICK_UNROLL_GET_FIELD_INLINE_FUNCTIONS(TYPE, NAME) \
@@ -71,6 +71,8 @@ namespace jni
 	using StringArray = jni::Array<jni::String>;
 	using StringClass = jni::Class<jni::StringTag>;
 	using UniqueStringClass = jni::UniqueClass<jni::StringTag>;
+
+	template <class ClassTag> using ObjectArray = jni::Array<jni::Object<ClassTag>>;
 
 	template <class ClassTag> using IntField = jni::Field<ClassTag, jni::jint>;
 	template <class ClassTag> using LongField = jni::Field<ClassTag, jni::jlong>;

@@ -30,17 +30,17 @@ public:
 		GENOTICK_MAININTERFACE_STATIC_METHODS(GENOTICK_UNROLL_STATIC_METHOD_INITIALIZERS)
 	{}
 
-	inline typename TGetInterfaceVersionMethod::ReturnType getInterfaceVersion() const
+	jni::jint getInterfaceVersion() const
 	{
 		return m_uniqueClass->Call(m_javaEnv, m_getInterfaceVersion);
 	}
 
-	inline typename TStartMethod::ReturnType start(const jni::StringArray& array) const
+	jni::jint start(const jni::StringArray& array) const
 	{
 		return m_uniqueClass->Call(m_javaEnv, m_start, array);
 	}
 
-	inline typename TGetSettingsMethod::ReturnType getSettings() const
+	CMainSettings::TObject getSettings() const
 	{
 		return m_uniqueClass->Call(m_javaEnv, m_getSettings);
 	}

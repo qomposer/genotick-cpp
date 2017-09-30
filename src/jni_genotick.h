@@ -9,7 +9,8 @@
 #include "jni_genotick_weight_mode.h"
 #include "jni_genotick_inherited_weight_mode.h"
 #include "jni_genotick_chart_mode.h"
-#include "jni_genotick_exceptions.h"
+#include "jni_genotick_error.h"
+#include "jni_exceptions.h"
 #include "strlcpy.h"
 
 class CJavaLoaderGenotick;
@@ -21,7 +22,6 @@ namespace genotick {
 class CGenotick : public IGenotickDestructable
 {
 public:
-	// Constructor can throw jni::PendingJavaException
 	CGenotick(CJavaLoader* pJavaLoader, jni::JavaVM* pJavaVM, jni::JNIEnv* pJavaEnv);
 	virtual ~CGenotick();
 
@@ -47,9 +47,6 @@ private:
 	EGenotickResult ChangeSettingsInternal(const SGenotickMainSettings* pSettings);
 	EGenotickResult StartInternal(const SGenotickStartSettings* pSettings);
 	EGenotickResult ReleaseInternal();
-
-	EGenotickResult HandleJavaException();
-	EGenotickResult HandleEnumMismatchException();
 
 	template <class D, class S> void ToNative(D& dst, const S src) {
 		dst = static_cast<D>(src);
@@ -136,6 +133,7 @@ private:
 	jni::genotick::CWeightMode m_weightMode;
 	jni::genotick::CInheritedWeightMode m_inheritedWeightMode;
 	jni::genotick::CChartMode m_chartMode;
+	jni::genotick::CErrorCode m_errorCode;
 };
 
 } // namespace genotick

@@ -2,6 +2,8 @@
 #pragma once
 
 #include "jni_helpers.h"
+#include "jni_exceptions.h"
+#include "utils.h"
 
 namespace jni {
 
@@ -38,32 +40,61 @@ public:
 	{
 	}
 
-	inline typename TNameMethod::ReturnType name(const TObject& object) const
+	virtual jni::jint GetEnumValue(const TObject& object) const = 0;
+
+	typename TNameMethod::ReturnType name(const TObject& object) const
 	{
 		return object.Call(m_javaEnv, m_name);
 	}
 
-	inline typename TOrdinalMethod::ReturnType ordinal(const TObject& object) const
+	typename TOrdinalMethod::ReturnType ordinal(const TObject& object) const
 	{
 		return object.Call(m_javaEnv, m_ordinal);
 	}
 
-	inline typename TGetDeclaringClassMethod::ReturnType getDeclaringClass(const TObject& object) const
+	typename TGetDeclaringClassMethod::ReturnType getDeclaringClass(const TObject& object) const
 	{
 		return object.Call(m_javaEnv, m_getDeclaringClass);
 	}
 
-	inline typename TValuesMethod::ReturnType values() const
+	typename TValuesMethod::ReturnType values() const
 	{
 		return m_uniqueClass->Call(m_javaEnv, m_values);
 	}
 
-	inline typename TValueOfMethod::ReturnType valueOf(const jni::String& enumName) const
+	typename TValueOfMethod::ReturnType valueOf(const jni::String& enumName) const
 	{
-		return m_uniqueClass->Call(m_javaEnv, m_values, enumName);
+		return m_uniqueClass->Call(m_javaEnv, m_valueOf, enumName);
 	}
 
 protected:
+	template <class NativeEnumValue>
+	void VerifyEnumValue(NativeEnumValue nativeValue, const char* javaValue)
+	{
+		const jni::String javaValueString = jni::Make<jni::String>(m_javaEnv, javaValue);
+		const TObject javaEnumObject = this->valueOf(javaValueString);
+		const jni::jint expectedValue = static_cast<jni::jint>(nativeValue);
+		const jni::jint actualValue = this->GetEnumValue(javaEnumObject);
+		if (expectedValue != actualValue)
+		{
+			throw EnumMismatchException(stl::string_format(
+				"Enum value '%s' of enum class '%s' does not match. Expected: %d. Actual: %d.",
+				javaValue, TagType::Name(), expectedValue, actualValue));
+		}
+	}
+
+	void VerifyEnumValueCount(jni::jsize expectedLength)
+	{
+		const TObjectArray values = this->values();
+		const jni::jsize actualLength = values.Length(m_javaEnv);
+		if (expectedLength != actualLength)
+		{
+			throw jni::EnumMismatchException(stl::string_format(
+				"Enum value count of enum class '%s' does not match. Expected: %d. Actual: %d.",
+				TagType::Name(), expectedLength, actualLength));
+		}
+	}
+
 	jni::JNIEnv& m_javaEnv;
 	TUniqueClass m_uniqueClass;
 	JAVA_ENUM_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)

@@ -28,12 +28,12 @@ public:
 	{
 	}
 
-	inline TObject New(jni::jlong value) const
+	TObject New(jni::jlong value) const
 	{
 		return m_uniqueClass->New(m_javaEnv, m_constructor, value);
 	}
 
-	inline typename TGetValueMethod::ReturnType getValue(const TObject& object) const
+	jni::jlong getValue(const TObject& object) const
 	{
 		return object.Call(m_javaEnv, m_getValue);
 	}

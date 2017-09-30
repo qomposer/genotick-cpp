@@ -1,8 +1,6 @@
 
 #include "jni_genotick.h"
 #include "jni_error.h"
-#include "jni_genotick_error.h"
-#include "jni_genotick_settings.h"
 #include "java_loader.h"
 #include "utils.h"
 #include <string>
@@ -36,6 +34,7 @@ CGenotick::CGenotick(CJavaLoader* pJavaLoader, jni::JavaVM* pJavaVM, jni::JNIEnv
 	, m_weightMode(pJavaEnv)
 	, m_inheritedWeightMode(pJavaEnv)
 	, m_chartMode(pJavaEnv)
+	, m_errorCode(pJavaEnv)
 {
 	functions = new IGenotickFunctions;
 	IGenotickFunctions* mutableFunctions = const_cast<IGenotickFunctions*>(functions);
@@ -74,13 +73,13 @@ EGenotickResult CGenotick::GetSettingsInternal(SGenotickMainSettings* pSettings)
 		GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_FIELDS_TO_NATIVE);
 		return EGenotickResult::Success;
 	}
-	catch (jni::PendingJavaException)
+	catch (const jni::PendingJavaException& exception)
 	{
-		return HandleJavaException();
+		return jni::HandleJavaException(m_javaEnv, exception);
 	}
-	catch (EnumMismatchException)
+	catch (const jni::EnumMismatchException& exception)
 	{
-		return HandleEnumMismatchException();
+		return jni::HandleEnumMismatchException(exception);
 	}
 }
 
@@ -95,13 +94,13 @@ EGenotickResult CGenotick::ChangeSettingsInternal(const SGenotickMainSettings* p
 		GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_FIELDS_TO_JAVA);
 		return EGenotickResult::Success;
 	}
-	catch (jni::PendingJavaException)
+	catch (const jni::PendingJavaException& exception)
 	{
-		return HandleJavaException();
+		return jni::HandleJavaException(m_javaEnv, exception);
 	}
-	catch (EnumMismatchException)
+	catch (const jni::EnumMismatchException& exception)
 	{
-		return HandleEnumMismatchException();
+		return jni::HandleEnumMismatchException(exception);
 	}
 }
 
@@ -126,9 +125,9 @@ EGenotickResult CGenotick::StartInternal(const SGenotickStartSettings* pSettings
 		const jni::jint error = m_mainInterface.start(args);
 		return jni::genotick::ErrorCodeToGenotickResult(error);
 	}
-	catch (jni::PendingJavaException)
+	catch (const jni::PendingJavaException& exception)
 	{
-		return HandleJavaException();
+		return jni::HandleJavaException(m_javaEnv, exception);
 	}
 }
 
@@ -141,19 +140,6 @@ EGenotickResult CGenotick::ReleaseInternal()
 		m_javaLoader.RemoveInstance(this);
 	}
 	return jni::JniErrorToGenotickResult(jniResult);
-}
-
-EGenotickResult CGenotick::HandleJavaException()
-{
-	jni::ThrowableObject exception(jni::ExceptionOccurred(m_javaEnv)); // TODO get and store exception description
-	jni::ExceptionDescribe(m_javaEnv);
-	jni::ExceptionClear(m_javaEnv);
-	return EGenotickResult::JavaException;
-}
-
-EGenotickResult CGenotick::HandleEnumMismatchException()
-{
-	return EGenotickResult::JavaEnumMismatch;
 }
 
 } // namespace genotick
