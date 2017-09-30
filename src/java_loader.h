@@ -17,7 +17,7 @@ public:
 	EGenotickResult LoadGenotick(IGenotick** ppInstance, const SGenotickJvmSettings* pSettings);
 
 protected:
-	void RemoveInstance(const IGenotick* pInstance);
+	EGenotickResult RemoveInstance(const IGenotick* pInstance, JavaVM& javaVM);
 
 private:
 	EGenotickResult LoadJvmModule(const char* path);

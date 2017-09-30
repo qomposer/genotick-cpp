@@ -74,15 +74,18 @@ EGenotickResult CJavaLoader::LoadGenotick(IGenotick** ppInstance, const SGenotic
 	return result;
 }
 
-void CJavaLoader::RemoveInstance(const IGenotick* pInstance)
+EGenotickResult CJavaLoader::RemoveInstance(const IGenotick* pInstance, JavaVM& javaVM)
 {
 	auto predicate = [pInstance](TGenotickPtr& p) { return p.get() == pInstance; };
 	stl::find_and_erase_if(m_instances, predicate);
+	const jint jniResult = javaVM.DestroyJavaVM();
 
 	if (m_instances.empty())
 	{
 		FreeJvmModule();
 	}
+
+	return jni::JniErrorToGenotickResult(jniResult);
 }
 
 EGenotickResult CJavaLoader::LoadJvmModule(const char* path)

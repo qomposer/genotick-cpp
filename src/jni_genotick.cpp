@@ -133,13 +133,7 @@ EGenotickResult CGenotick::StartInternal(const SGenotickStartSettings* pSettings
 
 EGenotickResult CGenotick::ReleaseInternal()
 {
-	const jint jniResult = m_javaVM.DestroyJavaVM();
-	assert(jniResult == JNI_OK);
-	if (jniResult == JNI_OK)
-	{
-		m_javaLoader.RemoveInstance(this);
-	}
-	return jni::JniErrorToGenotickResult(jniResult);
+	return m_javaLoader.RemoveInstance(this, m_javaVM);
 }
 
 } // namespace genotick
