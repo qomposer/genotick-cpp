@@ -8,7 +8,6 @@ namespace jni {
 namespace genotick {
 
 #define GENOTICK_ENUM_ERROR_CODE(f) \
-	f(eErrorCode_Continue        , CONTINUE        , -1, EGenotickResult::eGenotickResult_ErrorContinue       ) \
 	f(eErrorCode_NoError         , NO_ERROR        ,  0, EGenotickResult::eGenotickResult_ErrorNoError        ) \
 	f(eErrorCode_NoInput         , NO_INPUT        ,  1, EGenotickResult::eGenotickResult_ErrorNoInput        ) \
 	f(eErrorCode_NoOutput        , NO_OUTPUT       ,  2, EGenotickResult::eGenotickResult_ErrorNoOutput       ) \

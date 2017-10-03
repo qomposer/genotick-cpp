@@ -82,7 +82,6 @@ GENOTICK_OPEN_ENUM(EGenotickResult)
 	eGenotickResult_JavaClassMismatch,
 	eGenotickResult_JavaEnumMismatch,
 	eGenotickResult_JavaException,
-	eGenotickResult_ErrorContinue,
 	eGenotickResult_ErrorNoError,
 	eGenotickResult_ErrorNoInput,
 	eGenotickResult_ErrorNoOutput,
