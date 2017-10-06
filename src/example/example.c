@@ -36,8 +36,7 @@ int main(int argc, char** argv)
 
 	if (result == eGenotickResult_Success)
 	{
-		IGenotick functions = (*pInstance);
-		TGenotickInt32 version = functions->GetInterfaceVersion(pInstance);
+		TGenotickInt32 version = pInstance->GetInterfaceVersion(pInstance);
 
 		SGenotickMainSettings mainSettings = { 0 };
 		char buffer1[260] = { 0 };
@@ -45,13 +44,13 @@ int main(int argc, char** argv)
 		SetString(&mainSettings.populationDAO, buffer1, sizeof(buffer1));
 		SetString(&mainSettings.dataDirectory, buffer2, sizeof(buffer2));
 
-		result = functions->GetSettings(pInstance, &mainSettings);
+		result = pInstance->GetSettings(pInstance, &mainSettings);
 
 		mainSettings.startTimePoint = 20130101;
 		mainSettings.endTimePoint = 20150101;
 		SetConstString(&mainSettings.dataDirectory, GENOTICK_DATADIR);
 
-		result = functions->ChangeSettings(pInstance, &mainSettings);
+		result = pInstance->ChangeSettings(pInstance, &mainSettings);
 
 		const char* arguments[] =
 		{
@@ -62,7 +61,7 @@ int main(int argc, char** argv)
 		startSettings.parameters = arguments;
 		startSettings.parameterCount = ARRAY_SIZE(arguments);
 
-		result = functions->Start(pInstance, &startSettings);
+		result = pInstance->Start(pInstance, &startSettings);
 
 		GENOTICK_SAFE_RELEASE(pInstance);
 	}

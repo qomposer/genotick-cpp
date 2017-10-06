@@ -36,18 +36,16 @@ CGenotick::CGenotick(CJavaLoader* pJavaLoader, jni::JavaVM* pJavaVM, jni::JNIEnv
 	, m_chartMode(pJavaEnv)
 	, m_errorCode(pJavaEnv)
 {
-	functions = new IGenotickFunctions;
-	IGenotickFunctions* mutableFunctions = const_cast<IGenotickFunctions*>(functions);
-	mutableFunctions->GetInterfaceVersion = GetInterfaceVersionThis;
-	mutableFunctions->GetSettings = GetSettingsThis;
-	mutableFunctions->ChangeSettings = ChangeSettingsThis;
-	mutableFunctions->Start = StartThis;
-	mutableFunctions->Release = ReleaseThis;
+	IGenotickFunctions& mutableFunctions = const_cast<IGenotickFunctions&>(functions);
+	mutableFunctions.GetInterfaceVersion = GetInterfaceVersionThis;
+	mutableFunctions.GetSettings = GetSettingsThis;
+	mutableFunctions.ChangeSettings = ChangeSettingsThis;
+	mutableFunctions.Start = StartThis;
+	mutableFunctions.Release = ReleaseThis;
 }
 
 CGenotick::~CGenotick()
 {
-	SAFE_DELETE(functions);
 }
 
 TGenotickInt32 CGenotick::GetInterfaceVersionInternal()

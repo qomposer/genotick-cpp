@@ -25,7 +25,7 @@
 #ifdef __cplusplus
 #define GENOTICK_SAFE_RELEASE(p) if(p) { p->Release(); p = 0; }
 #else
-#define GENOTICK_SAFE_RELEASE(p) if(p) { (*p)->Release(p); p = 0; }
+#define GENOTICK_SAFE_RELEASE(p) if(p) { p->Release(p); p = 0; }
 #endif
 
 #define GENOTICK_OPEN_ENUM(name) typedef enum name {
@@ -97,7 +97,7 @@ struct IGenotick;
 #ifdef __cplusplus
 typedef struct IGenotick IGenotick;
 #else
-typedef const struct IGenotickFunctions* IGenotick;
+typedef const struct IGenotickFunctions IGenotick;
 #endif
 
 typedef signed long      TGenotickInt32;
@@ -172,22 +172,22 @@ struct IGenotickFunctions
 
 struct IGenotick
 {
-	const struct IGenotickFunctions* functions;
+	const struct IGenotickFunctions functions;
 #ifdef __cplusplus
 	TGenotickInt32 GetInterfaceVersion() {
-		return functions->GetInterfaceVersion(this);
+		return functions.GetInterfaceVersion(this);
 	}
 	EGenotickResult GetSettings(SGenotickMainSettings* pSettings) {
-		return functions->GetSettings(this, pSettings);
+		return functions.GetSettings(this, pSettings);
 	}
 	EGenotickResult ChangeSettings(const SGenotickMainSettings* pSettings) {
-		return functions->ChangeSettings(this, pSettings);
+		return functions.ChangeSettings(this, pSettings);
 	}
 	EGenotickResult Start(const SGenotickStartSettings* pSettings) {
-		return functions->Start(this, pSettings);
+		return functions.Start(this, pSettings);
 	}
 	EGenotickResult Release() {
-		return functions->Release(this);
+		return functions.Release(this);
 	}
 protected:
 	IGenotick() {}
