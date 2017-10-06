@@ -28,7 +28,7 @@ int main(int argc, char** argv)
 	(void)argv;
 
 	IGenotick* pInstance = 0;
-	SGenotickJvmSettings jvmSettings = { 0 };
+	TGenotickJvmSettings jvmSettings = { 0 };
 	jvmSettings.utf8_jvmDllPath = JVM_PATH;
 	jvmSettings.utf8_javaClassPath = JAVA_CLASS_PATH;
 
@@ -38,7 +38,7 @@ int main(int argc, char** argv)
 	{
 		TGenotickInt32 version = pInstance->GetInterfaceVersion(pInstance);
 
-		SGenotickMainSettings mainSettings = { 0 };
+		TGenotickMainSettings mainSettings = { 0 };
 		char buffer1[260] = { 0 };
 		char buffer2[260] = { 0 };
 		SetString(&mainSettings.populationDAO, buffer1, sizeof(buffer1));
@@ -57,7 +57,7 @@ int main(int argc, char** argv)
 			"input=external",
 			"outdir=" GENOTICK_OUTDIR,
 		};
-		SGenotickStartSettings startSettings = { 0 };
+		TGenotickStartSettings startSettings = { 0 };
 		startSettings.parameters = arguments;
 		startSettings.parameterCount = ARRAY_SIZE(arguments);
 

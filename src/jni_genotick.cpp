@@ -36,7 +36,7 @@ CGenotick::CGenotick(CJavaLoader* pJavaLoader, jni::JavaVM* pJavaVM, jni::JNIEnv
 	, m_chartMode(pJavaEnv)
 	, m_errorCode(pJavaEnv)
 {
-	IGenotickFunctions& mutableFunctions = const_cast<IGenotickFunctions&>(functions);
+	SGenotickFunctions& mutableFunctions = const_cast<SGenotickFunctions&>(functions);
 	mutableFunctions.GetInterfaceVersion = GetInterfaceVersionThis;
 	mutableFunctions.GetSettings = GetSettingsThis;
 	mutableFunctions.ChangeSettings = ChangeSettingsThis;
@@ -48,7 +48,7 @@ CGenotick::~CGenotick()
 {
 }
 
-TGenotickInt32 CGenotick::GetInterfaceVersionInternal()
+TGenotickInt32 CGenotick::GetInterfaceVersionInternal() const
 {
 	return m_mainInterface.getInterfaceVersion();
 }
@@ -60,7 +60,7 @@ ToNative(pSettings->NAME, this->m_mainSettings.Get_##NAME(settingsObject)); }
 auto value = ToJava<typename jni::genotick::CMainSettings::TYPE::FieldType>(pSettings->NAME); \
 this->m_mainSettings.Set_##NAME(settingsObject, value); }
 
-EGenotickResult CGenotick::GetSettingsInternal(SGenotickMainSettings* pSettings)
+EGenotickResult CGenotick::GetSettingsInternal(SGenotickMainSettings* pSettings) const
 {
 	if (!pSettings)
 		return EGenotickResult::eGenotickResult_InvalidArgument;
@@ -81,7 +81,7 @@ EGenotickResult CGenotick::GetSettingsInternal(SGenotickMainSettings* pSettings)
 	}
 }
 
-EGenotickResult CGenotick::ChangeSettingsInternal(const SGenotickMainSettings* pSettings)
+EGenotickResult CGenotick::ChangeSettingsInternal(const SGenotickMainSettings* pSettings) const
 {
 	if (!pSettings)
 		return EGenotickResult::eGenotickResult_InvalidArgument;
@@ -105,7 +105,7 @@ EGenotickResult CGenotick::ChangeSettingsInternal(const SGenotickMainSettings* p
 #undef GENOTICK_UNROLL_FIELDS_TO_NATIVE
 #undef GENOTICK_UNROLL_FIELDS_TO_JAVA
 
-EGenotickResult CGenotick::StartInternal(const SGenotickStartSettings* pSettings)
+EGenotickResult CGenotick::StartInternal(const SGenotickStartSettings* pSettings) const
 {
 	if (!pSettings)
 		return EGenotickResult::eGenotickResult_InvalidArgument;
@@ -129,7 +129,7 @@ EGenotickResult CGenotick::StartInternal(const SGenotickStartSettings* pSettings
 	}
 }
 
-EGenotickResult CGenotick::ReleaseInternal()
+EGenotickResult CGenotick::ReleaseInternal() const
 {
 	return m_javaLoader.RemoveInstance(this, m_javaVM);
 }
