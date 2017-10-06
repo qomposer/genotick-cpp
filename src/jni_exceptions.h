@@ -5,7 +5,7 @@
 #include <jni/errors.hpp>
 #include <jni/types.hpp>
 #include <exception>
-#include <igenotick.h>
+#include "genotick.h"
 
 namespace jni {
 

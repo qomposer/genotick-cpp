@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <igenotick.h>
+#include "genotick.h"
 #include <jni.h>
 
 namespace jni

@@ -126,9 +126,6 @@
     <ClInclude Include="..\src\jni_genotick.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\igenotick_destructable.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\jni_helpers.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -166,6 +163,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\src\jni_exceptions.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,7 +2,7 @@
 #pragma once
 
 #include "jni_enum.h"
-#include <igenotick.h>
+#include "genotick.h"
 
 namespace jni {
 namespace genotick {

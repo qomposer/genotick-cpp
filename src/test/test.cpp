@@ -1,9 +1,7 @@
 
 #include "igenotick.h"
 
-#ifdef GENOTICK_LIB
 #pragma comment(lib, "genotickcpp.lib")
-#endif
 
 #define GENOTICK_OUTDIR "D:\\Trading\\Code\\genotick\\.jar\\OUTPUT"
 #define GENOTICK_DATADIR "D:\\Trading\\Code\\genotick\\.jar\\spx_data"

@@ -1,8 +1,7 @@
 
 #pragma once
 
-#include <igenotick.h>
-#include "igenotick_destructable.h"
+#include "genotick.h"
 #include <jni.h>
 #include <Windows.h>
 #include <vector>

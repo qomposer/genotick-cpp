@@ -7,7 +7,7 @@
       <PreprocessorDefinitions>GENOTICK_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
-<ItemDefinitionGroup Condition="'$(Configuration)'=='ReleaseDLL'">
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='ReleaseDLL'">
     <ClCompile>
       <PreprocessorDefinitions>GENOTICK_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>

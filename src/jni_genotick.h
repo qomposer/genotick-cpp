@@ -1,8 +1,7 @@
 
 #pragma once
 
-#include <igenotick.h>
-#include "igenotick_destructable.h"
+#include "genotick.h"
 #include "jni_genotick_interface.h"
 #include "jni_genotick_settings.h"
 #include "jni_genotick_timepoint.h"
