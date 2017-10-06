@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "genotickcpp", "genotickcpp.vcxproj", "{D21EDFCA-CD29-4475-B1A8-37B45973227A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "genotickcpp_test", "genotickcpp_test.vcxproj", "{904538D6-C660-4AEC-A40E-1A08799277DE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "genotickcpp_example", "genotickcpp_example.vcxproj", "{904538D6-C660-4AEC-A40E-1A08799277DE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D21EDFCA-CD29-4475-B1A8-37B45973227A} = {D21EDFCA-CD29-4475-B1A8-37B45973227A}
 	EndProjectSection
