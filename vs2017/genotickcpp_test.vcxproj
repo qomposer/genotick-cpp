@@ -99,59 +99,35 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='DebugLIB|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="genotickcpp_outputdir.props" />
-    <Import Project="genotickcpp_preprocessor.props" />
-    <Import Project="genotickcpp_includes.props" />
-    <Import Project="genotickcpp_libs.props" />
+    <Import Project="genotickcpp_test.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="genotickcpp_outputdir.props" />
-    <Import Project="genotickcpp_preprocessor.props" />
-    <Import Project="genotickcpp_includes.props" />
-    <Import Project="genotickcpp_libs.props" />
+    <Import Project="genotickcpp_test.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='ReleaseLIB|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="genotickcpp_outputdir.props" />
-    <Import Project="genotickcpp_preprocessor.props" />
-    <Import Project="genotickcpp_includes.props" />
-    <Import Project="genotickcpp_libs.props" />
+    <Import Project="genotickcpp_test.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="genotickcpp_outputdir.props" />
-    <Import Project="genotickcpp_preprocessor.props" />
-    <Import Project="genotickcpp_includes.props" />
-    <Import Project="genotickcpp_libs.props" />
+    <Import Project="genotickcpp_test.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='DebugLIB|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="genotickcpp_outputdir.props" />
-    <Import Project="genotickcpp_preprocessor.props" />
-    <Import Project="genotickcpp_includes.props" />
-    <Import Project="genotickcpp_libs.props" />
+    <Import Project="genotickcpp_test.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="genotickcpp_outputdir.props" />
-    <Import Project="genotickcpp_preprocessor.props" />
-    <Import Project="genotickcpp_includes.props" />
-    <Import Project="genotickcpp_libs.props" />
+    <Import Project="genotickcpp_test.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='ReleaseLIB|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="genotickcpp_outputdir.props" />
-    <Import Project="genotickcpp_preprocessor.props" />
-    <Import Project="genotickcpp_includes.props" />
-    <Import Project="genotickcpp_libs.props" />
+    <Import Project="genotickcpp_test.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="genotickcpp_outputdir.props" />
-    <Import Project="genotickcpp_preprocessor.props" />
-    <Import Project="genotickcpp_includes.props" />
-    <Import Project="genotickcpp_libs.props" />
+    <Import Project="genotickcpp_test.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
