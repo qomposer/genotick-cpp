@@ -22,8 +22,11 @@
 #define GENOTICK_IMPORT_OR_EXPORT
 #endif
 
-#undef SAFE_RELEASE
-#define SAFE_RELEASE(p) if(p) { p->Release(); p = 0; }
+#ifdef __cplusplus
+#define GENOTICK_SAFE_RELEASE(p) if(p) { p->Release(); p = 0; }
+#else
+#define GENOTICK_SAFE_RELEASE(p) if(p) { (*p)->Release(p); p = 0; }
+#endif
 
 #define GENOTICK_OPEN_ENUM(name) typedef enum name {
 #define GENOTICK_CLOSE_ENUM(name) } name;
@@ -188,7 +191,7 @@ struct IGenotick
 	}
 protected:
 	IGenotick() {}
-	virtual ~IGenotick() {}
+	~IGenotick() {}
 #endif
 };
 

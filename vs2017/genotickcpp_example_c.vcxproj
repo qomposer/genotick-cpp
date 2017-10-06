@@ -35,11 +35,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\example\example.cpp" />
+    <ClCompile Include="..\src\example\example.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{904538D6-C660-4AEC-A40E-1A08799277DE}</ProjectGuid>
-    <RootNamespace>genotickcpp_example</RootNamespace>
+    <ProjectGuid>{3736FD5A-0B0E-44E7-A8A2-8517A2CD1118}</ProjectGuid>
+    <RootNamespace>genotickcpp_example_c</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -156,6 +156,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugLIB|x64'">

@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "genotickcpp", "genotickcpp.vcxproj", "{D21EDFCA-CD29-4475-B1A8-37B45973227A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "genotickcpp_example", "genotickcpp_example.vcxproj", "{904538D6-C660-4AEC-A40E-1A08799277DE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D21EDFCA-CD29-4475-B1A8-37B45973227A} = {D21EDFCA-CD29-4475-B1A8-37B45973227A}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "genotickcpp_example_c", "genotickcpp_example_c.vcxproj", "{3736FD5A-0B0E-44E7-A8A2-8517A2CD1118}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D21EDFCA-CD29-4475-B1A8-37B45973227A} = {D21EDFCA-CD29-4475-B1A8-37B45973227A}
 	EndProjectSection
@@ -54,8 +59,27 @@ Global
 		{904538D6-C660-4AEC-A40E-1A08799277DE}.ReleaseLIB|x64.Build.0 = ReleaseLIB|x64
 		{904538D6-C660-4AEC-A40E-1A08799277DE}.ReleaseLIB|x86.ActiveCfg = ReleaseLIB|Win32
 		{904538D6-C660-4AEC-A40E-1A08799277DE}.ReleaseLIB|x86.Build.0 = ReleaseLIB|Win32
+		{3736FD5A-0B0E-44E7-A8A2-8517A2CD1118}.DebugDLL|x64.ActiveCfg = DebugDLL|x64
+		{3736FD5A-0B0E-44E7-A8A2-8517A2CD1118}.DebugDLL|x64.Build.0 = DebugDLL|x64
+		{3736FD5A-0B0E-44E7-A8A2-8517A2CD1118}.DebugDLL|x86.ActiveCfg = DebugDLL|Win32
+		{3736FD5A-0B0E-44E7-A8A2-8517A2CD1118}.DebugDLL|x86.Build.0 = DebugDLL|Win32
+		{3736FD5A-0B0E-44E7-A8A2-8517A2CD1118}.DebugLIB|x64.ActiveCfg = DebugLIB|x64
+		{3736FD5A-0B0E-44E7-A8A2-8517A2CD1118}.DebugLIB|x64.Build.0 = DebugLIB|x64
+		{3736FD5A-0B0E-44E7-A8A2-8517A2CD1118}.DebugLIB|x86.ActiveCfg = DebugLIB|Win32
+		{3736FD5A-0B0E-44E7-A8A2-8517A2CD1118}.DebugLIB|x86.Build.0 = DebugLIB|Win32
+		{3736FD5A-0B0E-44E7-A8A2-8517A2CD1118}.ReleaseDLL|x64.ActiveCfg = ReleaseDLL|x64
+		{3736FD5A-0B0E-44E7-A8A2-8517A2CD1118}.ReleaseDLL|x64.Build.0 = ReleaseDLL|x64
+		{3736FD5A-0B0E-44E7-A8A2-8517A2CD1118}.ReleaseDLL|x86.ActiveCfg = ReleaseDLL|Win32
+		{3736FD5A-0B0E-44E7-A8A2-8517A2CD1118}.ReleaseDLL|x86.Build.0 = ReleaseDLL|Win32
+		{3736FD5A-0B0E-44E7-A8A2-8517A2CD1118}.ReleaseLIB|x64.ActiveCfg = ReleaseLIB|x64
+		{3736FD5A-0B0E-44E7-A8A2-8517A2CD1118}.ReleaseLIB|x64.Build.0 = ReleaseLIB|x64
+		{3736FD5A-0B0E-44E7-A8A2-8517A2CD1118}.ReleaseLIB|x86.ActiveCfg = ReleaseLIB|Win32
+		{3736FD5A-0B0E-44E7-A8A2-8517A2CD1118}.ReleaseLIB|x86.Build.0 = ReleaseLIB|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {64EE0D31-748A-41E1-B636-B6AA340623D3}
 	EndGlobalSection
 EndGlobal

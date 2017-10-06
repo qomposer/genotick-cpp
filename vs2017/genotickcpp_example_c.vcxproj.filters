@@ -5,11 +5,11 @@
       <UniqueIdentifier>{2637af0b-7ff6-4542-a8b9-c253773d58f4}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\example">
-      <UniqueIdentifier>{766a661c-501b-4924-9ff3-3d6a67d005a5}</UniqueIdentifier>
+      <UniqueIdentifier>{b88f4c1a-881f-4818-a226-f5df34ec41cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\example\example.cpp">
+    <ClCompile Include="..\src\example\example.c">
       <Filter>src\example</Filter>
     </ClCompile>
   </ItemGroup>

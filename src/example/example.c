@@ -8,23 +8,18 @@
 #define JAVA_CLASS_PATH "D:\\Trading\\Code\\genotick\\.jar\\genotick.jar"
 #define JVM_PATH "C:\\Program Files (x86)\\Java\\jre1.8.0_144\\bin\\client\\jvm.dll"
 
-template<typename T, unsigned int size>
-unsigned int GetArrayLength(T(&)[size])
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+
+void SetString(TGenotickString* dst, char* src, unsigned int capacity)
 {
-	return size;
+	dst->utf8_buffer = src;
+	dst->capacity = capacity;
 }
 
-template<int size>
-void SetString(TGenotickString& dst, char(&src)[size])
+void SetConstString(TGenotickString* dst, const char* src)
 {
-	dst.utf8_buffer = src;
-	dst.capacity = size;
-}
-
-void SetConstString(TGenotickString& dst, const char* src)
-{
-	dst.utf8_buffer = const_cast<char*>(src);
-	dst.capacity = 0;
+	dst->utf8_buffer = (char*)src;
+	dst->capacity = 0;
 }
 
 int main(int argc, char** argv)
@@ -32,30 +27,31 @@ int main(int argc, char** argv)
 	(void)argc;
 	(void)argv;
 
-	IGenotick* pInstance = nullptr;
+	IGenotick* pInstance = 0;
 	SGenotickJvmSettings jvmSettings = { 0 };
 	jvmSettings.utf8_jvmDllPath = JVM_PATH;
 	jvmSettings.utf8_javaClassPath = JAVA_CLASS_PATH;
 
 	EGenotickResult result = LoadGenotick(&pInstance, &jvmSettings);
 
-	if (result == EGenotickResult::eGenotickResult_Success)
+	if (result == eGenotickResult_Success)
 	{
-		TGenotickInt32 version = pInstance->GetInterfaceVersion();
+		IGenotick functions = (*pInstance);
+		TGenotickInt32 version = functions->GetInterfaceVersion(pInstance);
 
 		SGenotickMainSettings mainSettings = { 0 };
 		char buffer1[260] = { 0 };
 		char buffer2[260] = { 0 };
-		SetString(mainSettings.populationDAO, buffer1);
-		SetString(mainSettings.dataDirectory, buffer2);
+		SetString(&mainSettings.populationDAO, buffer1, sizeof(buffer1));
+		SetString(&mainSettings.dataDirectory, buffer2, sizeof(buffer2));
 
-		result = pInstance->GetSettings(&mainSettings);
+		result = functions->GetSettings(pInstance, &mainSettings);
 
 		mainSettings.startTimePoint = 20130101;
 		mainSettings.endTimePoint = 20150101;
-		SetConstString(mainSettings.dataDirectory, GENOTICK_DATADIR);
+		SetConstString(&mainSettings.dataDirectory, GENOTICK_DATADIR);
 
-		result = pInstance->ChangeSettings(&mainSettings);
+		result = functions->ChangeSettings(pInstance, &mainSettings);
 
 		const char* arguments[] =
 		{
@@ -64,9 +60,9 @@ int main(int argc, char** argv)
 		};
 		SGenotickStartSettings startSettings = { 0 };
 		startSettings.parameters = arguments;
-		startSettings.parameterCount = GetArrayLength(arguments);
+		startSettings.parameterCount = ARRAY_SIZE(arguments);
 
-		result = pInstance->Start(&startSettings);
+		result = functions->Start(pInstance, &startSettings);
 
 		GENOTICK_SAFE_RELEASE(pInstance);
 	}
