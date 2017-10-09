@@ -7,11 +7,12 @@
 
 namespace jni {
 
-template <class TheTag>
+template <class TheTag, class EnumClass>
 class CDerivedEnum
 {
 public:
 	using TagType = TheTag;
+	using TEnumClass = EnumClass;
 	using TClass = jni::Class<TagType>;
 	using TUniqueClass = jni::UniqueClass<TagType>;
 	using TObject = jni::Object<TagType>;
@@ -38,6 +39,7 @@ public:
 		JAVA_ENUM_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 		JAVA_ENUM_STATIC_METHODS(GENOTICK_UNROLL_STATIC_METHOD_INITIALIZERS)
 	{
+		VerifyEnumBasics();
 	}
 
 	virtual jni::jint GetEnumValue(const TObject& object) const = 0;
@@ -86,47 +88,79 @@ protected:
 			"Enum constant of enum class '%s' with value %d was not found", TagType::Name(), value));
 	}
 
-	TObject GetEnumObjectByOrdinal(const jni::jint value) const
+	TObject GetEnumObjectByOrdinal(const jni::jint ordinal) const
 	{
 		const TObjectArray enumValues = values();
 		const jni::jsize length = enumValues.Length(m_javaEnv);
-		if (static_cast<jni::jsize>(value) < length) {
-			return enumValues.Get(m_javaEnv, value);
+		if (static_cast<jni::jsize>(ordinal) < length) {
+			return enumValues.Get(m_javaEnv, ordinal);
 		}
 		throw EnumMismatchException(stl::string_format(
-			"Enum constant of enum class '%s' with value %d was not found", TagType::Name(), value));
+			"Enum constant of enum class '%s' with ordinal %d was not found", TagType::Name(), ordinal));
 	}
 
-	template <class NativeEnumValue>
-	void VerifyEnumValue(NativeEnumValue nativeValue, const char* javaValue)
+protected:
+	void VerifyEnumValues()
 	{
-		const jni::String javaValueString = jni::Make<jni::String>(m_javaEnv, javaValue);
-		const TObject enumObject = valueOf(javaValueString);
-		const jni::jint expectedValue = static_cast<jni::jint>(nativeValue);
-		const jni::jint actualValue = GetEnumValue(enumObject);
-		if (expectedValue != actualValue)
+		const TEnumClass::ordinal_type count = TEnumClass::count();
+		for (TEnumClass::ordinal_type i = 0; i < count; ++i)
 		{
-			throw EnumMismatchException(stl::string_format(
-				"Enum value '%s' of enum class '%s' does not match. Expected: %d. Actual: %d.",
-				javaValue, TagType::Name(), expectedValue, actualValue));
+			const TEnumClass& instance = TEnumClass::getByOrdinal(i);
+			VerifyEnumValue(instance.value(), instance.meta().javaValueName);
 		}
 	}
 
-	void VerifyEnumValueCount(jni::jsize expectedLength)
+	void VerifyEnumValue(jni::jint nativeValue, const char* const javaValueName)
+	{
+		const jni::String javaValueString = jni::Make<jni::String>(m_javaEnv, javaValueName);
+		const TObject enumObject = valueOf(javaValueString);
+		const jni::jint javaValue = GetEnumValue(enumObject);
+		if (nativeValue != javaValue)
+		{
+			throw EnumMismatchException(stl::string_format(
+				"Enum value of '%s' of enum class '%s' does not match. Expected: %d. Actual: %d.",
+				javaValueName, TagType::Name(), nativeValue, javaValue));
+		}
+	}
+
+private:
+	void VerifyEnumBasics()
+	{
+		const TEnumClass::ordinal_type count = TEnumClass::count();
+		VerifyEnumValueCount(count);
+		for (TEnumClass::ordinal_type i = 0; i < count; ++i)
+		{
+			const TEnumClass& instance = TEnumClass::getByOrdinal(i);
+			VerifyEnumOrdinal(instance.ordinal(), instance.meta().javaValueName);
+		}
+	}
+
+	void VerifyEnumOrdinal(jni::jint nativeOrdinal, const char* const javaValueName)
+	{
+		const jni::String javaValueString = jni::Make<jni::String>(m_javaEnv, javaValueName);
+		const TObject enumObject = valueOf(javaValueString);
+		const jni::jint javaOrdinal = ordinal(enumObject);
+		if (nativeOrdinal != javaOrdinal)
+		{
+			throw EnumMismatchException(stl::string_format(
+				"Enum ordinal of '%s' of enum class '%s' does not match. Expected: %d. Actual: %d.",
+				javaValueName, TagType::Name(), nativeOrdinal, javaOrdinal));
+		}
+	}
+
+	void VerifyEnumValueCount(typename TEnumClass::ordinal_type nativeValueCount)
 	{
 		const TObjectArray enumObjects = values();
-		const jni::jsize actualLength = enumObjects.Length(m_javaEnv);
-		if (expectedLength != actualLength)
+		const jni::jsize javaValueCount = enumObjects.Length(m_javaEnv);
+		if (nativeValueCount != javaValueCount)
 		{
 			throw jni::EnumMismatchException(stl::string_format(
 				"Enum value count of enum class '%s' does not match. Expected: %d. Actual: %d.",
-				TagType::Name(), expectedLength, actualLength));
+				TagType::Name(), nativeValueCount, javaValueCount));
 		}
 	}
 
-#define GENOTICK_UNROLL_VERIFY_ENUM_VALUE(cppEnumValue, javaEnumValue, ...) \
-	this->VerifyEnumValue(cppEnumValue, STRINGIFY(javaEnumValue));
-
+protected:
 	jni::JNIEnv& m_javaEnv;
 	TUniqueClass m_uniqueClass;
 	JAVA_ENUM_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)

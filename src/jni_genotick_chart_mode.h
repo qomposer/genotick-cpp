@@ -9,7 +9,7 @@ namespace genotick {
 
 struct SChartModeTagType { static constexpr auto Name() { return "com/alphatica/genotick/chart/GenoChartMode"; } };
 
-class CChartMode : public CDerivedEnum<SChartModeTagType>
+class CChartMode : public CDerivedEnum<SChartModeTagType, EGenotickChartMode>
 {
 public:
 	using TValueMethod = jni::Method<TagType, jni::jint()>;
@@ -21,8 +21,7 @@ public:
 		: CDerivedEnum(pJavaEnv)
 		GENOTICK_CHART_MODE_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
-		GENOTICK_ENUM_CHART_MODE(GENOTICK_UNROLL_VERIFY_ENUM_VALUE);
-		VerifyEnumValueCount(EGenotickChartMode::eGenotickChartMode_Count);
+		VerifyEnumValues();
 	}
 
 	jni::jint value(const TObject& object) const

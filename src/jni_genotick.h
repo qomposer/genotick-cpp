@@ -63,15 +63,15 @@ private:
 	}
 
 	template <> void ToNative(EGenotickWeightMode& dst, const jni::genotick::CWeightMode::TObject src) const {
-		dst = static_cast<EGenotickWeightMode>(m_weightMode.GetEnumValue(src));
+		dst = EGenotickWeightMode::getByValue(m_weightMode.GetEnumValue(src));
 	}
 
 	template <> void ToNative(EGenotickInheritedWeightMode& dst, const jni::genotick::CInheritedWeightMode::TObject src) const {
-		dst = static_cast<EGenotickInheritedWeightMode>(m_inheritedWeightMode.GetEnumValue(src));
+		dst = EGenotickInheritedWeightMode::getByValue(m_inheritedWeightMode.GetEnumValue(src));
 	}
 
 	template <> void ToNative(EGenotickChartMode& dst, const jni::genotick::CChartMode::TObject src) const {
-		dst = static_cast<EGenotickChartMode>(m_chartMode.GetEnumValue(src));
+		dst = EGenotickChartMode::getByValue(m_chartMode.GetEnumValue(src));
 	}
 
 	template <class D, class S> D ToJava(const S src) const {
@@ -88,15 +88,15 @@ private:
 	}
 
 	template <> jni::genotick::CWeightMode::TObject ToJava(const EGenotickWeightMode src) const {
-		return m_weightMode.GetEnumObject(static_cast<jni::jint>(src));
+		return m_weightMode.GetEnumObject(src.value());
 	}
 
 	template <> jni::genotick::CInheritedWeightMode::TObject ToJava(const EGenotickInheritedWeightMode src) const {
-		return m_inheritedWeightMode.GetEnumObject(static_cast<jni::jint>(src));
+		return m_inheritedWeightMode.GetEnumObject(src.value());
 	}
 
 	template <> jni::genotick::CChartMode::TObject ToJava(const EGenotickChartMode src) const {
-		return m_chartMode.GetEnumObject(static_cast<jni::jint>(src));
+		return m_chartMode.GetEnumObject(src.value());
 	}
 
 	CJavaLoaderGenotick& m_javaLoader;

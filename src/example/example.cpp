@@ -39,11 +39,11 @@ int main(int argc, char** argv)
 
 	EGenotickResult result = LoadGenotick(&pInstance, &jvmSettings);
 
-	if (result == EGenotickResult::eGenotickResult_Success)
+	if (result == EGenotickResult::Success)
 	{
 		TGenotickInt32 version = pInstance->GetInterfaceVersion();
 
-		TGenotickMainSettings mainSettings = { 0 };
+		TGenotickMainSettings mainSettings;
 		char buffer1[260] = { 0 };
 		char buffer2[260] = { 0 };
 		SetString(mainSettings.populationDAO, buffer1);
@@ -68,7 +68,7 @@ int main(int argc, char** argv)
 
 		result = pInstance->Start(&startSettings);
 
-		GENOTICK_SAFE_RELEASE(pInstance);
+		GenotickSafeRelease(pInstance);
 	}
 
 	return 0;

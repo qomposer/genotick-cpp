@@ -9,14 +9,13 @@ namespace genotick {
 
 struct SInheritedWeightModeTagType { static constexpr auto Name() { return "com/alphatica/genotick/breeder/InheritedWeightMode"; } };
 
-class CInheritedWeightMode : public CDerivedEnum<SInheritedWeightModeTagType>
+class CInheritedWeightMode : public CDerivedEnum<SInheritedWeightModeTagType, EGenotickInheritedWeightMode>
 {
 public:
 	explicit CInheritedWeightMode(jni::JNIEnv* pJavaEnv)
 		: CDerivedEnum(pJavaEnv)
 	{
-		GENOTICK_ENUM_INHERITED_WEIGHT_MODE(GENOTICK_UNROLL_VERIFY_ENUM_VALUE);
-		VerifyEnumValueCount(EGenotickInheritedWeightMode::eGenotickInheritedWeightMode_Count);
+		VerifyEnumValues();
 	}
 
 	jni::jint GetEnumValue(const TObject& object) const override final

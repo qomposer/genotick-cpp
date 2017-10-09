@@ -7,29 +7,31 @@
 namespace jni {
 namespace genotick {
 
+struct SGenotickErrorCodeMeta
+{
+	constexpr SGenotickErrorCodeMeta(const char* const javaValueName, const EGenotickResult result)
+		: javaValueName(javaValueName)
+		, result(result) {}
+	const char* const javaValueName;
+	const EGenotickResult result;
+};
+
 #define GENOTICK_ENUM_ERROR_CODE(f) \
-	f(eErrorCode_NoError         , NO_ERROR        ,  0, EGenotickResult::eGenotickResult_ErrorNoError        ) \
-	f(eErrorCode_NoInput         , NO_INPUT        ,  1, EGenotickResult::eGenotickResult_ErrorNoInput        ) \
-	f(eErrorCode_NoOutput        , NO_OUTPUT       ,  2, EGenotickResult::eGenotickResult_ErrorNoOutput       ) \
-	f(eErrorCode_UnknownArgument , UNKNOWN_ARGUMENT,  3, EGenotickResult::eGenotickResult_ErrorUnknownArgument) \
+	f(NoError         , = 0 , (SGenotickErrorCodeMeta("NO_ERROR"        , EGenotickResult::ErrorNoError        ))) \
+	f(NoInput         , = 1 , (SGenotickErrorCodeMeta("NO_INPUT"        , EGenotickResult::ErrorNoInput        ))) \
+	f(NoOutput        , = 2 , (SGenotickErrorCodeMeta("NO_OUTPUT"       , EGenotickResult::ErrorNoOutput       ))) \
+	f(UnknownArgument , = 3 , (SGenotickErrorCodeMeta("UNKNOWN_ARGUMENT", EGenotickResult::ErrorUnknownArgument))) \
 
-GENOTICK_DEFINE_ENUM_WITH_VALUE_COUNT(EErrorCode, GENOTICK_ENUM_ERROR_CODE, eErrorCode_Count)
-
-#define GENOTICK_UNROLL_ERROR_CODE_RESULT_MAPPING(a,b,c,result) result,
+DEFINE_CUSTOM_ENUM_CLASS(EErrorCode, jni::jint, GENOTICK_ENUM_ERROR_CODE, SGenotickErrorCodeMeta)
 
 inline EGenotickResult ErrorCodeToGenotickResult(const jni::jint error)
 {
-	if (error < eErrorCode_Count)
-	{
-		const EGenotickResult results[] = { GENOTICK_ENUM_ERROR_CODE(GENOTICK_UNROLL_ERROR_CODE_RESULT_MAPPING) };
-		return results[error];
-	}
-	throw EnumMismatchException(stl::string_format("Unknown error code with value %d", error));
+	return EErrorCode::getByValue(error).meta().result;
 }
 
 struct SErrorCodeTagType { static constexpr auto Name() { return "com/alphatica/genotick/genotick/ErrorCode"; } };
 
-class CErrorCode : public CDerivedEnum<SErrorCodeTagType>
+class CErrorCode : public CDerivedEnum<SErrorCodeTagType, EErrorCode>
 {
 public:
 	using TValueMethod = jni::Method<TagType, jni::jint()>;
@@ -41,8 +43,6 @@ public:
 		: CDerivedEnum(pJavaEnv)
 		GENOTICK_ERRORCODE_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
-		GENOTICK_ENUM_ERROR_CODE(GENOTICK_UNROLL_VERIFY_ENUM_VALUE);
-		VerifyEnumValueCount(EErrorCode::eErrorCode_Count);
 	}
 
 	jni::jint value(const TObject& object) const

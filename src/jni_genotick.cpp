@@ -14,10 +14,6 @@ static_assert(sizeof(TGenotickChar) == sizeof(jni::jchar), MISMATCH_MESSAGE);
 static_assert(sizeof(TGenotickShort) == sizeof(jni::jshort), MISMATCH_MESSAGE);
 static_assert(sizeof(TGenotickFloat) == sizeof(jni::jfloat), MISMATCH_MESSAGE);
 static_assert(sizeof(TGenotickDouble) == sizeof(jni::jdouble), MISMATCH_MESSAGE);
-static_assert(sizeof(EGenotickWeightMode) == sizeof(jni::jint), MISMATCH_MESSAGE);
-static_assert(sizeof(EGenotickInheritedWeightMode) == sizeof(jni::jint), MISMATCH_MESSAGE);
-static_assert(sizeof(EGenotickChartMode) == sizeof(jni::jint), MISMATCH_MESSAGE);
-static_assert(sizeof(EGenotickResult) == sizeof(jni::jint), MISMATCH_MESSAGE);
 #undef MISMATCH_MESSAGE
 
 namespace jni {
@@ -63,13 +59,13 @@ this->m_mainSettings.Set_##NAME(settingsObject, value); }
 EGenotickResult CGenotick::GetSettingsInternal(SGenotickMainSettings* pSettings) const
 {
 	if (!pSettings)
-		return EGenotickResult::eGenotickResult_InvalidArgument;
+		return EGenotickResult::InvalidArgument;
 
 	try
 	{
 		const jni::genotick::CMainSettings::TObject settingsObject = m_mainInterface.getSettings();
 		GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_FIELDS_TO_NATIVE);
-		return EGenotickResult::eGenotickResult_Success;
+		return EGenotickResult::Success;
 	}
 	catch (const jni::PendingJavaException& exception)
 	{
@@ -84,13 +80,13 @@ EGenotickResult CGenotick::GetSettingsInternal(SGenotickMainSettings* pSettings)
 EGenotickResult CGenotick::ChangeSettingsInternal(const SGenotickMainSettings* pSettings) const
 {
 	if (!pSettings)
-		return EGenotickResult::eGenotickResult_InvalidArgument;
+		return EGenotickResult::InvalidArgument;
 
 	try
 	{
 		const jni::genotick::CMainSettings::TObject settingsObject = m_mainInterface.getSettings();
 		GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_FIELDS_TO_JAVA);
-		return EGenotickResult::eGenotickResult_Success;
+		return EGenotickResult::Success;
 	}
 	catch (const jni::PendingJavaException& exception)
 	{
@@ -108,7 +104,7 @@ EGenotickResult CGenotick::ChangeSettingsInternal(const SGenotickMainSettings* p
 EGenotickResult CGenotick::StartInternal(const SGenotickStartSettings* pSettings) const
 {
 	if (!pSettings)
-		return EGenotickResult::eGenotickResult_InvalidArgument;
+		return EGenotickResult::InvalidArgument;
 
 	try
 	{

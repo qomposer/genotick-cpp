@@ -32,10 +32,10 @@ CJavaLoader::~CJavaLoader()
 EGenotickResult CJavaLoader::LoadGenotick(IGenotick** ppInstance, const SGenotickJvmSettings* pSettings)
 {
 	if (!ppInstance || !pSettings)
-		return EGenotickResult::eGenotickResult_InvalidArgument;
+		return EGenotickResult::InvalidArgument;
 
 	EGenotickResult result = LoadJvmModule(pSettings->utf8_jvmDllPath);
-	if (result == EGenotickResult::eGenotickResult_Success)
+	if (result == EGenotickResult::Success)
 	{
 		const std::string javaClassPathOption = MakeJavaOptionString("-Djava.class.path", pSettings->utf8_javaClassPath);
 
@@ -51,7 +51,7 @@ EGenotickResult CJavaLoader::LoadGenotick(IGenotick** ppInstance, const SGenotic
 		const jni::jint jniResult = JNI_CreateJavaVM_FuncPtr(&pJvm, reinterpret_cast<void**>(&pEnv), &vm_args);
 		result = jni::JniErrorToGenotickResult(jniResult);
 
-		if (result == EGenotickResult::eGenotickResult_Success)
+		if (result == EGenotickResult::Success)
 		{
 			assert(pJvm);
 			assert(pEnv);
@@ -91,13 +91,13 @@ EGenotickResult CJavaLoader::RemoveInstance(const IGenotick* pInstance, JavaVM& 
 EGenotickResult CJavaLoader::LoadJvmModule(const char* path)
 {
 	if (JvmModuleLoaded())
-		return EGenotickResult::eGenotickResult_Success;
+		return EGenotickResult::Success;
 
 	const std::wstring wpath = utf8::to_ucs2(path);
 	m_jvmModule = ::LoadLibraryW(wpath.c_str());
 
 	if (!JvmModuleLoaded())
-		return EGenotickResult::eGenotickResult_JvmDllNotFound;
+		return EGenotickResult::JvmDllNotFound;
 
 	JNI_GetDefaultJavaVMInitArgs_FuncPtr = GetProcAddressT<pJNI_GetDefaultJavaVMInitArgs>(m_jvmModule, "JNI_GetDefaultJavaVMInitArgs");
 	JNI_CreateJavaVM_FuncPtr = GetProcAddressT<pJNI_CreateJavaVM>(m_jvmModule, "JNI_CreateJavaVM");
@@ -107,9 +107,9 @@ EGenotickResult CJavaLoader::LoadJvmModule(const char* path)
 	if (!bValid)
 	{
 		FreeJvmModule();
-		return EGenotickResult::eGenotickResult_JvmExportsNotFound;
+		return EGenotickResult::JvmExportsNotFound;
 	}
-	return EGenotickResult::eGenotickResult_Success;
+	return EGenotickResult::Success;
 }
 
 void CJavaLoader::FreeJvmModule()
@@ -126,8 +126,8 @@ void CJavaLoader::FreeJvmModule()
 
 EGenotickResult CJavaLoader::ReleaseAllJvmInstances()
 {
-	EGenotickResult result = EGenotickResult::eGenotickResult_Success;
-	while (!m_instances.empty() && (result == EGenotickResult::eGenotickResult_Success))
+	EGenotickResult result = EGenotickResult::Success;
+	while (!m_instances.empty() && (result == EGenotickResult::Success))
 	{
 		IGenotick* pInstance = m_instances.back().get();
 		result = pInstance->Release();

@@ -23,7 +23,13 @@
 #endif
 
 #ifdef __cplusplus
-#define GENOTICK_SAFE_RELEASE(p) if(p) { p->Release(); p = 0; }
+template <class T>
+inline void GenotickSafeRelease(T* p) {
+	if (p) {
+		p->Release();
+		p = nullptr;
+	}
+}
 #else
 #define GENOTICK_SAFE_RELEASE(p) if(p) { p->Release(p); p = 0; }
 #endif
@@ -58,117 +64,143 @@ typedef TGenotickInt64   TGenotickTimePoint;
 const TGenotickBoolean GenotickFalse = 0;
 const TGenotickBoolean GenotickTrue = 1;
 
-#ifdef ZORRO_LITE_C
+#define GenotickWeightMode_WinCount     0
+#define GenotickWeightMode_WinRate      1
+#define GenotickWeightMode_ProfitCount  2
+#define GenotickWeightMode_ProfitFactor 3
+
+#define GenotickInheritedWeightMode_Parents      0
+#define GenotickInheritedWeightMode_Ancestors    1
+#define GenotickInheritedWeightMode_AncestorsLog 2
+
+#define GenotickChartMode_None                 0
+#define GenotickChartMode_Draw                 (1 << 0)
+#define GenotickChartMode_Save                 (1 << 1)
+#define GenotickChartMode_JFreeChart           (1 << 2)
+#define GenotickChartMode_JFreeChart_Draw      (GenotickChartMode_JFreeChart | GenotickChartMode_Draw)
+#define GenotickChartMode_JFreeChart_Save      (GenotickChartMode_JFreeChart | GenotickChartMode_Save)
+#define GenotickChartMode_JFreeChart_Draw_Save (GenotickChartMode_JFreeChart | GenotickChartMode_Draw | GenotickChartMode_Save)
+
+#define GenotickResult_Success               0
+#define GenotickResult_InvalidArgument       1
+#define GenotickResult_JvmDllNotFound        2
+#define GenotickResult_JvmExportsNotFound    3
+#define GenotickResult_JniError              4
+#define GenotickResult_JniDetached           5
+#define GenotickResult_JniVersionMismatch    6
+#define GenotickResult_JniNoMemory           7
+#define GenotickResult_JniExists             8
+#define GenotickResult_JniInvalidArgument    9
+#define GenotickResult_JavaClassMismatch    10
+#define GenotickResult_JavaEnumMismatch     11
+#define GenotickResult_JavaException        12
+#define GenotickResult_ErrorNoError         13
+#define GenotickResult_ErrorNoInput         14
+#define GenotickResult_ErrorNoOutput        15
+#define GenotickResult_ErrorUnknownArgument 16
+
+#ifdef __cplusplus
+
+#include "enumdef.h"
+
+struct SGenotickEnumMeta
+{
+	constexpr SGenotickEnumMeta(const char* const javaValueName) : javaValueName(javaValueName) {}
+	const char* const javaValueName;
+};
+
+#define GENOTICK_ENUM_WEIGHT_MODE(e) \
+	e(WinCount     , = GenotickWeightMode_WinCount     , (SGenotickEnumMeta("WIN_COUNT"    ))) \
+	e(WinRate      , = GenotickWeightMode_WinRate      , (SGenotickEnumMeta("WIN_RATE"     ))) \
+	e(ProfitCount  , = GenotickWeightMode_ProfitCount  , (SGenotickEnumMeta("PROFIT_COUNT" ))) \
+	e(ProfitFactor , = GenotickWeightMode_ProfitFactor , (SGenotickEnumMeta("PROFIT_FACTOR"))) \
+
+#define GENOTICK_ENUM_INHERITED_WEIGHT_MODE(e) \
+	e(Parents      , = GenotickInheritedWeightMode_Parents      , (SGenotickEnumMeta("PARENTS"      ))) \
+	e(Ancestors    , = GenotickInheritedWeightMode_Ancestors    , (SGenotickEnumMeta("ANCESTORS"    ))) \
+	e(AncestorsLog , = GenotickInheritedWeightMode_AncestorsLog , (SGenotickEnumMeta("ANCESTORS_LOG"))) \
+
+#define GENOTICK_ENUM_CHART_MODE(e) \
+	e(None                 , = GenotickChartMode_None                 , (SGenotickEnumMeta("NONE"                ))) \
+	e(Draw                 , = GenotickChartMode_Draw                 , (SGenotickEnumMeta("DRAW"                ))) \
+	e(Save                 , = GenotickChartMode_Save                 , (SGenotickEnumMeta("SAVE"                ))) \
+	e(JFreeChart           , = GenotickChartMode_JFreeChart           , (SGenotickEnumMeta("JFREECHART"          ))) \
+	e(JFreeChart_Draw      , = GenotickChartMode_JFreeChart_Draw      , (SGenotickEnumMeta("JFREECHART_DRAW"     ))) \
+	e(JFreeChart_Save      , = GenotickChartMode_JFreeChart_Save      , (SGenotickEnumMeta("JFREECHART_SAVE"     ))) \
+	e(JFreeChart_Draw_Save , = GenotickChartMode_JFreeChart_Draw_Save , (SGenotickEnumMeta("JFREECHART_DRAW_SAVE"))) \
+
+DEFINE_CUSTOM_ENUM_CLASS(EGenotickWeightMode, TGenotickInt32, GENOTICK_ENUM_WEIGHT_MODE, SGenotickEnumMeta)
+DEFINE_CUSTOM_ENUM_CLASS(EGenotickInheritedWeightMode, TGenotickInt32, GENOTICK_ENUM_INHERITED_WEIGHT_MODE, SGenotickEnumMeta)
+DEFINE_CUSTOM_ENUM_CLASS(EGenotickChartMode, TGenotickInt32, GENOTICK_ENUM_CHART_MODE, SGenotickEnumMeta)
+
+enum class EGenotickResult : TGenotickInt32
+{
+	Success              = GenotickResult_Success,
+	InvalidArgument      = GenotickResult_InvalidArgument,
+	JvmDllNotFound       = GenotickResult_JvmDllNotFound,
+	JvmExportsNotFound   = GenotickResult_JvmExportsNotFound,
+	JniError             = GenotickResult_JniError,
+	JniDetached          = GenotickResult_JniDetached,
+	JniVersionMismatch   = GenotickResult_JniVersionMismatch,
+	JniNoMemory          = GenotickResult_JniNoMemory,
+	JniExists            = GenotickResult_JniExists,
+	JniInvalidArgument   = GenotickResult_JniInvalidArgument,
+	JavaClassMismatch    = GenotickResult_JavaClassMismatch,
+	JavaEnumMismatch     = GenotickResult_JavaEnumMismatch,
+	JavaException        = GenotickResult_JavaException,
+	ErrorNoError         = GenotickResult_ErrorNoError,
+	ErrorNoInput         = GenotickResult_ErrorNoInput,
+	ErrorNoOutput        = GenotickResult_ErrorNoOutput,
+	ErrorUnknownArgument = GenotickResult_ErrorUnknownArgument,
+};
+
+#else
 
 typedef TGenotickInt32 EGenotickWeightMode;
 typedef TGenotickInt32 EGenotickInheritedWeightMode;
 typedef TGenotickInt32 EGenotickChartMode;
 typedef TGenotickInt32 EGenotickResult;
 
-#define eGenotickWeightMode_WinCount     0
-#define eGenotickWeightMode_WinRate      1
-#define eGenotickWeightMode_ProfitCount  2
-#define eGenotickWeightMode_ProfitFactor 3
-
-#define eGenotickInheritedWeightMode_Parents      0
-#define eGenotickInheritedWeightMode_Ancestors    1
-#define eGenotickInheritedWeightMode_AncestorsLog 2
-
-#define eGenotickChartMode_None                 0
-#define eGenotickChartMode_Draw                 (1 << 0)
-#define eGenotickChartMode_Save                 (1 << 1)
-#define eGenotickChartMode_JFreeChart           (1 << 2)
-#define eGenotickChartMode_JFreeChart_Draw      (eGenotickChartMode_JFreeChart | eGenotickChartMode_Draw)
-#define eGenotickChartMode_JFreeChart_Save      (eGenotickChartMode_JFreeChart | eGenotickChartMode_Save)
-#define eGenotickChartMode_JFreeChart_Draw_Save (eGenotickChartMode_JFreeChart | eGenotickChartMode_Draw | eGenotickChartMode_Save)
-
-#define eGenotickResult_Success               0
-#define eGenotickResult_InvalidArgument       1
-#define eGenotickResult_JvmDllNotFound        2
-#define eGenotickResult_JvmExportsNotFound    3
-#define eGenotickResult_JniError              4
-#define eGenotickResult_JniDetached           5
-#define eGenotickResult_JniVersionMismatch    6
-#define eGenotickResult_JniNoMemory           7
-#define eGenotickResult_JniExists             8
-#define eGenotickResult_JniInvalidArgument    9
-#define eGenotickResult_JavaClassMismatch    10
-#define eGenotickResult_JavaEnumMismatch     11
-#define eGenotickResult_JavaException        12
-#define eGenotickResult_ErrorNoError         13
-#define eGenotickResult_ErrorNoInput         14
-#define eGenotickResult_ErrorNoOutput        15
-#define eGenotickResult_ErrorUnknownArgument 16
-
-#else
-
-#define GENOTICK_OPEN_ENUM(name) typedef enum name {
-#define GENOTICK_CLOSE_ENUM(name) } name;
-
-#define GENOTICK_UNROLL_ENUM_NAME(cppEnumName, ...)                                    cppEnumName,
-#define GENOTICK_UNROLL_ENUM_NAME_AND_VALUE(cppEnumName, javaEnumName, enumValue, ...) cppEnumName = enumValue,
-#define GENOTICK_UNROLL_ENUM_DUMMY_NAME(cppEnumName, ...)                              eDummy_##cppEnumName,
-
-#define GENOTICK_DEFINE_ENUM(name, list) \
-	GENOTICK_OPEN_ENUM(name) list(GENOTICK_UNROLL_ENUM_NAME) GENOTICK_CLOSE_ENUM(name)
-
-#define GENOTICK_DEFINE_ENUM_WITH_VALUE(name, list) \
-	GENOTICK_OPEN_ENUM(name) list(GENOTICK_UNROLL_ENUM_NAME_AND_VALUE) GENOTICK_CLOSE_ENUM(name)
-
-#define GENOTICK_DEFINE_ENUM_WITH_COUNT(name, list, count) \
-	GENOTICK_OPEN_ENUM(name) list(GENOTICK_UNROLL_ENUM_NAME) count, GENOTICK_CLOSE_ENUM(name)
-
-#define GENOTICK_DEFINE_ENUM_WITH_VALUE_COUNT(name, list, count) \
-	GENOTICK_OPEN_ENUM(name) list(GENOTICK_UNROLL_ENUM_DUMMY_NAME) count, list(GENOTICK_UNROLL_ENUM_NAME_AND_VALUE) GENOTICK_CLOSE_ENUM(name)
-
-#define GENOTICK_ENUM_WEIGHT_MODE(f) \
-	f(eGenotickWeightMode_WinCount     , WIN_COUNT    ) \
-	f(eGenotickWeightMode_WinRate      , WIN_RATE     ) \
-	f(eGenotickWeightMode_ProfitCount  , PROFIT_COUNT ) \
-	f(eGenotickWeightMode_ProfitFactor , PROFIT_FACTOR) \
-
-#define GENOTICK_ENUM_INHERITED_WEIGHT_MODE(f) \
-	f(eGenotickInheritedWeightMode_Parents      , PARENTS      ) \
-	f(eGenotickInheritedWeightMode_Ancestors    , ANCESTORS    ) \
-	f(eGenotickInheritedWeightMode_AncestorsLog , ANCESTORS_LOG) \
-
-#define GENOTICK_ENUM_CHART_MODE(f) \
-	f(eGenotickChartMode_None                 , NONE                 , (0)                                                                                ) \
-	f(eGenotickChartMode_Draw                 , DRAW                 , (1 << 0)                                                                           ) \
-	f(eGenotickChartMode_Save                 , SAVE                 , (1 << 1)                                                                           ) \
-	f(eGenotickChartMode_JFreeChart           , JFREECHART           , (1 << 2)                                                                           ) \
-	f(eGenotickChartMode_JFreeChart_Draw      , JFREECHART_DRAW      , (eGenotickChartMode_JFreeChart | eGenotickChartMode_Draw)                          ) \
-	f(eGenotickChartMode_JFreeChart_Save      , JFREECHART_SAVE      , (eGenotickChartMode_JFreeChart | eGenotickChartMode_Save)                          ) \
-	f(eGenotickChartMode_JFreeChart_Draw_Save , JFREECHART_DRAW_SAVE , (eGenotickChartMode_JFreeChart | eGenotickChartMode_Draw | eGenotickChartMode_Save)) \
-
-GENOTICK_DEFINE_ENUM_WITH_COUNT(EGenotickWeightMode, GENOTICK_ENUM_WEIGHT_MODE, eGenotickWeightMode_Count)
-GENOTICK_DEFINE_ENUM_WITH_COUNT(EGenotickInheritedWeightMode, GENOTICK_ENUM_INHERITED_WEIGHT_MODE, eGenotickInheritedWeightMode_Count)
-GENOTICK_DEFINE_ENUM_WITH_VALUE_COUNT(EGenotickChartMode, GENOTICK_ENUM_CHART_MODE, eGenotickChartMode_Count)
-
-GENOTICK_OPEN_ENUM(EGenotickResult)
-	eGenotickResult_Success = 0,
-	eGenotickResult_InvalidArgument,
-	eGenotickResult_JvmDllNotFound,
-	eGenotickResult_JvmExportsNotFound,
-	eGenotickResult_JniError,
-	eGenotickResult_JniDetached,
-	eGenotickResult_JniVersionMismatch,
-	eGenotickResult_JniNoMemory,
-	eGenotickResult_JniExists,
-	eGenotickResult_JniInvalidArgument,
-	eGenotickResult_JavaClassMismatch,
-	eGenotickResult_JavaEnumMismatch,
-	eGenotickResult_JavaException,
-	eGenotickResult_ErrorNoError,
-	eGenotickResult_ErrorNoInput,
-	eGenotickResult_ErrorNoOutput,
-	eGenotickResult_ErrorUnknownArgument,
-GENOTICK_CLOSE_ENUM(EGenotickResult)
-
-#endif // ZORRO_LITE_C
+#endif // __cplusplus
 
 struct SGenotickMainSettings
 {
+#ifdef __cplusplus
+	SGenotickMainSettings()
+		: startTimePoint()
+		, endTimePoint()
+		, populationDesiredSize()
+		, populationDAO()
+		, performTraining()
+		, dataDirectory()
+		, minimumRobotInstructions()
+		, maximumRobotInstructions()
+		, maximumProcessorInstructionFactor()
+		, maximumDeathByAge()
+		, maximumDeathByWeight()
+		, probabilityOfDeathByAge()
+		, probabilityOfDeathByWeight()
+		, weightMode(EGenotickWeightMode::WinCount)
+		, weightExponent()
+		, inheritedChildWeight()
+		, inheritedChildWeightMode(EGenotickInheritedWeightMode::Parents)
+		, maximumDataOffset()
+		, protectRobotsUntilOutcomes()
+		, newInstructionProbability()
+		, instructionMutationProbability()
+		, skipInstructionProbability()
+		, minimumOutcomesToAllowBreeding()
+		, minimumOutcomesBetweenBreeding()
+		, killNonPredictingRobots()
+		, randomRobotsAtEachUpdate()
+		, protectBestRobots()
+		, requireSymmetricalRobots()
+		, resultThreshold()
+		, ignoreColumns()
+		, randomSeed()
+		, chartMode(EGenotickChartMode::None)
+	{}
+#endif
 	TGenotickTimePoint  startTimePoint;
 	TGenotickTimePoint  endTimePoint;
 	TGenotickInt32      populationDesiredSize;
