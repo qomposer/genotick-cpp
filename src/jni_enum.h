@@ -7,12 +7,12 @@
 
 namespace jni {
 
-template <class TheTag, class EnumClass>
+template <class Tag, class Enum>
 class CDerivedEnum
 {
 public:
-	using TagType = TheTag;
-	using TEnumClass = EnumClass;
+	using TagType = Tag;
+	using TEnumClass = Enum;
 	using TClass = jni::Class<TagType>;
 	using TUniqueClass = jni::UniqueClass<TagType>;
 	using TObject = jni::Object<TagType>;
@@ -71,100 +71,25 @@ public:
 	}
 
 protected:
-	TObject GetEnumObjectBySearch(const jni::jint value) const
-	{
-		const TObjectArray enumObjects = values();
-		const jni::jsize length = enumObjects.Length(m_javaEnv);
-		for (jni::jsize i = 0; i < length; ++i)
-		{
-			const TObject enumObject = enumObjects.Get(m_javaEnv, i);
-			const jni::jint givenValue = GetEnumValue(enumObject);
-			if (value == givenValue)
-			{
-				return enumObject;
-			}
-		}
-		throw EnumMismatchException(stl::string_format(
-			"Enum constant of enum class '%s' with value %d was not found", TagType::Name(), value));
-	}
-
-	TObject GetEnumObjectByOrdinal(const jni::jint ordinal) const
-	{
-		const TObjectArray enumValues = values();
-		const jni::jsize length = enumValues.Length(m_javaEnv);
-		if (static_cast<jni::jsize>(ordinal) < length) {
-			return enumValues.Get(m_javaEnv, ordinal);
-		}
-		throw EnumMismatchException(stl::string_format(
-			"Enum constant of enum class '%s' with ordinal %d was not found", TagType::Name(), ordinal));
-	}
-
-protected:
-	void VerifyEnumValues()
-	{
-		const TEnumClass::ordinal_type count = TEnumClass::count();
-		for (TEnumClass::ordinal_type i = 0; i < count; ++i)
-		{
-			const TEnumClass& instance = TEnumClass::getByOrdinal(i);
-			VerifyEnumValue(instance.value(), instance.meta().javaValueName);
-		}
-	}
-
-	void VerifyEnumValue(jni::jint nativeValue, const char* const javaValueName)
-	{
-		const jni::String javaValueString = jni::Make<jni::String>(m_javaEnv, javaValueName);
-		const TObject enumObject = valueOf(javaValueString);
-		const jni::jint javaValue = GetEnumValue(enumObject);
-		if (nativeValue != javaValue)
-		{
-			throw EnumMismatchException(stl::string_format(
-				"Enum value of '%s' of enum class '%s' does not match. Expected: %d. Actual: %d.",
-				javaValueName, TagType::Name(), nativeValue, javaValue));
-		}
-	}
+	TObject GetEnumObjectBySearch(const jni::jint value) const;
+	TObject GetEnumObjectByOrdinal(const jni::jint ordinal) const;
+	void VerifyEnumValues();
+	void VerifyEnumValue(jni::jint nativeValue, const char* const javaValueName);
 
 private:
-	void VerifyEnumBasics()
-	{
-		const TEnumClass::ordinal_type count = TEnumClass::count();
-		VerifyEnumValueCount(count);
-		for (TEnumClass::ordinal_type i = 0; i < count; ++i)
-		{
-			const TEnumClass& instance = TEnumClass::getByOrdinal(i);
-			VerifyEnumOrdinal(instance.ordinal(), instance.meta().javaValueName);
-		}
-	}
-
-	void VerifyEnumOrdinal(jni::jint nativeOrdinal, const char* const javaValueName)
-	{
-		const jni::String javaValueString = jni::Make<jni::String>(m_javaEnv, javaValueName);
-		const TObject enumObject = valueOf(javaValueString);
-		const jni::jint javaOrdinal = ordinal(enumObject);
-		if (nativeOrdinal != javaOrdinal)
-		{
-			throw EnumMismatchException(stl::string_format(
-				"Enum ordinal of '%s' of enum class '%s' does not match. Expected: %d. Actual: %d.",
-				javaValueName, TagType::Name(), nativeOrdinal, javaOrdinal));
-		}
-	}
-
-	void VerifyEnumValueCount(typename TEnumClass::ordinal_type nativeValueCount)
-	{
-		const TObjectArray enumObjects = values();
-		const jni::jsize javaValueCount = enumObjects.Length(m_javaEnv);
-		if (nativeValueCount != javaValueCount)
-		{
-			throw jni::EnumMismatchException(stl::string_format(
-				"Enum value count of enum class '%s' does not match. Expected: %d. Actual: %d.",
-				TagType::Name(), nativeValueCount, javaValueCount));
-		}
-	}
+	void VerifyEnumBasics();
+	void VerifyEnumOrdinal(jni::jint nativeOrdinal, const char* const javaValueName);
+	void VerifyEnumValueCount(typename TEnumClass::ordinal_type nativeValueCount);
 
 protected:
 	jni::JNIEnv& m_javaEnv;
 	TUniqueClass m_uniqueClass;
+
+private:
 	JAVA_ENUM_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 	JAVA_ENUM_STATIC_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 };
 
 } // namespace jni
+
+#include "jni_enum_impl.h"

@@ -223,6 +223,7 @@
     <ClInclude Include="..\include\igenotick.h" />
     <ClInclude Include="..\include\enumdef.h" />
     <ClInclude Include="..\src\jni_enum.h" />
+    <ClInclude Include="..\src\jni_enum_impl.h" />
     <ClInclude Include="..\src\jni_genotick_chart_mode.h" />
     <ClInclude Include="..\src\jni_genotick_error.h" />
     <ClInclude Include="..\src\jni_exceptions.h" />
