@@ -23,6 +23,7 @@
 #endif
 
 #ifdef __cplusplus
+#define GENOTICK_ZERO_INIT = {0}
 template <class T>
 inline void GenotickSafeRelease(T* p) {
 	if (p) {
@@ -31,6 +32,7 @@ inline void GenotickSafeRelease(T* p) {
 	}
 }
 #else
+#define GENOTICK_ZERO_INIT
 #define GENOTICK_SAFE_RELEASE(p) if(p) { p->Release(p); p = 0; }
 #endif
 
@@ -52,14 +54,14 @@ typedef struct longlong  TGenotickInt64;
 typedef signed long long TGenotickInt64;
 #endif // ZORRO_LITE_C
 
-typedef signed long      TGenotickInt32;
-typedef unsigned char    TGenotickBoolean;
-typedef signed char      TGenotickByte;
-typedef unsigned short   TGenotickChar;
-typedef signed short     TGenotickShort;
-typedef float            TGenotickFloat;
-typedef double           TGenotickDouble;
-typedef TGenotickInt64   TGenotickTimePoint;
+typedef signed long    TGenotickInt32;
+typedef unsigned char  TGenotickBoolean;
+typedef signed char    TGenotickByte;
+typedef unsigned short TGenotickChar;
+typedef signed short   TGenotickShort;
+typedef float          TGenotickFloat;
+typedef double         TGenotickDouble;
+typedef TGenotickInt64 TGenotickTimePoint;
 
 const TGenotickBoolean GenotickFalse = 0;
 const TGenotickBoolean GenotickTrue = 1;
@@ -167,81 +169,59 @@ struct SGenotickMainSettings
 {
 #ifdef __cplusplus
 	SGenotickMainSettings()
-		: startTimePoint()
-		, endTimePoint()
-		, populationDesiredSize()
-		, populationDAO()
-		, performTraining()
-		, dataDirectory()
-		, minimumRobotInstructions()
-		, maximumRobotInstructions()
-		, maximumProcessorInstructionFactor()
-		, maximumDeathByAge()
-		, maximumDeathByWeight()
-		, probabilityOfDeathByAge()
-		, probabilityOfDeathByWeight()
-		, weightMode(EGenotickWeightMode::WinCount)
-		, weightExponent()
-		, inheritedChildWeight()
+		: weightMode(EGenotickWeightMode::WinCount)
 		, inheritedChildWeightMode(EGenotickInheritedWeightMode::Parents)
-		, maximumDataOffset()
-		, protectRobotsUntilOutcomes()
-		, newInstructionProbability()
-		, instructionMutationProbability()
-		, skipInstructionProbability()
-		, minimumOutcomesToAllowBreeding()
-		, minimumOutcomesBetweenBreeding()
-		, killNonPredictingRobots()
-		, randomRobotsAtEachUpdate()
-		, protectBestRobots()
-		, requireSymmetricalRobots()
-		, resultThreshold()
-		, ignoreColumns()
-		, randomSeed()
 		, chartMode(EGenotickChartMode::None)
 	{}
 #endif
-	TGenotickTimePoint  startTimePoint;
-	TGenotickTimePoint  endTimePoint;
-	TGenotickInt32      populationDesiredSize;
-	TGenotickString     populationDAO;
-	TGenotickBoolean    performTraining;
-	TGenotickString     dataDirectory;
-	TGenotickInt32      minimumRobotInstructions;
-	TGenotickInt32      maximumRobotInstructions;
-	TGenotickInt32      maximumProcessorInstructionFactor;
-	TGenotickDouble     maximumDeathByAge;
-	TGenotickDouble     maximumDeathByWeight;
-	TGenotickDouble     probabilityOfDeathByAge;
-	TGenotickDouble     probabilityOfDeathByWeight;
+	TGenotickTimePoint  startTimePoint                    GENOTICK_ZERO_INIT;
+	TGenotickTimePoint  endTimePoint                      GENOTICK_ZERO_INIT;
+	TGenotickInt32      populationDesiredSize             GENOTICK_ZERO_INIT;
+	TGenotickString     populationDAO                     GENOTICK_ZERO_INIT;
+	TGenotickBoolean    performTraining                   GENOTICK_ZERO_INIT;
+	TGenotickString     dataDirectory                     GENOTICK_ZERO_INIT;
+	TGenotickInt32      minimumRobotInstructions          GENOTICK_ZERO_INIT;
+	TGenotickInt32      maximumRobotInstructions          GENOTICK_ZERO_INIT;
+	TGenotickInt32      maximumProcessorInstructionFactor GENOTICK_ZERO_INIT;
+	TGenotickDouble     maximumDeathByAge                 GENOTICK_ZERO_INIT;
+	TGenotickDouble     maximumDeathByWeight              GENOTICK_ZERO_INIT;
+	TGenotickDouble     probabilityOfDeathByAge           GENOTICK_ZERO_INIT;
+	TGenotickDouble     probabilityOfDeathByWeight        GENOTICK_ZERO_INIT;
 	EGenotickWeightMode weightMode;
-	TGenotickDouble     weightExponent;
-	TGenotickDouble     inheritedChildWeight;
+	TGenotickDouble     weightExponent                    GENOTICK_ZERO_INIT;
+	TGenotickDouble     inheritedChildWeight              GENOTICK_ZERO_INIT;
 	EGenotickInheritedWeightMode inheritedChildWeightMode;
-	TGenotickInt32      maximumDataOffset;
-	TGenotickInt32      protectRobotsUntilOutcomes;
-	TGenotickDouble     newInstructionProbability;
-	TGenotickDouble     instructionMutationProbability;
-	TGenotickDouble     skipInstructionProbability;
-	TGenotickInt32      minimumOutcomesToAllowBreeding;
-	TGenotickInt32      minimumOutcomesBetweenBreeding;
-	TGenotickBoolean    killNonPredictingRobots;
-	TGenotickDouble     randomRobotsAtEachUpdate;
-	TGenotickDouble     protectBestRobots;
-	TGenotickBoolean    requireSymmetricalRobots;
-	TGenotickDouble     resultThreshold;
-	TGenotickInt32      ignoreColumns;
-	TGenotickInt64      randomSeed;
+	TGenotickInt32      maximumDataOffset                 GENOTICK_ZERO_INIT;
+	TGenotickInt32      protectRobotsUntilOutcomes        GENOTICK_ZERO_INIT;
+	TGenotickDouble     newInstructionProbability         GENOTICK_ZERO_INIT;
+	TGenotickDouble     instructionMutationProbability    GENOTICK_ZERO_INIT;
+	TGenotickDouble     skipInstructionProbability        GENOTICK_ZERO_INIT;
+	TGenotickInt32      minimumOutcomesToAllowBreeding    GENOTICK_ZERO_INIT;
+	TGenotickInt32      minimumOutcomesBetweenBreeding    GENOTICK_ZERO_INIT;
+	TGenotickBoolean    killNonPredictingRobots           GENOTICK_ZERO_INIT;
+	TGenotickDouble     randomRobotsAtEachUpdate          GENOTICK_ZERO_INIT;
+	TGenotickDouble     protectBestRobots                 GENOTICK_ZERO_INIT;
+	TGenotickBoolean    requireSymmetricalRobots          GENOTICK_ZERO_INIT;
+	TGenotickDouble     resultThreshold                   GENOTICK_ZERO_INIT;
+	TGenotickInt32      ignoreColumns                     GENOTICK_ZERO_INIT;
+	TGenotickInt64      randomSeed                        GENOTICK_ZERO_INIT;
 	EGenotickChartMode  chartMode;
 };
 typedef struct SGenotickMainSettings TGenotickMainSettings;
 
 struct SGenotickStartSettings
 {
-	const char** parameters;
-	unsigned int parameterCount;
+	const char** parameters     GENOTICK_ZERO_INIT;
+	unsigned int parameterCount GENOTICK_ZERO_INIT;
 };
 typedef struct SGenotickStartSettings TGenotickStartSettings;
+
+struct SGenotickJvmSettings
+{
+	const char* utf8_jvmDllPath    GENOTICK_ZERO_INIT;
+	const char* utf8_javaClassPath GENOTICK_ZERO_INIT;
+};
+typedef struct SGenotickJvmSettings TGenotickJvmSettings;
 
 #ifdef ZORRO_LITE_C
 
@@ -303,13 +283,6 @@ protected:
 
 #endif // ZORRO_LITE_C
 
-struct SGenotickJvmSettings
-{
-	const char* utf8_jvmDllPath;
-	const char* utf8_javaClassPath;
-};
-typedef struct SGenotickJvmSettings TGenotickJvmSettings;
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -322,5 +295,7 @@ GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL LoadGenotick(IGenotick**
 #ifdef __cplusplus
 }
 #endif
+
+#undef GENOTICK_ZERO_INIT
 
 #endif // I_GENOTICK_H

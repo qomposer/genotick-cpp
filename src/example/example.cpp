@@ -33,7 +33,7 @@ int main(int argc, char** argv)
 	(void)argv;
 
 	IGenotick* pInstance = nullptr;
-	TGenotickJvmSettings jvmSettings = { 0 };
+	TGenotickJvmSettings jvmSettings;
 	jvmSettings.utf8_jvmDllPath = JVM_PATH;
 	jvmSettings.utf8_javaClassPath = JAVA_CLASS_PATH;
 
@@ -62,7 +62,7 @@ int main(int argc, char** argv)
 			"input=external",
 			"outdir=" GENOTICK_OUTDIR,
 		};
-		TGenotickStartSettings startSettings = { 0 };
+		TGenotickStartSettings startSettings;
 		startSettings.parameters = arguments;
 		startSettings.parameterCount = GetArrayLength(arguments);
 
