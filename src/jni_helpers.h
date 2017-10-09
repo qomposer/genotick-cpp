@@ -6,22 +6,21 @@
 #include "jni/jni.hpp"
 #pragma warning(default: 4018 4063 4624 4800)
 #include <vector>
-#include "utils.h"
 
 #define GENOTICK_UNROLL_MEMBER_DECLARATIONS(TYPE, NAME) \
 TYPE m_##NAME;
 
 #define GENOTICK_UNROLL_FIELD_INITIALIZERS(TYPE, NAME) \
-, m_##NAME(this->m_uniqueClass->GetField<typename TYPE::FieldType>(m_javaEnv, STRINGIFY(NAME)))
+, m_##NAME(this->m_uniqueClass->GetField<typename TYPE::FieldType>(m_javaEnv, #NAME))
 
 #define GENOTICK_UNROLL_STATIC_FIELD_INITIALIZERS(TYPE, NAME) \
-, m_##NAME(this->m_uniqueClass->GetStaticField<typename TYPE::FieldType>(m_javaEnv, STRINGIFY(NAME)))
+, m_##NAME(this->m_uniqueClass->GetStaticField<typename TYPE::FieldType>(m_javaEnv, #NAME))
 
 #define GENOTICK_UNROLL_METHOD_INITIALIZERS(TYPE, NAME) \
-, m_##NAME(this->m_uniqueClass->GetMethod<typename TYPE::MethodType>(m_javaEnv, STRINGIFY(NAME)))
+, m_##NAME(this->m_uniqueClass->GetMethod<typename TYPE::MethodType>(m_javaEnv, #NAME))
 
 #define GENOTICK_UNROLL_STATIC_METHOD_INITIALIZERS(TYPE, NAME) \
-, m_##NAME(this->m_uniqueClass->GetStaticMethod<typename TYPE::MethodType>(m_javaEnv, STRINGIFY(NAME)))
+, m_##NAME(this->m_uniqueClass->GetStaticMethod<typename TYPE::MethodType>(m_javaEnv, #NAME))
 
 #define GENOTICK_UNROLL_SET_FIELD_INLINE_FUNCTIONS(TYPE, NAME) \
 void Set_##NAME(const TObject& object, const typename TYPE::FieldType& value) const { \
