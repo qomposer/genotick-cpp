@@ -66,6 +66,9 @@ EGenotickResult CGenotick::GetSettingsInternal(TGenotickInt32 sessionId, SGenoti
 	try
 	{
 		const jni::genotick::CMainSettings::TObject settingsObject = m_mainInterface.getSettings(sessionId);
+		if (settingsObject.Get() == nullptr)
+			return EGenotickResult::ErrorInvalidSession;
+
 		GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_FIELDS_TO_NATIVE);
 		return EGenotickResult::Success;
 	}
@@ -87,6 +90,9 @@ EGenotickResult CGenotick::ChangeSettingsInternal(TGenotickInt32 sessionId, cons
 	try
 	{
 		const jni::genotick::CMainSettings::TObject settingsObject = m_mainInterface.getSettings(sessionId);
+		if (settingsObject.Get() == nullptr)
+			return EGenotickResult::ErrorInvalidSession;
+
 		GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_FIELDS_TO_JAVA);
 		return EGenotickResult::Success;
 	}
