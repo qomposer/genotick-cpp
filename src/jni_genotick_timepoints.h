@@ -24,12 +24,12 @@ public:
 		GENOTICK_TIMEPOINTS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{}
 
-	CTimePoint::TObject get(const TObject& object, jni::jint index) const
+	CTimePoint::TObject get(const TObject& object, const jni::jint index) const
 	{
 		return object.Call(GetJavaEnv(), m_get, index);
 	}
 
-	jni::jint getIndex(const TObject& object, CTimePoint::TObject timePoint) const
+	jni::jint getIndex(const TObject& object, const CTimePoint::TObject& timePoint) const
 	{
 		return object.Call(GetJavaEnv(), m_getIndex, timePoint);
 	}

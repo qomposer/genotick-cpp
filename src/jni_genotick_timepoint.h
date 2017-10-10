@@ -24,7 +24,7 @@ public:
 	{
 	}
 
-	TObject New(jni::jlong value) const
+	TObject New(const jni::jlong value) const
 	{
 		return GetUniqueClass()->New(GetJavaEnv(), m_constructor, value);
 	}

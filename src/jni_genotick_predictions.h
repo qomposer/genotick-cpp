@@ -22,7 +22,7 @@ public:
 		GENOTICK_PREDICTIONS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{}
 
-	CPrediction::TObject get(const TObject& object, jni::jint index) const
+	CPrediction::TObject get(const TObject& object, const jni::jint index) const
 	{
 		return object.Call(GetJavaEnv(), m_get, index);
 	}

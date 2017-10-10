@@ -31,12 +31,12 @@ public:
 		return GetUniqueClass()->Call(GetJavaEnv(), m_getInterfaceVersion);
 	}
 
-	jni::jint start(jni::jint sessionId, jni::StringArray array) const
+	jni::jint start(const jni::jint sessionId, const jni::StringArray& array) const
 	{
 		return GetUniqueClass()->Call(GetJavaEnv(), m_start, sessionId, array);
 	}
 
-	CMainSettings::TObject getSettings(jni::jint sessionId) const
+	CMainSettings::TObject getSettings(const jni::jint sessionId) const
 	{
 		return GetUniqueClass()->Call(GetJavaEnv(), m_getSettings, sessionId);
 	}

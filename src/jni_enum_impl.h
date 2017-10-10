@@ -45,7 +45,7 @@ void CEnum<Tag, Enum>::VerifyEnumValues()
 }
 
 template <class Tag, class Enum>
-void CEnum<Tag, Enum>::VerifyEnumValue(jni::jint nativeValue, const char* const javaValueName)
+void CEnum<Tag, Enum>::VerifyEnumValue(const jni::jint nativeValue, const char* const javaValueName)
 {
 	const jni::String javaValueString = jni::Make<jni::String>(GetJavaEnv(), javaValueName);
 	const TObject enumObject = valueOf(javaValueString);
@@ -71,7 +71,7 @@ void CEnum<Tag, Enum>::VerifyEnumBasics()
 }
 
 template <class Tag, class Enum>
-void CEnum<Tag, Enum>::VerifyEnumOrdinal(jni::jint nativeOrdinal, const char* const javaValueName)
+void CEnum<Tag, Enum>::VerifyEnumOrdinal(const jni::jint nativeOrdinal, const char* const javaValueName)
 {
 	const jni::String javaValueString = jni::Make<jni::String>(GetJavaEnv(), javaValueName);
 	const TObject enumObject = valueOf(javaValueString);

@@ -68,11 +68,11 @@ protected:
 	TObject GetEnumObjectBySearch(const jni::jint value) const;
 	TObject GetEnumObjectByOrdinal(const jni::jint ordinal) const;
 	void VerifyEnumValues();
-	void VerifyEnumValue(jni::jint nativeValue, const char* const javaValueName);
+	void VerifyEnumValue(const jni::jint nativeValue, const char* const javaValueName);
 
 private:
 	void VerifyEnumBasics();
-	void VerifyEnumOrdinal(jni::jint nativeOrdinal, const char* const javaValueName);
+	void VerifyEnumOrdinal(const jni::jint nativeOrdinal, const char* const javaValueName);
 	void VerifyEnumValueCount(typename TEnumClass::ordinal_type nativeValueCount);
 
 private:
