@@ -270,6 +270,7 @@
     <ClInclude Include="..\src\jni\wrapping.hpp" />
     <ClInclude Include="..\src\java_loader.h" />
     <ClInclude Include="..\src\jni_genotick_timepoint.h" />
+    <ClInclude Include="..\src\jni_genotick_timepoints.h" />
     <ClInclude Include="..\src\jni_genotick_weight_mode.h" />
     <ClInclude Include="..\src\jni_helpers.h" />
     <ClInclude Include="..\src\strlcpy.h" />

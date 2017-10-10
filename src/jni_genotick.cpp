@@ -27,6 +27,7 @@ CGenotick::CGenotick(CJavaLoader* pJavaLoader, jni::JavaVM* pJavaVM, jni::JNIEnv
 	, m_mainInterface(pJavaEnv)
 	, m_mainSettings(pJavaEnv)
 	, m_timePoint(pJavaEnv)
+	, m_timePoints(pJavaEnv)
 	, m_weightMode(pJavaEnv)
 	, m_inheritedWeightMode(pJavaEnv)
 	, m_chartMode(pJavaEnv)

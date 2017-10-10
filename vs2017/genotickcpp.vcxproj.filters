@@ -183,6 +183,9 @@
     <ClInclude Include="..\src\jni_class.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\jni_genotick_timepoints.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\dllmain.cpp">

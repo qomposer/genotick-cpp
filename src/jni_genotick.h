@@ -5,6 +5,7 @@
 #include "jni_genotick_interface.h"
 #include "jni_genotick_settings.h"
 #include "jni_genotick_timepoint.h"
+#include "jni_genotick_timepoints.h"
 #include "jni_genotick_weight_mode.h"
 #include "jni_genotick_inherited_weight_mode.h"
 #include "jni_genotick_chart_mode.h"
@@ -109,6 +110,7 @@ private:
 	jni::genotick::CMainInterface m_mainInterface;
 	jni::genotick::CMainSettings m_mainSettings;
 	jni::genotick::CTimePoint m_timePoint;
+	jni::genotick::CTimePoints m_timePoints;
 	jni::genotick::CWeightMode m_weightMode;
 	jni::genotick::CInheritedWeightMode m_inheritedWeightMode;
 	jni::genotick::CChartMode m_chartMode;
