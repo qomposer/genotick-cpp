@@ -43,5 +43,7 @@ private:
 	GENOTICK_PREDICTION_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 };
 
+#undef GENOTICK_PREDICTION_METHODS
+
 } // namespace genotick
 } // namespace jni

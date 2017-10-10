@@ -66,5 +66,8 @@ private:
 	GENOTICK_ERRORCODE_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 };
 
+#undef GENOTICK_ERRORCODE_METHODS
+#undef GENOTICK_ENUM_ERROR_CODE
+
 } // namespace genotick
 } // namespace jni

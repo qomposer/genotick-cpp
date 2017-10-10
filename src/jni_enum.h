@@ -80,6 +80,9 @@ private:
 	JAVA_ENUM_STATIC_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 };
 
+#undef JAVA_ENUM_METHODS
+#undef JAVA_ENUM_STATIC_METHODS
+
 } // namespace jni
 
 #include "jni_enum_impl.h"

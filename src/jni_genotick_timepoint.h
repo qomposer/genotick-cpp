@@ -39,5 +39,7 @@ private:
 	GENOTICK_TIMEPOINT_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 };
 
+#undef GENOTICK_TIMEPOINT_METHODS
+
 } // namespace genotick
 } // namespace jni
