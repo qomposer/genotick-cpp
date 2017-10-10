@@ -7,13 +7,13 @@
 namespace jni {
 namespace genotick {
 
-struct SWeightModeTagType { static constexpr auto Name() { return "com/alphatica/genotick/genotick/WeightMode"; } };
+struct SWeightModeTag { static constexpr auto Name() { return "com/alphatica/genotick/genotick/WeightMode"; } };
 
-class CWeightMode : public CDerivedEnum<SWeightModeTagType, EGenotickWeightMode>
+class CWeightMode : public CEnum<SWeightModeTag, EGenotickWeightMode>
 {
 public:
 	explicit CWeightMode(jni::JNIEnv* pJavaEnv)
-		: CDerivedEnum(pJavaEnv)
+		: CEnum<TagType, TEnumClass>(pJavaEnv)
 	{
 		VerifyEnumValues();
 	}

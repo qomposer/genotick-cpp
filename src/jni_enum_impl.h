@@ -1,14 +1,16 @@
 
+#include "utils.h"
+
 namespace jni {
 
 template <class Tag, class Enum>
-typename CDerivedEnum<Tag, Enum>::TObject CDerivedEnum<Tag, Enum>::GetEnumObjectBySearch(const jni::jint value) const
+typename CEnum<Tag, Enum>::TObject CEnum<Tag, Enum>::GetEnumObjectBySearch(const jni::jint value) const
 {
 	const TObjectArray enumObjects = values();
-	const jni::jsize length = enumObjects.Length(m_javaEnv);
+	const jni::jsize length = enumObjects.Length(GetJavaEnv());
 	for (jni::jsize i = 0; i < length; ++i)
 	{
-		const TObject enumObject = enumObjects.Get(m_javaEnv, i);
+		const TObject enumObject = enumObjects.Get(GetJavaEnv(), i);
 		const jni::jint givenValue = GetEnumValue(enumObject);
 		if (value == givenValue)
 		{
@@ -20,19 +22,19 @@ typename CDerivedEnum<Tag, Enum>::TObject CDerivedEnum<Tag, Enum>::GetEnumObject
 }
 
 template <class Tag, class Enum>
-typename CDerivedEnum<Tag, Enum>::TObject CDerivedEnum<Tag, Enum>::GetEnumObjectByOrdinal(const jni::jint ordinal) const
+typename CEnum<Tag, Enum>::TObject CEnum<Tag, Enum>::GetEnumObjectByOrdinal(const jni::jint ordinal) const
 {
 	const TObjectArray enumValues = values();
-	const jni::jsize length = enumValues.Length(m_javaEnv);
+	const jni::jsize length = enumValues.Length(GetJavaEnv());
 	if (static_cast<jni::jsize>(ordinal) < length) {
-		return enumValues.Get(m_javaEnv, ordinal);
+		return enumValues.Get(GetJavaEnv(), ordinal);
 	}
 	throw EnumMismatchException(stl::string_format(
 		"Enum constant of enum class '%s' with ordinal %d was not found", TagType::Name(), ordinal));
 }
 
 template <class Tag, class Enum>
-void CDerivedEnum<Tag, Enum>::VerifyEnumValues()
+void CEnum<Tag, Enum>::VerifyEnumValues()
 {
 	const TEnumClass::ordinal_type count = TEnumClass::count();
 	for (TEnumClass::ordinal_type i = 0; i < count; ++i)
@@ -43,9 +45,9 @@ void CDerivedEnum<Tag, Enum>::VerifyEnumValues()
 }
 
 template <class Tag, class Enum>
-void CDerivedEnum<Tag, Enum>::VerifyEnumValue(jni::jint nativeValue, const char* const javaValueName)
+void CEnum<Tag, Enum>::VerifyEnumValue(jni::jint nativeValue, const char* const javaValueName)
 {
-	const jni::String javaValueString = jni::Make<jni::String>(m_javaEnv, javaValueName);
+	const jni::String javaValueString = jni::Make<jni::String>(GetJavaEnv(), javaValueName);
 	const TObject enumObject = valueOf(javaValueString);
 	const jni::jint javaValue = GetEnumValue(enumObject);
 	if (nativeValue != javaValue)
@@ -57,7 +59,7 @@ void CDerivedEnum<Tag, Enum>::VerifyEnumValue(jni::jint nativeValue, const char*
 }
 
 template <class Tag, class Enum>
-void CDerivedEnum<Tag, Enum>::VerifyEnumBasics()
+void CEnum<Tag, Enum>::VerifyEnumBasics()
 {
 	const TEnumClass::ordinal_type count = TEnumClass::count();
 	VerifyEnumValueCount(count);
@@ -69,9 +71,9 @@ void CDerivedEnum<Tag, Enum>::VerifyEnumBasics()
 }
 
 template <class Tag, class Enum>
-void CDerivedEnum<Tag, Enum>::VerifyEnumOrdinal(jni::jint nativeOrdinal, const char* const javaValueName)
+void CEnum<Tag, Enum>::VerifyEnumOrdinal(jni::jint nativeOrdinal, const char* const javaValueName)
 {
-	const jni::String javaValueString = jni::Make<jni::String>(m_javaEnv, javaValueName);
+	const jni::String javaValueString = jni::Make<jni::String>(GetJavaEnv(), javaValueName);
 	const TObject enumObject = valueOf(javaValueString);
 	const jni::jint javaOrdinal = ordinal(enumObject);
 	if (nativeOrdinal != javaOrdinal)
@@ -83,10 +85,10 @@ void CDerivedEnum<Tag, Enum>::VerifyEnumOrdinal(jni::jint nativeOrdinal, const c
 }
 
 template <class Tag, class Enum>
-void CDerivedEnum<Tag, Enum>::VerifyEnumValueCount(typename TEnumClass::ordinal_type nativeValueCount)
+void CEnum<Tag, Enum>::VerifyEnumValueCount(typename TEnumClass::ordinal_type nativeValueCount)
 {
 	const TObjectArray enumObjects = values();
-	const jni::jsize javaValueCount = enumObjects.Length(m_javaEnv);
+	const jni::jsize javaValueCount = enumObjects.Length(GetJavaEnv());
 	if (nativeValueCount != javaValueCount)
 	{
 		throw jni::EnumMismatchException(stl::string_format(

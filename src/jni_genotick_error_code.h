@@ -31,9 +31,9 @@ inline EGenotickResult ErrorCodeToGenotickResult(const jni::jint error)
 	return EErrorCode::getByValue(error).meta().result;
 }
 
-struct SErrorCodeTagType { static constexpr auto Name() { return "com/alphatica/genotick/genotick/ErrorCode"; } };
+struct SErrorCodeTag { static constexpr auto Name() { return "com/alphatica/genotick/genotick/ErrorCode"; } };
 
-class CErrorCode : public CDerivedEnum<SErrorCodeTagType, EErrorCode>
+class CErrorCode : public CEnum<SErrorCodeTag, EErrorCode>
 {
 public:
 	using TValueMethod = jni::Method<TagType, jni::jint()>;
@@ -42,14 +42,14 @@ public:
 	f(TValueMethod, getValue) \
 
 	explicit CErrorCode(jni::JNIEnv* pJavaEnv)
-		: CDerivedEnum(pJavaEnv)
+		: CEnum<TagType, TEnumClass>(pJavaEnv)
 		GENOTICK_ERRORCODE_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
 	}
 
 	jni::jint value(const TObject& object) const
 	{
-		return object.Call(m_javaEnv, m_getValue);
+		return object.Call(GetJavaEnv(), m_getValue);
 	}
 
 	jni::jint GetEnumValue(const TObject& object) const override final

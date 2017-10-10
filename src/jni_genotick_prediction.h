@@ -7,9 +7,9 @@
 namespace jni {
 namespace genotick {
 
-struct SPredictionTagType { static constexpr auto Name() { return "com/alphatica/genotick/genotick/Prediction"; } };
+struct SPredictionTag { static constexpr auto Name() { return "com/alphatica/genotick/genotick/Prediction"; } };
 
-class CPrediction : public CDerivedEnum<SPredictionTagType, EGenotickPrediction>
+class CPrediction : public CEnum<SPredictionTag, EGenotickPrediction>
 {
 public:
 	using TValueMethod = jni::Method<TagType, jni::jint()>;
@@ -18,7 +18,7 @@ public:
 	f(TValueMethod, getValue) \
 
 	explicit CPrediction(jni::JNIEnv* pJavaEnv)
-		: CDerivedEnum(pJavaEnv)
+		: CEnum<TagType, TEnumClass>(pJavaEnv)
 		GENOTICK_PREDICTION_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
 		VerifyEnumValues();
@@ -26,7 +26,7 @@ public:
 
 	jni::jint value(const TObject& object) const
 	{
-		return object.Call(m_javaEnv, m_getValue);
+		return object.Call(GetJavaEnv(), m_getValue);
 	}
 
 	jni::jint GetEnumValue(const TObject& object) const override final

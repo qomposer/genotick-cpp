@@ -11,14 +11,11 @@
 namespace jni {
 namespace genotick {
 
-class CMainSettings
+struct SMainSettingsTag { static constexpr auto Name() { return "com/alphatica/genotick/genotick/MainSettings"; } };
+
+class CMainSettings : public CClass<SMainSettingsTag>
 {
 public:
-	struct TagType { static constexpr auto Name() { return "com/alphatica/genotick/genotick/MainSettings"; } };
-	using TClass = jni::Class<TagType>;
-	using TUniqueClass = jni::UniqueClass<TagType>;
-	using TObject = jni::Object<TagType>;
-
 	using TIntField = jni::IntField<TagType>;
 	using TLongField = jni::LongField<TagType>;
 	using TDoubleField = jni::DoubleField<TagType>;
@@ -64,8 +61,7 @@ public:
 	f(TChartModeField          , chartMode                        ) \
 
 	explicit CMainSettings::CMainSettings(jni::JNIEnv* pJavaEnv)
-		: m_javaEnv(*pJavaEnv)
-		, m_uniqueClass(TClass::Find(m_javaEnv).NewGlobalRef(m_javaEnv))
+		: CClass<TagType>(pJavaEnv)
 		GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_FIELD_INITIALIZERS)
 	{
 	}
@@ -74,10 +70,7 @@ public:
 	GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_GET_FIELD_INLINE_FUNCTIONS)
 
 private:
-	jni::JNIEnv& m_javaEnv;
-	TUniqueClass m_uniqueClass;
 	GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
-
 };
 
 } // namespace genotick

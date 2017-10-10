@@ -11,24 +11,24 @@
 TYPE m_##NAME;
 
 #define GENOTICK_UNROLL_FIELD_INITIALIZERS(TYPE, NAME) \
-, m_##NAME(this->m_uniqueClass->GetField<typename TYPE::FieldType>(m_javaEnv, #NAME))
+, m_##NAME(this->GetUniqueClass()->GetField<typename TYPE::FieldType>(this->GetJavaEnv(), #NAME))
 
 #define GENOTICK_UNROLL_STATIC_FIELD_INITIALIZERS(TYPE, NAME) \
-, m_##NAME(this->m_uniqueClass->GetStaticField<typename TYPE::FieldType>(m_javaEnv, #NAME))
+, m_##NAME(this->GetUniqueClass()->GetStaticField<typename TYPE::FieldType>(this->GetJavaEnv(), #NAME))
 
 #define GENOTICK_UNROLL_METHOD_INITIALIZERS(TYPE, NAME) \
-, m_##NAME(this->m_uniqueClass->GetMethod<typename TYPE::MethodType>(m_javaEnv, #NAME))
+, m_##NAME(this->GetUniqueClass()->GetMethod<typename TYPE::MethodType>(this->GetJavaEnv(), #NAME))
 
 #define GENOTICK_UNROLL_STATIC_METHOD_INITIALIZERS(TYPE, NAME) \
-, m_##NAME(this->m_uniqueClass->GetStaticMethod<typename TYPE::MethodType>(m_javaEnv, #NAME))
+, m_##NAME(this->GetUniqueClass()->GetStaticMethod<typename TYPE::MethodType>(this->GetJavaEnv(), #NAME))
 
 #define GENOTICK_UNROLL_SET_FIELD_INLINE_FUNCTIONS(TYPE, NAME) \
 void Set_##NAME(const TObject& object, const typename TYPE::FieldType& value) const { \
-	object.Set(m_javaEnv, this->m_##NAME, value); }
+	object.Set(this->GetJavaEnv(), this->m_##NAME, value); }
 
 #define GENOTICK_UNROLL_GET_FIELD_INLINE_FUNCTIONS(TYPE, NAME) \
 inline typename TYPE::FieldType Get_##NAME(const TObject& object) const { \
-	return object.Get(m_javaEnv, this->m_##NAME); }
+	return object.Get(this->GetJavaEnv(), this->m_##NAME); }
 
 namespace jni
 {
