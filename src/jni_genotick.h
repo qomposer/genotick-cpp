@@ -10,6 +10,7 @@
 #include "jni_genotick_chart_mode.h"
 #include "jni_genotick_error_code.h"
 #include "jni_genotick_prediction.h"
+#include "jni_genotick_predictions.h"
 #include "jni_exceptions.h"
 #include "strlcpy.h"
 
@@ -113,6 +114,7 @@ private:
 	jni::genotick::CChartMode m_chartMode;
 	jni::genotick::CErrorCode m_errorCode;
 	jni::genotick::CPrediction m_prediction;
+	jni::genotick::CPredictions m_predictions;
 };
 
 } // namespace genotick

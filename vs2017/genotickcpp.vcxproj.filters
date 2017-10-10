@@ -177,6 +177,9 @@
     <ClInclude Include="..\src\jni_genotick_error_code.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\jni_genotick_predictions.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\dllmain.cpp">
