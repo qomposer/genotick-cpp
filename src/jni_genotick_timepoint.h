@@ -14,13 +14,13 @@ public:
 	using TTimePointConstructor = jni::Constructor<TagType, jni::jlong>;
 	using TGetValueMethod = jni::Method<TagType, jni::jlong()>;
 
-#define GENOTICK_TIMEPOINT_METHODS(f) \
+#define GENOTICK_CLASS_METHODS(f) \
 	f(TGetValueMethod, getValue) \
 
 	explicit CTimePoint(jni::JNIEnv* pJavaEnv)
 		: CClass<TagType>(pJavaEnv)
 		, m_constructor(GetUniqueClass()->GetConstructor<jni::jlong>(GetJavaEnv()))
-		GENOTICK_TIMEPOINT_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
+		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
 	}
 
@@ -36,10 +36,10 @@ public:
 
 private:
 	TTimePointConstructor m_constructor;
-	GENOTICK_TIMEPOINT_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
+	GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 };
 
-#undef GENOTICK_TIMEPOINT_METHODS
+#undef GENOTICK_CLASS_METHODS
 
 } // namespace genotick
 } // namespace jni

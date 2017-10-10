@@ -38,12 +38,12 @@ class CErrorCode : public CEnum<SErrorCodeTag, EErrorCode>
 public:
 	using TValueMethod = jni::Method<TagType, jni::jint()>;
 
-#define GENOTICK_ERRORCODE_METHODS(f) \
+#define GENOTICK_CLASS_METHODS(f) \
 	f(TValueMethod, getValue) \
 
 	explicit CErrorCode(jni::JNIEnv* pJavaEnv)
 		: CEnum<TagType, TEnumClass>(pJavaEnv)
-		GENOTICK_ERRORCODE_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
+		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
 	}
 
@@ -63,10 +63,10 @@ public:
 	}
 
 private:
-	GENOTICK_ERRORCODE_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
+	GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 };
 
-#undef GENOTICK_ERRORCODE_METHODS
+#undef GENOTICK_CLASS_METHODS
 #undef GENOTICK_ENUM_ERROR_CODE
 
 } // namespace genotick

@@ -13,12 +13,12 @@ class CPredictions : public CClass<SPredictionsTag>
 public:
 	using TGetMethod = jni::Method<TagType, CPrediction::TObject(jni::jint /* index */)>;
 
-#define GENOTICK_PREDICTIONS_METHODS(f) \
+#define GENOTICK_CLASS_METHODS(f) \
 	f(TGetMethod, get) \
 
 	explicit CPredictions(jni::JNIEnv* pJavaEnv)
 		: CClass<TagType>(pJavaEnv)
-		GENOTICK_PREDICTIONS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
+		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{}
 
 	CPrediction::TObject get(const TObject& object, const jni::jint index) const
@@ -27,10 +27,10 @@ public:
 	}
 
 private:
-	GENOTICK_PREDICTIONS_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
+	GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 };
 
-#undef GENOTICK_PREDICTIONS_METHODS
+#undef GENOTICK_CLASS_METHODS
 
 } // namespace genotick
 } // namespace jni

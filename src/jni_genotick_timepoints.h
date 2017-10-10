@@ -14,13 +14,13 @@ public:
 	using TGetMethod = jni::Method<TagType, CTimePoint::TObject(jni::jint /* index */)>;
 	using TGetIndexMethod = jni::Method<TagType, jni::jint(CTimePoint::TObject)>;
 
-#define GENOTICK_TIMEPOINTS_METHODS(f) \
+#define GENOTICK_CLASS_METHODS(f) \
 	f(TGetMethod, get) \
 	f(TGetIndexMethod, getIndex) \
 
 	explicit CTimePoints(jni::JNIEnv* pJavaEnv)
 		: CClass<TagType>(pJavaEnv)
-		GENOTICK_TIMEPOINTS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
+		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{}
 
 	CTimePoint::TObject get(const TObject& object, const jni::jint index) const
@@ -34,10 +34,10 @@ public:
 	}
 
 private:
-	GENOTICK_TIMEPOINTS_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
+	GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 };
 
-#undef GENOTICK_TIMEPOINTS_METHODS
+#undef GENOTICK_CLASS_METHODS
 
 } // namespace genotick
 } // namespace jni

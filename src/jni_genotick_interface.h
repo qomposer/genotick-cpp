@@ -15,14 +15,14 @@ public:
 	using TStartMethod = jni::StaticMethod<TagType, jni::jint(jni::jint /* sessionId */, jni::StringArray /* args */)>;
 	using TGetSettingsMethod = jni::StaticMethod<TagType, CMainSettings::TObject(jni::jint /* sessionId */)>;
 
-#define GENOTICK_MAININTERFACE_STATIC_METHODS(f) \
+#define GENOTICK_CLASS_STATIC_METHODS(f) \
 	f(TGetInterfaceVersionMethod, getInterfaceVersion) \
 	f(TStartMethod              , start              ) \
 	f(TGetSettingsMethod        , getSettings        ) \
 
 	explicit CMainInterface(jni::JNIEnv* pJavaEnv)
 		: CClass<TagType>(pJavaEnv)
-		GENOTICK_MAININTERFACE_STATIC_METHODS(GENOTICK_UNROLL_STATIC_METHOD_INITIALIZERS)
+		GENOTICK_CLASS_STATIC_METHODS(GENOTICK_UNROLL_STATIC_METHOD_INITIALIZERS)
 	{}
 
 	jni::jint getInterfaceVersion() const
@@ -41,10 +41,10 @@ public:
 	}
 
 private:
-	GENOTICK_MAININTERFACE_STATIC_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
+	GENOTICK_CLASS_STATIC_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 };
 
-#undef GENOTICK_MAININTERFACE_STATIC_METHODS
+#undef GENOTICK_CLASS_STATIC_METHODS
 
 } // namespace genotick
 } // namespace jni

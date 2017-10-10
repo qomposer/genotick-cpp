@@ -14,12 +14,12 @@ class CPrediction : public CEnum<SPredictionTag, EGenotickPrediction>
 public:
 	using TValueMethod = jni::Method<TagType, jni::jint()>;
 
-#define GENOTICK_PREDICTION_METHODS(f) \
+#define GENOTICK_CLASS_METHODS(f) \
 	f(TValueMethod, getValue) \
 
 	explicit CPrediction(jni::JNIEnv* pJavaEnv)
 		: CEnum<TagType, TEnumClass>(pJavaEnv)
-		GENOTICK_PREDICTION_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
+		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
 		VerifyEnumValues();
 	}
@@ -40,10 +40,10 @@ public:
 	}
 
 private:
-	GENOTICK_PREDICTION_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
+	GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 };
 
-#undef GENOTICK_PREDICTION_METHODS
+#undef GENOTICK_CLASS_METHODS
 
 } // namespace genotick
 } // namespace jni
