@@ -31,6 +31,7 @@ CGenotick::CGenotick(CJavaLoader* pJavaLoader, jni::JavaVM* pJavaVM, jni::JNIEnv
 	, m_inheritedWeightMode(pJavaEnv)
 	, m_chartMode(pJavaEnv)
 	, m_errorCode(pJavaEnv)
+	, m_prediction(pJavaEnv)
 {
 	SGenotickFunctions& mutableFunctions = const_cast<SGenotickFunctions&>(functions);
 	mutableFunctions.GetInterfaceVersion = GetInterfaceVersionThis;

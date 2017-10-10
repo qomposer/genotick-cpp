@@ -9,6 +9,7 @@
 #include "jni_genotick_inherited_weight_mode.h"
 #include "jni_genotick_chart_mode.h"
 #include "jni_genotick_error.h"
+#include "jni_genotick_prediction.h"
 #include "jni_exceptions.h"
 #include "strlcpy.h"
 
@@ -111,6 +112,7 @@ private:
 	jni::genotick::CInheritedWeightMode m_inheritedWeightMode;
 	jni::genotick::CChartMode m_chartMode;
 	jni::genotick::CErrorCode m_errorCode;
+	jni::genotick::CPrediction m_prediction;
 };
 
 } // namespace genotick

@@ -83,6 +83,10 @@ const TGenotickBoolean GenotickTrue = 1;
 #define GenotickChartMode_JFreeChart_Save      (GenotickChartMode_JFreeChart | GenotickChartMode_Save)
 #define GenotickChartMode_JFreeChart_Draw_Save (GenotickChartMode_JFreeChart | GenotickChartMode_Draw | GenotickChartMode_Save)
 
+#define GenotickPrediction_Up    1
+#define GenotickPrediction_Down -1
+#define GenotickPrediction_Out   0
+
 #define GenotickResult_Success                0
 #define GenotickResult_InvalidArgument        1
 #define GenotickResult_JvmDllNotFound         2
@@ -133,9 +137,15 @@ struct SGenotickEnumMeta
 	e(JFreeChart_Save      , = GenotickChartMode_JFreeChart_Save      , (SGenotickEnumMeta("JFREECHART_SAVE"     ))) \
 	e(JFreeChart_Draw_Save , = GenotickChartMode_JFreeChart_Draw_Save , (SGenotickEnumMeta("JFREECHART_DRAW_SAVE"))) \
 
+#define GENOTICK_PREDICTION(e) \
+	e(Up   , = GenotickPrediction_Up   , (SGenotickEnumMeta("UP"  ))) \
+	e(Down , = GenotickPrediction_Down , (SGenotickEnumMeta("DOWN"))) \
+	e(Out  , = GenotickPrediction_Out  , (SGenotickEnumMeta("OUT" ))) \
+
 DEFINE_CUSTOM_ENUM_CLASS(EGenotickWeightMode, TGenotickInt32, GENOTICK_ENUM_WEIGHT_MODE, SGenotickEnumMeta)
 DEFINE_CUSTOM_ENUM_CLASS(EGenotickInheritedWeightMode, TGenotickInt32, GENOTICK_ENUM_INHERITED_WEIGHT_MODE, SGenotickEnumMeta)
 DEFINE_CUSTOM_ENUM_CLASS(EGenotickChartMode, TGenotickInt32, GENOTICK_ENUM_CHART_MODE, SGenotickEnumMeta)
+DEFINE_CUSTOM_ENUM_CLASS(EGenotickPrediction, TGenotickInt32, GENOTICK_PREDICTION, SGenotickEnumMeta)
 
 enum class EGenotickResult : TGenotickInt32
 {
