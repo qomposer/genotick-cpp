@@ -17,10 +17,12 @@ struct SGenotickErrorCodeMeta
 };
 
 #define GENOTICK_ENUM_ERROR_CODE(f) \
-	f(NoError         , = 0 , (SGenotickErrorCodeMeta("NO_ERROR"        , EGenotickResult::ErrorNoError        ))) \
-	f(NoInput         , = 1 , (SGenotickErrorCodeMeta("NO_INPUT"        , EGenotickResult::ErrorNoInput        ))) \
-	f(NoOutput        , = 2 , (SGenotickErrorCodeMeta("NO_OUTPUT"       , EGenotickResult::ErrorNoOutput       ))) \
-	f(UnknownArgument , = 3 , (SGenotickErrorCodeMeta("UNKNOWN_ARGUMENT", EGenotickResult::ErrorUnknownArgument))) \
+	f(NoError          , = 0 , (SGenotickErrorCodeMeta("NO_ERROR"         , EGenotickResult::ErrorNoError         ))) \
+	f(NoInput          , = 1 , (SGenotickErrorCodeMeta("NO_INPUT"         , EGenotickResult::ErrorNoInput         ))) \
+	f(NoOutput         , = 2 , (SGenotickErrorCodeMeta("NO_OUTPUT"        , EGenotickResult::ErrorNoOutput        ))) \
+	f(UnknownArgument  , = 3 , (SGenotickErrorCodeMeta("UNKNOWN_ARGUMENT" , EGenotickResult::ErrorUnknownArgument ))) \
+	f(InvalidSession   , = 4 , (SGenotickErrorCodeMeta("INVALID_SESSION"  , EGenotickResult::ErrorInvalidSession  ))) \
+	f(InsufficientData , = 5 , (SGenotickErrorCodeMeta("INSUFFICIENT_DATA", EGenotickResult::ErrorInsufficientData))) \
 
 DEFINE_CUSTOM_ENUM_CLASS(EErrorCode, jni::jint, GENOTICK_ENUM_ERROR_CODE, SGenotickErrorCodeMeta)
 

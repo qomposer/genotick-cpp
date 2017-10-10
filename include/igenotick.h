@@ -83,23 +83,25 @@ const TGenotickBoolean GenotickTrue = 1;
 #define GenotickChartMode_JFreeChart_Save      (GenotickChartMode_JFreeChart | GenotickChartMode_Save)
 #define GenotickChartMode_JFreeChart_Draw_Save (GenotickChartMode_JFreeChart | GenotickChartMode_Draw | GenotickChartMode_Save)
 
-#define GenotickResult_Success               0
-#define GenotickResult_InvalidArgument       1
-#define GenotickResult_JvmDllNotFound        2
-#define GenotickResult_JvmExportsNotFound    3
-#define GenotickResult_JniError              4
-#define GenotickResult_JniDetached           5
-#define GenotickResult_JniVersionMismatch    6
-#define GenotickResult_JniNoMemory           7
-#define GenotickResult_JniExists             8
-#define GenotickResult_JniInvalidArgument    9
-#define GenotickResult_JavaClassMismatch    10
-#define GenotickResult_JavaEnumMismatch     11
-#define GenotickResult_JavaException        12
-#define GenotickResult_ErrorNoError         13
-#define GenotickResult_ErrorNoInput         14
-#define GenotickResult_ErrorNoOutput        15
-#define GenotickResult_ErrorUnknownArgument 16
+#define GenotickResult_Success                0
+#define GenotickResult_InvalidArgument        1
+#define GenotickResult_JvmDllNotFound         2
+#define GenotickResult_JvmExportsNotFound     3
+#define GenotickResult_JniError               4
+#define GenotickResult_JniDetached            5
+#define GenotickResult_JniVersionMismatch     6
+#define GenotickResult_JniNoMemory            7
+#define GenotickResult_JniExists              8
+#define GenotickResult_JniInvalidArgument     9
+#define GenotickResult_JavaClassMismatch     10
+#define GenotickResult_JavaEnumMismatch      11
+#define GenotickResult_JavaException         12
+#define GenotickResult_ErrorNoError          13
+#define GenotickResult_ErrorNoInput          14
+#define GenotickResult_ErrorNoOutput         15
+#define GenotickResult_ErrorUnknownArgument  16
+#define GenotickResult_ErrorInvalidSession   17
+#define GenotickResult_ErrorInsufficientData 18
 
 #ifdef __cplusplus
 
@@ -137,23 +139,25 @@ DEFINE_CUSTOM_ENUM_CLASS(EGenotickChartMode, TGenotickInt32, GENOTICK_ENUM_CHART
 
 enum class EGenotickResult : TGenotickInt32
 {
-	Success              = GenotickResult_Success,
-	InvalidArgument      = GenotickResult_InvalidArgument,
-	JvmDllNotFound       = GenotickResult_JvmDllNotFound,
-	JvmExportsNotFound   = GenotickResult_JvmExportsNotFound,
-	JniError             = GenotickResult_JniError,
-	JniDetached          = GenotickResult_JniDetached,
-	JniVersionMismatch   = GenotickResult_JniVersionMismatch,
-	JniNoMemory          = GenotickResult_JniNoMemory,
-	JniExists            = GenotickResult_JniExists,
-	JniInvalidArgument   = GenotickResult_JniInvalidArgument,
-	JavaClassMismatch    = GenotickResult_JavaClassMismatch,
-	JavaEnumMismatch     = GenotickResult_JavaEnumMismatch,
-	JavaException        = GenotickResult_JavaException,
-	ErrorNoError         = GenotickResult_ErrorNoError,
-	ErrorNoInput         = GenotickResult_ErrorNoInput,
-	ErrorNoOutput        = GenotickResult_ErrorNoOutput,
-	ErrorUnknownArgument = GenotickResult_ErrorUnknownArgument,
+	Success               = GenotickResult_Success,
+	InvalidArgument       = GenotickResult_InvalidArgument,
+	JvmDllNotFound        = GenotickResult_JvmDllNotFound,
+	JvmExportsNotFound    = GenotickResult_JvmExportsNotFound,
+	JniError              = GenotickResult_JniError,
+	JniDetached           = GenotickResult_JniDetached,
+	JniVersionMismatch    = GenotickResult_JniVersionMismatch,
+	JniNoMemory           = GenotickResult_JniNoMemory,
+	JniExists             = GenotickResult_JniExists,
+	JniInvalidArgument    = GenotickResult_JniInvalidArgument,
+	JavaClassMismatch     = GenotickResult_JavaClassMismatch,
+	JavaEnumMismatch      = GenotickResult_JavaEnumMismatch,
+	JavaException         = GenotickResult_JavaException,
+	ErrorNoError          = GenotickResult_ErrorNoError,
+	ErrorNoInput          = GenotickResult_ErrorNoInput,
+	ErrorNoOutput         = GenotickResult_ErrorNoOutput,
+	ErrorUnknownArgument  = GenotickResult_ErrorUnknownArgument,
+	ErrorInvalidSession   = GenotickResult_ErrorInvalidSession,
+	ErrorInsufficientData = GenotickResult_ErrorInsufficientData,
 };
 
 #else
@@ -209,12 +213,12 @@ struct SGenotickMainSettings
 };
 typedef struct SGenotickMainSettings TGenotickMainSettings;
 
-struct SGenotickStartSettings
+struct SGenotickStartArgs
 {
-	const char** parameters     GENOTICK_ZERO_INIT;
-	unsigned int parameterCount GENOTICK_ZERO_INIT;
+	const char** arguments     GENOTICK_ZERO_INIT;
+	unsigned int argumentCount GENOTICK_ZERO_INIT;
 };
-typedef struct SGenotickStartSettings TGenotickStartSettings;
+typedef struct SGenotickStartArgs TGenotickStartArgs;
 
 struct SGenotickJvmSettings
 {
@@ -228,9 +232,9 @@ typedef struct SGenotickJvmSettings TGenotickJvmSettings;
 struct SGenotick
 {
 	TGenotickInt32  GENOTICK_CALL GetInterfaceVersion(const struct SGenotick* pThis);
-	EGenotickResult GENOTICK_CALL GetSettings(const struct SGenotick* pThis, struct SGenotickMainSettings* pSettings);
-	EGenotickResult GENOTICK_CALL ChangeSettings(const struct SGenotick* pThis, const struct SGenotickMainSettings* pSettings);
-	EGenotickResult GENOTICK_CALL Start(const struct SGenotick* pThis, const struct SGenotickStartSettings* pSettings);
+	EGenotickResult GENOTICK_CALL GetSettings(const struct SGenotick* pThis, TGenotickInt32 sessionId, struct SGenotickMainSettings* pSettings);
+	EGenotickResult GENOTICK_CALL ChangeSettings(const struct SGenotick* pThis, TGenotickInt32 sessionId, const struct SGenotickMainSettings* pSettings);
+	EGenotickResult GENOTICK_CALL Start(const struct SGenotick* pThis, TGenotickInt32 sessionId, const struct SGenotickStartArgs* pArgs);
 	EGenotickResult GENOTICK_CALL Release(const struct SGenotick* pThis);
 };
 typedef const struct SGenotick IGenotick;
@@ -249,9 +253,9 @@ typedef const struct SGenotickFunctions IGenotick;
 struct SGenotickFunctions
 {
 	TGenotickInt32 (GENOTICK_CALL* GetInterfaceVersion)(IGenotick* pThis);
-	EGenotickResult(GENOTICK_CALL* GetSettings)(IGenotick* pThis, struct SGenotickMainSettings* pSettings);
-	EGenotickResult(GENOTICK_CALL* ChangeSettings)(IGenotick* pThis, const struct SGenotickMainSettings* pSettings);
-	EGenotickResult(GENOTICK_CALL* Start)(IGenotick* pThis, const struct SGenotickStartSettings* pSettings);
+	EGenotickResult(GENOTICK_CALL* GetSettings)(IGenotick* pThis, TGenotickInt32 sessionId, struct SGenotickMainSettings* pSettings);
+	EGenotickResult(GENOTICK_CALL* ChangeSettings)(IGenotick* pThis, TGenotickInt32 sessionId, const struct SGenotickMainSettings* pSettings);
+	EGenotickResult(GENOTICK_CALL* Start)(IGenotick* pThis, TGenotickInt32 sessionId, const struct SGenotickStartArgs* pArgs);
 	EGenotickResult(GENOTICK_CALL* Release)(IGenotick* pThis);
 };
 
@@ -263,14 +267,14 @@ struct SGenotick
 	TGenotickInt32 GetInterfaceVersion() {
 		return functions.GetInterfaceVersion(this);
 	}
-	EGenotickResult GetSettings(SGenotickMainSettings* pSettings) {
-		return functions.GetSettings(this, pSettings);
+	EGenotickResult GetSettings(TGenotickInt32 sessionId, SGenotickMainSettings* pSettings) {
+		return functions.GetSettings(this, sessionId, pSettings);
 	}
-	EGenotickResult ChangeSettings(const SGenotickMainSettings* pSettings) {
-		return functions.ChangeSettings(this, pSettings);
+	EGenotickResult ChangeSettings(TGenotickInt32 sessionId, const SGenotickMainSettings* pSettings) {
+		return functions.ChangeSettings(this, sessionId, pSettings);
 	}
-	EGenotickResult Start(const SGenotickStartSettings* pSettings) {
-		return functions.Start(this, pSettings);
+	EGenotickResult Start(TGenotickInt32 sessionId, const SGenotickStartArgs* pArgs) {
+		return functions.Start(this, sessionId, pArgs);
 	}
 	EGenotickResult Release() {
 		return functions.Release(this);

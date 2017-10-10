@@ -16,8 +16,8 @@ public:
 	using TObject = jni::Object<TagType>;
 
 	using TGetInterfaceVersionMethod = jni::StaticMethod<TagType, jni::jint()>;
-	using TStartMethod = jni::StaticMethod<TagType, jni::jint(jni::StringArray)>;
-	using TGetSettingsMethod = jni::StaticMethod<TagType, CMainSettings::TObject()>;
+	using TStartMethod = jni::StaticMethod<TagType, jni::jint(jni::jint /* sessionId */, jni::StringArray /* args */)>;
+	using TGetSettingsMethod = jni::StaticMethod<TagType, CMainSettings::TObject(jni::jint /* sessionId */)>;
 
 #define GENOTICK_MAININTERFACE_STATIC_METHODS(f) \
 	f(TGetInterfaceVersionMethod, getInterfaceVersion) \
@@ -35,14 +35,14 @@ public:
 		return m_uniqueClass->Call(m_javaEnv, m_getInterfaceVersion);
 	}
 
-	jni::jint start(const jni::StringArray& array) const
+	jni::jint start(jni::jint sessionId, jni::StringArray array) const
 	{
-		return m_uniqueClass->Call(m_javaEnv, m_start, array);
+		return m_uniqueClass->Call(m_javaEnv, m_start, sessionId, array);
 	}
 
-	CMainSettings::TObject getSettings() const
+	CMainSettings::TObject getSettings(jni::jint sessionId) const
 	{
-		return m_uniqueClass->Call(m_javaEnv, m_getSettings);
+		return m_uniqueClass->Call(m_javaEnv, m_getSettings, sessionId);
 	}
 
 private:

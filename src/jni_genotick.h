@@ -28,23 +28,23 @@ private:
 	static TGenotickInt32 GENOTICK_CALL GetInterfaceVersionThis(IGenotick* pThis) {
 		return static_cast<const CGenotick*>(pThis)->GetInterfaceVersionInternal();
 	};
-	static EGenotickResult GENOTICK_CALL GetSettingsThis(IGenotick* pThis, SGenotickMainSettings* pSettings) {
-		return static_cast<const CGenotick*>(pThis)->GetSettingsInternal(pSettings);
+	static EGenotickResult GENOTICK_CALL GetSettingsThis(IGenotick* pThis, TGenotickInt32 sessionId, SGenotickMainSettings* pSettings) {
+		return static_cast<const CGenotick*>(pThis)->GetSettingsInternal(sessionId, pSettings);
 	};
-	static EGenotickResult GENOTICK_CALL ChangeSettingsThis(IGenotick* pThis, const SGenotickMainSettings* pSettings) {
-		return static_cast<const CGenotick*>(pThis)->ChangeSettingsInternal(pSettings);
+	static EGenotickResult GENOTICK_CALL ChangeSettingsThis(IGenotick* pThis, TGenotickInt32 sessionId, const SGenotickMainSettings* pSettings) {
+		return static_cast<const CGenotick*>(pThis)->ChangeSettingsInternal(sessionId, pSettings);
 	};
-	static EGenotickResult GENOTICK_CALL StartThis(IGenotick* pThis, const SGenotickStartSettings* pSettings) {
-		return static_cast<const CGenotick*>(pThis)->StartInternal(pSettings);
+	static EGenotickResult GENOTICK_CALL StartThis(IGenotick* pThis, TGenotickInt32 sessionId, const SGenotickStartArgs* pArgs) {
+		return static_cast<const CGenotick*>(pThis)->StartInternal(sessionId, pArgs);
 	};
 	static EGenotickResult GENOTICK_CALL ReleaseThis(IGenotick* pThis) {
 		return static_cast<const CGenotick*>(pThis)->ReleaseInternal();
 	};
 	
 	TGenotickInt32 GetInterfaceVersionInternal() const;
-	EGenotickResult GetSettingsInternal(SGenotickMainSettings* pSettings) const;
-	EGenotickResult ChangeSettingsInternal(const SGenotickMainSettings* pSettings) const;
-	EGenotickResult StartInternal(const SGenotickStartSettings* pSettings) const;
+	EGenotickResult GetSettingsInternal(TGenotickInt32 sessionId, SGenotickMainSettings* pSettings) const;
+	EGenotickResult ChangeSettingsInternal(TGenotickInt32 sessionId, const SGenotickMainSettings* pSettings) const;
+	EGenotickResult StartInternal(TGenotickInt32 sessionId, const SGenotickStartArgs* pArgs) const;
 	EGenotickResult ReleaseInternal() const;
 
 	template <class D, class S> void ToNative(D& dst, const S src) const {

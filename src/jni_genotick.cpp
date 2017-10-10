@@ -56,14 +56,14 @@ ToNative(pSettings->NAME, this->m_mainSettings.Get_##NAME(settingsObject)); }
 auto value = ToJava<typename jni::genotick::CMainSettings::TYPE::FieldType>(pSettings->NAME); \
 this->m_mainSettings.Set_##NAME(settingsObject, value); }
 
-EGenotickResult CGenotick::GetSettingsInternal(SGenotickMainSettings* pSettings) const
+EGenotickResult CGenotick::GetSettingsInternal(TGenotickInt32 sessionId, SGenotickMainSettings* pSettings) const
 {
 	if (!pSettings)
 		return EGenotickResult::InvalidArgument;
 
 	try
 	{
-		const jni::genotick::CMainSettings::TObject settingsObject = m_mainInterface.getSettings();
+		const jni::genotick::CMainSettings::TObject settingsObject = m_mainInterface.getSettings(sessionId);
 		GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_FIELDS_TO_NATIVE);
 		return EGenotickResult::Success;
 	}
@@ -77,14 +77,14 @@ EGenotickResult CGenotick::GetSettingsInternal(SGenotickMainSettings* pSettings)
 	}
 }
 
-EGenotickResult CGenotick::ChangeSettingsInternal(const SGenotickMainSettings* pSettings) const
+EGenotickResult CGenotick::ChangeSettingsInternal(TGenotickInt32 sessionId, const SGenotickMainSettings* pSettings) const
 {
 	if (!pSettings)
 		return EGenotickResult::InvalidArgument;
 
 	try
 	{
-		const jni::genotick::CMainSettings::TObject settingsObject = m_mainInterface.getSettings();
+		const jni::genotick::CMainSettings::TObject settingsObject = m_mainInterface.getSettings(sessionId);
 		GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_FIELDS_TO_JAVA);
 		return EGenotickResult::Success;
 	}
@@ -101,22 +101,22 @@ EGenotickResult CGenotick::ChangeSettingsInternal(const SGenotickMainSettings* p
 #undef GENOTICK_UNROLL_FIELDS_TO_NATIVE
 #undef GENOTICK_UNROLL_FIELDS_TO_JAVA
 
-EGenotickResult CGenotick::StartInternal(const SGenotickStartSettings* pSettings) const
+EGenotickResult CGenotick::StartInternal(TGenotickInt32 sessionId, const SGenotickStartArgs* pArgs) const
 {
-	if (!pSettings)
+	if (!pArgs)
 		return EGenotickResult::InvalidArgument;
 
 	try
 	{
-		const jni::jsize length = pSettings->parameterCount;
+		const jni::jsize length = pArgs->argumentCount;
 		jni::StringArray args = jni::StringArray::New(m_javaEnv, length, *m_stringClass.get());
 		for (jni::jsize i = 0; i < length; ++i)
 		{
-			const char* parameter = pSettings->parameters[i];
+			const char* parameter = pArgs->arguments[i];
 			jni::String newString = jni::Make<jni::String>(m_javaEnv, parameter);
 			args.Set(m_javaEnv, i, newString);
 		}
-		const jni::jint error = m_mainInterface.start(args);
+		const jni::jint error = m_mainInterface.start(sessionId, args);
 		return jni::genotick::ErrorCodeToGenotickResult(error);
 	}
 	catch (const jni::PendingJavaException& exception)

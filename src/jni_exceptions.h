@@ -5,6 +5,7 @@
 #include <jni/errors.hpp>
 #include <jni/types.hpp>
 #include <exception>
+#include <iostream>
 #include "genotick.h"
 
 namespace jni {
@@ -35,6 +36,7 @@ inline EGenotickResult HandleEnumMismatchException(const EnumMismatchException& 
 {
 	(void)exception;
 	// TODO store and print exception
+	std::cout << exception.what() << std::endl;
 	return EGenotickResult::JavaEnumMismatch;
 }
 

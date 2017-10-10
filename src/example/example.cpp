@@ -43,30 +43,31 @@ int main(int argc, char** argv)
 	{
 		TGenotickInt32 version = pInstance->GetInterfaceVersion();
 
+		TGenotickInt32 sessionId = 0;
 		TGenotickMainSettings mainSettings;
 		char buffer1[260] = { 0 };
 		char buffer2[260] = { 0 };
 		SetString(mainSettings.populationDAO, buffer1);
 		SetString(mainSettings.dataDirectory, buffer2);
 
-		result = pInstance->GetSettings(&mainSettings);
+		result = pInstance->GetSettings(sessionId, &mainSettings);
 
 		mainSettings.startTimePoint = 20130101;
 		mainSettings.endTimePoint = 20150101;
 		SetConstString(mainSettings.dataDirectory, GENOTICK_DATADIR);
 
-		result = pInstance->ChangeSettings(&mainSettings);
+		result = pInstance->ChangeSettings(sessionId, &mainSettings);
 
 		const char* arguments[] =
 		{
 			"input=external",
 			"outdir=" GENOTICK_OUTDIR,
 		};
-		TGenotickStartSettings startSettings;
-		startSettings.parameters = arguments;
-		startSettings.parameterCount = GetArrayLength(arguments);
+		TGenotickStartArgs startArgs;
+		startArgs.arguments = arguments;
+		startArgs.argumentCount = GetArrayLength(arguments);
 
-		result = pInstance->Start(&startSettings);
+		result = pInstance->Start(sessionId, &startArgs);
 
 		GenotickSafeRelease(pInstance);
 	}
