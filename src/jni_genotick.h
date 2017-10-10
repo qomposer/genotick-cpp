@@ -8,7 +8,7 @@
 #include "jni_genotick_weight_mode.h"
 #include "jni_genotick_inherited_weight_mode.h"
 #include "jni_genotick_chart_mode.h"
-#include "jni_genotick_error.h"
+#include "jni_genotick_error_code.h"
 #include "jni_genotick_prediction.h"
 #include "jni_exceptions.h"
 #include "strlcpy.h"

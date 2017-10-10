@@ -132,9 +132,6 @@
     <ClInclude Include="..\src\jni_error.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\jni_genotick_error.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\jni_genotick_interface.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -175,6 +172,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\src\jni_genotick_prediction.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni_genotick_error_code.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
