@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include "jni_helpers.h"
 #include "jni_genotick_prediction.h"
 
 namespace jni {
