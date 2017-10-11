@@ -271,8 +271,8 @@ struct SGenotickPredictions
 	void                GENOTICK_CALL Release(const struct SGenotickPredictions* pThis);
 };
 
-typedef const struct SGenotickTimePoints TGenotickTimePoints;
-typedef const struct SGenotickPredictions TGenotickPredictions;
+typedef const struct SGenotickTimePoints IGenotickTimePoints;
+typedef const struct SGenotickPredictions IGenotickPredictions;
 
 struct SGenotick
 {
@@ -304,27 +304,27 @@ struct SGenotickPredictions;
 
 #ifdef __cplusplus
 typedef const struct SGenotick IGenotick;
-typedef const struct SGenotickTimePoints TGenotickTimePoints;
-typedef const struct SGenotickPredictions TGenotickPredictions;
+typedef const struct SGenotickTimePoints IGenotickTimePoints;
+typedef const struct SGenotickPredictions IGenotickPredictions;
 #else
 typedef const struct SGenotickFunctions IGenotick;
-typedef const struct SGenotickTimePointsFunctions TGenotickTimePoints;
-typedef const struct SGenotickPredictionsFunctions TGenotickPredictions;
+typedef const struct SGenotickTimePointsFunctions IGenotickTimePoints;
+typedef const struct SGenotickPredictionsFunctions IGenotickPredictions;
 #endif
 
 struct SGenotickTimePointsFunctions
 {
-	TGenotickBoolean   (GENOTICK_CALL* FindIndex)(TGenotickTimePoints* pThis, TGenotickTimePoint timePoint, TGenotickInt32* pIndex);
-	TGenotickTimePoint (GENOTICK_CALL* GetElement)(TGenotickTimePoints* pThis, TGenotickInt32 index);
-	TGenotickSize      (GENOTICK_CALL* GetElementCount)(TGenotickTimePoints* pThis);
-	void               (GENOTICK_CALL* Release)(TGenotickTimePoints* pThis);
+	TGenotickBoolean   (GENOTICK_CALL* FindIndex)(IGenotickTimePoints* pThis, TGenotickTimePoint timePoint, TGenotickInt32* pIndex);
+	TGenotickTimePoint (GENOTICK_CALL* GetElement)(IGenotickTimePoints* pThis, TGenotickInt32 index);
+	TGenotickSize      (GENOTICK_CALL* GetElementCount)(IGenotickTimePoints* pThis);
+	void               (GENOTICK_CALL* Release)(IGenotickTimePoints* pThis);
 };
 
 struct SGenotickPredictionsFunctions
 {
-	EGenotickPrediction (GENOTICK_CALL* GetElement)(TGenotickPredictions* pThis, TGenotickInt32 index);
-	TGenotickSize       (GENOTICK_CALL* GetElementCount)(TGenotickPredictions* pThis);
-	void                (GENOTICK_CALL* Release)(TGenotickPredictions* pThis);
+	EGenotickPrediction (GENOTICK_CALL* GetElement)(IGenotickPredictions* pThis, TGenotickInt32 index);
+	TGenotickSize       (GENOTICK_CALL* GetElementCount)(IGenotickPredictions* pThis);
+	void                (GENOTICK_CALL* Release)(IGenotickPredictions* pThis);
 };
 
 struct SGenotickFunctions
@@ -337,8 +337,8 @@ struct SGenotickFunctions
 	EGenotickResult (GENOTICK_CALL* ChangeSettings)(IGenotick* pThis, TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings);
 	EGenotickResult (GENOTICK_CALL* SetAssetData)(IGenotick* pThis, TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData);
 	EGenotickResult (GENOTICK_CALL* Start)(IGenotick* pThis, TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs);
-	EGenotickResult (GENOTICK_CALL* GetTimePoints)(IGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoints** ppTimePoints);
-	EGenotickResult (GENOTICK_CALL* GetPredictions)(IGenotick* pThis, TGenotickSessionId sessionId, TGenotickPredictions** ppPredictions);
+	EGenotickResult (GENOTICK_CALL* GetTimePoints)(IGenotick* pThis, TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints);
+	EGenotickResult (GENOTICK_CALL* GetPredictions)(IGenotick* pThis, TGenotickSessionId sessionId, IGenotickPredictions** ppPredictions);
 	EGenotickResult (GENOTICK_CALL* GetNewestTimePoint)(IGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint);
 	EGenotickResult (GENOTICK_CALL* GetNewestPrediction)(IGenotick* pThis, TGenotickSessionId sessionId, EGenotickPrediction* pPrediction);
 	EGenotickResult (GENOTICK_CALL* Release)(IGenotick* pThis);
@@ -413,10 +413,10 @@ struct SGenotick
 	EGenotickResult Start(TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs) const {
 		return functions.Start(this, sessionId, pArgs);
 	}
-	EGenotickResult GetTimePoints(TGenotickSessionId sessionId, TGenotickTimePoints** ppTimePoints) const {
+	EGenotickResult GetTimePoints(TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) const {
 		return functions.GetTimePoints(this, sessionId, ppTimePoints);
 	}
-	EGenotickResult GetPredictions(TGenotickSessionId sessionId, TGenotickPredictions** ppPredictions) const {
+	EGenotickResult GetPredictions(TGenotickSessionId sessionId, IGenotickPredictions** ppPredictions) const {
 		return functions.GetPredictions(this, sessionId, ppPredictions);
 	}
 	EGenotickResult GetNewestTimePoint(TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) const {
