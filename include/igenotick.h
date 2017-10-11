@@ -266,37 +266,39 @@ typedef struct SGenotickJvmSettings  TGenotickJvmSettings;
 
 struct SGenotickTimePoints
 {
+	TGenotickBoolean   GENOTICK_CALL FindIndex(const struct SGenotickTimePoints* pThis, TGenotickTimePoint timePoint, TGenotickInt32* pIndex);
 	TGenotickTimePoint GENOTICK_CALL GetElement(const struct SGenotickTimePoints* pThis, TGenotickInt32 index);
-	TSize              GENOTICK_CALL GetElementCount(const struct SGenotickTimePoints* pThis);
+	TGenotickSize      GENOTICK_CALL GetElementCount(const struct SGenotickTimePoints* pThis);
 	void               GENOTICK_CALL Release(const struct SGenotickTimePoints* pThis);
 };
 
 struct SGenotickPredictions
 {
 	EGenotickPrediction GENOTICK_CALL GetElement(const struct SGenotickPredictions* pThis, TGenotickInt32 index);
-	TSize               GENOTICK_CALL GetElementCount(const struct SGenotickPredictions* pThis);
+	TGenotickSize       GENOTICK_CALL GetElementCount(const struct SGenotickPredictions* pThis);
 	void                GENOTICK_CALL Release(const struct SGenotickPredictions* pThis);
-};
-
-struct SGenotick
-{
-	TGenotickInt32  GENOTICK_CALL GetInterfaceVersion(const struct SGenotick* pThis);
-	EGenotickResult GENOTICK_CALL CreateSession(IGenotick* pThis, TGenotickSessionId sessionId);
-	EGenotickResult GENOTICK_CALL RemoveSession(IGenotick* pThis, TGenotickSessionId sessionId);
-	EGenotickResult GENOTICK_CALL RemoveAllSessions(IGenotick* pThis);
-	EGenotickResult GENOTICK_CALL GetSettings(const struct SGenotick* pThis, TGenotickSessionId sessionId, TGenotickMainSettings* pSettings);
-	EGenotickResult GENOTICK_CALL ChangeSettings(const struct SGenotick* pThis, TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings);
-	EGenotickResult GENOTICK_CALL SetAssetData(IGenotick* pThis, TGenotickSessionId sessionId, const SGenotickAssetData* pAssetData);
-	EGenotickResult GENOTICK_CALL Start(const struct SGenotick* pThis, TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs);
-	EGenotickResult GENOTICK_CALL GetTimePoints(IGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoints** ppTimePoints);
-	EGenotickResult GENOTICK_CALL GetPredictions(IGenotick* pThis, TGenotickSessionId sessionId, TGenotickPredictions** ppPredictions);
-	EGenotickResult GENOTICK_CALL GetNewestTimePoint(IGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint);
-	EGenotickResult GENOTICK_CALL GetNewestPrediction(IGenotick* pThis, TGenotickSessionId sessionId, EGenotickPrediction* pPrediction);
-	EGenotickResult GENOTICK_CALL Release(const struct SGenotick* pThis);
 };
 
 typedef const struct SGenotickTimePoints TGenotickTimePoints;
 typedef const struct SGenotickPredictions TGenotickPredictions;
+
+struct SGenotick
+{
+	TGenotickInt32  GENOTICK_CALL GetInterfaceVersion(const struct SGenotick* pThis);
+	EGenotickResult GENOTICK_CALL CreateSession(const struct SGenotick* pThis, TGenotickSessionId sessionId);
+	EGenotickResult GENOTICK_CALL RemoveSession(const struct SGenotick* pThis, TGenotickSessionId sessionId);
+	EGenotickResult GENOTICK_CALL RemoveAllSessions(const struct SGenotick* pThis);
+	EGenotickResult GENOTICK_CALL GetSettings(const struct SGenotick* pThis, TGenotickSessionId sessionId, TGenotickMainSettings* pSettings);
+	EGenotickResult GENOTICK_CALL ChangeSettings(const struct SGenotick* pThis, TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings);
+	EGenotickResult GENOTICK_CALL SetAssetData(const struct SGenotick* pThis, TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData);
+	EGenotickResult GENOTICK_CALL Start(const struct SGenotick* pThis, TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs);
+	EGenotickResult GENOTICK_CALL GetTimePoints(const struct SGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoints** ppTimePoints);
+	EGenotickResult GENOTICK_CALL GetPredictions(const struct SGenotick* pThis, TGenotickSessionId sessionId, TGenotickPredictions** ppPredictions);
+	EGenotickResult GENOTICK_CALL GetNewestTimePoint(const struct SGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint);
+	EGenotickResult GENOTICK_CALL GetNewestPrediction(const struct SGenotick* pThis, TGenotickSessionId sessionId, EGenotickPrediction* pPrediction);
+	EGenotickResult GENOTICK_CALL Release(const struct SGenotick* pThis);
+};
+
 typedef const struct SGenotick IGenotick;
 
 #else
@@ -320,7 +322,7 @@ typedef const struct SGenotickPredictionsFunctions TGenotickPredictions;
 
 struct SGenotickTimePointsFunctions
 {
-	TGenotickBoolean   (GENOTICK_CALL* FindIndex)(TGenotickTimePoints* pThis, TGenotickTimePoint timePoint, TGenotickInt32* index);
+	TGenotickBoolean   (GENOTICK_CALL* FindIndex)(TGenotickTimePoints* pThis, TGenotickTimePoint timePoint, TGenotickInt32* pIndex);
 	TGenotickTimePoint (GENOTICK_CALL* GetElement)(TGenotickTimePoints* pThis, TGenotickInt32 index);
 	TGenotickSize      (GENOTICK_CALL* GetElementCount)(TGenotickTimePoints* pThis);
 	void               (GENOTICK_CALL* Release)(TGenotickTimePoints* pThis);
