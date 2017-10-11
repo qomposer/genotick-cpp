@@ -26,6 +26,8 @@ CGenotick::CGenotick(CJavaLoader* pJavaLoader, jni::JavaVM* pJavaVM, jni::JNIEnv
 	, m_stringClass(jni::StringClass::Find(m_javaEnv).NewGlobalRef(m_javaEnv))
 	, m_mainInterface(pJavaEnv)
 	, m_mainSettings(pJavaEnv)
+	, m_dataLines(pJavaEnv)
+	, m_mainAppData(pJavaEnv)
 	, m_timePoint(pJavaEnv)
 	, m_timePoints(pJavaEnv)
 	, m_weightMode(pJavaEnv)

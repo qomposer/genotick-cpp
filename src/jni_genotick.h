@@ -4,6 +4,8 @@
 #include "genotick.h"
 #include "jni_genotick_interface.h"
 #include "jni_genotick_settings.h"
+#include "jni_genotick_data_lines.h"
+#include "jni_genotick_main_app_data.h"
 #include "jni_genotick_timepoint.h"
 #include "jni_genotick_timepoints.h"
 #include "jni_genotick_weight_mode.h"
@@ -109,6 +111,8 @@ private:
 	jni::UniqueStringClass m_stringClass;
 	jni::genotick::CMainInterface m_mainInterface;
 	jni::genotick::CMainSettings m_mainSettings;
+	jni::genotick::CDataLines m_dataLines;
+	jni::genotick::CMainAppData m_mainAppData;
 	jni::genotick::CTimePoint m_timePoint;
 	jni::genotick::CTimePoints m_timePoints;
 	jni::genotick::CWeightMode m_weightMode;

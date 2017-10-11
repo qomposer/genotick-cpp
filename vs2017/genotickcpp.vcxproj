@@ -226,10 +226,12 @@
     <ClInclude Include="..\src\jni_enum.h" />
     <ClInclude Include="..\src\jni_enum_impl.h" />
     <ClInclude Include="..\src\jni_genotick_chart_mode.h" />
+    <ClInclude Include="..\src\jni_genotick_data_lines.h" />
     <ClInclude Include="..\src\jni_genotick_error_code.h" />
     <ClInclude Include="..\src\jni_exceptions.h" />
     <ClInclude Include="..\src\jni_genotick_inherited_weight_mode.h" />
     <ClInclude Include="..\src\jni_genotick_interface.h" />
+    <ClInclude Include="..\src\jni_genotick_main_app_data.h" />
     <ClInclude Include="..\src\jni_genotick_prediction.h" />
     <ClInclude Include="..\src\jni_genotick_predictions.h" />
     <ClInclude Include="..\src\jni_genotick_settings.h" />

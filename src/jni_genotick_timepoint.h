@@ -11,7 +11,7 @@ struct STimePointTag { static constexpr auto Name() { return "com/alphatica/geno
 class CTimePoint : public CClass<STimePointTag>
 {
 public:
-	using TTimePointConstructor = jni::Constructor<TagType, jni::jlong>;
+	using TConstructor = jni::Constructor<TagType, jni::jlong>;
 	using TGetValueMethod = jni::Method<TagType, jni::jlong()>;
 
 #define GENOTICK_CLASS_METHODS(f) \
@@ -35,7 +35,7 @@ public:
 	}
 
 private:
-	TTimePointConstructor m_constructor;
+	TConstructor m_constructor;
 	GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 };
 
