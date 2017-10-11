@@ -6,7 +6,7 @@
 #include <jni/types.hpp>
 #include <exception>
 #include <iostream>
-#include "genotick.h"
+#include <genotick/interface.h>
 
 namespace jni {
 

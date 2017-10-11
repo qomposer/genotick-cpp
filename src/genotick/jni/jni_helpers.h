@@ -3,7 +3,7 @@
 
 #pragma warning(disable: 4018 4063 4624 4800)
 #undef max
-#include "jni/jni.hpp"
+#include <jni/jni.hpp>
 #pragma warning(default: 4018 4063 4624 4800)
 #include <vector>
 

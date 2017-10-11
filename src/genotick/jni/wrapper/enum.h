@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "jni_class.h"
-#include "jni_exceptions.h"
+#include <genotick/jni/wrapper/class.h>
+#include <genotick/jni/exceptions.h>
 
 namespace jni {
 
@@ -84,4 +84,4 @@ private:
 
 } // namespace jni
 
-#include "jni_enum_impl.h"
+#include "enum_impl.h"

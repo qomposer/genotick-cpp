@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "jni_helpers.h"
+#include <genotick/jni/jni_helpers.h>
 
 namespace jni {
 

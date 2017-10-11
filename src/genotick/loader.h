@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "genotick.h"
+#include <genotick/interface.h>
 #include <jni.h>
 #include <Windows.h>
 #include <vector>

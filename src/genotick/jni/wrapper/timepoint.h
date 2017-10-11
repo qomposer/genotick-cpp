@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "jni_class.h"
+#include <genotick/jni/wrapper/class.h>
 
 namespace jni {
 namespace genotick {

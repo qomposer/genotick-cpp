@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "jni_enum.h"
-#include "genotick.h"
+#include <genotick/jni/wrapper/enum.h>
+#include <genotick/interface.h>
 
 namespace jni {
 namespace genotick {

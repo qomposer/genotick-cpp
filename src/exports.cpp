@@ -1,5 +1,5 @@
 
-#include "java_loader.h"
+#include <genotick/loader.h>
 
 CJavaLoader g_javaLoader;
 

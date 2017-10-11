@@ -1,21 +1,21 @@
 
 #pragma once
 
-#include "genotick.h"
-#include "jni_genotick_interface.h"
-#include "jni_genotick_settings.h"
-#include "jni_genotick_data_lines.h"
-#include "jni_genotick_main_app_data.h"
-#include "jni_genotick_timepoint.h"
-#include "jni_genotick_timepoints.h"
-#include "jni_genotick_weight_mode.h"
-#include "jni_genotick_inherited_weight_mode.h"
-#include "jni_genotick_chart_mode.h"
-#include "jni_genotick_error_code.h"
-#include "jni_genotick_prediction.h"
-#include "jni_genotick_predictions.h"
-#include "jni_exceptions.h"
-#include "strlcpy.h"
+#include <genotick/interface.h>
+#include <genotick/jni/wrapper/main_interface.h>
+#include <genotick/jni/wrapper/main_settings.h>
+#include <genotick/jni/wrapper/data_lines.h>
+#include <genotick/jni/wrapper/main_app_data.h>
+#include <genotick/jni/wrapper/timepoint.h>
+#include <genotick/jni/wrapper/timepoints.h>
+#include <genotick/jni/wrapper/weight_mode.h>
+#include <genotick/jni/wrapper/inherited_weight_mode.h>
+#include <genotick/jni/wrapper/chart_mode.h>
+#include <genotick/jni/wrapper/error_code.h>
+#include <genotick/jni/wrapper/prediction.h>
+#include <genotick/jni/wrapper/predictions.h>
+#include <genotick/jni/exceptions.h>
+#include <strlcpy.h>
 
 class CJavaLoaderGenotick;
 class CJavaLoader;

@@ -1,8 +1,8 @@
 
-#include "jni_genotick.h"
-#include "jni_error.h"
-#include "java_loader.h"
-#include "utils.h"
+#include "genotick.h"
+#include <genotick/jni/error.h>
+#include <genotick/loader.h>
+#include <utils.h>
 #include <string>
 
 #define MISMATCH_MESSAGE "Mismatching Data Type Found"

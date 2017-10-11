@@ -1,9 +1,10 @@
 
-#include "java_loader.h"
-#include "jni_genotick.h"
-#include "jni_error.h"
-#include "utils.h"
-#include "utf8.h"
+#include "loader.h"
+#include <genotick/jni/genotick.h>
+#include <genotick/jni/error.h>
+#include <genotick/jni/exceptions.h>
+#include <utils.h>
+#include <utf8.h>
 #include <array>
 #include <assert.h>
 

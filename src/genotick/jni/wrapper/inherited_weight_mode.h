@@ -1,18 +1,18 @@
 
 #pragma once
 
-#include "jni_enum.h"
-#include "genotick.h"
+#include <genotick/jni/wrapper/enum.h>
+#include <genotick/interface.h>
 
 namespace jni {
 namespace genotick {
 
-struct SWeightModeTag { static constexpr auto Name() { return "com/alphatica/genotick/genotick/WeightMode"; } };
+struct SInheritedWeightModeTag { static constexpr auto Name() { return "com/alphatica/genotick/breeder/InheritedWeightMode"; } };
 
-class CWeightMode : public CEnum<SWeightModeTag, EGenotickWeightMode>
+class CInheritedWeightMode : public CEnum<SInheritedWeightModeTag, EGenotickInheritedWeightMode>
 {
 public:
-	explicit CWeightMode(jni::JNIEnv* pJavaEnv)
+	explicit CInheritedWeightMode(jni::JNIEnv* pJavaEnv)
 		: CEnum<TagType, TEnumClass>(pJavaEnv)
 	{
 		VerifyEnumValues();

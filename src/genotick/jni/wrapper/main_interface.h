@@ -1,13 +1,13 @@
 
 #pragma once
 
-#include "jni_genotick_settings.h"
-#include "jni_genotick_data_lines.h"
-#include "jni_genotick_main_app_data.h"
-#include "jni_genotick_timepoint.h"
-#include "jni_genotick_timepoints.h"
-#include "jni_genotick_prediction.h"
-#include "jni_genotick_predictions.h"
+#include <genotick/jni/wrapper/main_settings.h>
+#include <genotick/jni/wrapper/data_lines.h>
+#include <genotick/jni/wrapper/main_app_data.h>
+#include <genotick/jni/wrapper/timepoint.h>
+#include <genotick/jni/wrapper/timepoints.h>
+#include <genotick/jni/wrapper/prediction.h>
+#include <genotick/jni/wrapper/predictions.h>
 
 namespace jni {
 namespace genotick {
