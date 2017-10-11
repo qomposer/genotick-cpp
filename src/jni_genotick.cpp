@@ -42,11 +42,21 @@ CGenotick::CGenotick(CJavaLoader* pJavaLoader, jni::JavaVM* pJavaVM, jni::JNIEnv
 	, m_predictions(pJavaEnv)
 {
 	SGenotickFunctions& mutableFunctions = const_cast<SGenotickFunctions&>(functions);
-	mutableFunctions.GetInterfaceVersion = GetInterfaceVersionThis;
-	mutableFunctions.GetSettings = GetSettingsThis;
-	mutableFunctions.ChangeSettings = ChangeSettingsThis;
-	mutableFunctions.Start = StartThis;
-	mutableFunctions.Release = ReleaseThis;
+	mutableFunctions.GetInterfaceVersion = GetInterfaceVersion;
+	mutableFunctions.CreateSession = CreateSession;
+	mutableFunctions.RemoveSession = RemoveSession;
+	mutableFunctions.RemoveAllSessions = RemoveAllSessions;
+	mutableFunctions.GetSettings = GetSettings;
+	mutableFunctions.ChangeSettings = ChangeSettings;
+	mutableFunctions.SetAssetData = SetAssetData;
+	mutableFunctions.Start = Start;
+	mutableFunctions.GetTimePoints = GetTimePoints;
+	mutableFunctions.GetPredictions = GetPredictions;
+	mutableFunctions.GetNewestTimePoint = GetNewestTimePoint;
+	mutableFunctions.GetNewestPrediction = GetNewestPrediction;
+	mutableFunctions.Release = Release;
+
+	utils::VerifyFunctionsStruct(functions);
 }
 
 CGenotick::~CGenotick()
@@ -56,6 +66,21 @@ CGenotick::~CGenotick()
 TGenotickInt32 CGenotick::GetInterfaceVersionInternal() const
 {
 	return m_mainInterface.getInterfaceVersion();
+}
+
+EGenotickResult CGenotick::CreateSessionInternal(TGenotickSessionId sessionId) const
+{
+	return EGenotickResult::ErrorInvalidSession;
+}
+
+EGenotickResult CGenotick::RemoveSessionInternal(TGenotickSessionId sessionId) const
+{
+	return EGenotickResult::ErrorInvalidSession;
+}
+
+EGenotickResult CGenotick::RemoveAllSessionsInternal() const
+{
+	return EGenotickResult::ErrorInvalidSession;
 }
 
 #define GENOTICK_UNROLL_FIELDS_TO_NATIVE(TYPE, NAME) { \
@@ -116,6 +141,12 @@ EGenotickResult CGenotick::ChangeSettingsInternal(TGenotickSessionId sessionId, 
 #undef GENOTICK_UNROLL_FIELDS_TO_NATIVE
 #undef GENOTICK_UNROLL_FIELDS_TO_JAVA
 
+
+EGenotickResult CGenotick::SetAssetDataInternal(TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData) const
+{
+	return EGenotickResult::ErrorInvalidSession;
+}
+
 EGenotickResult CGenotick::StartInternal(TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs) const
 {
 	if (!pArgs)
@@ -139,6 +170,28 @@ EGenotickResult CGenotick::StartInternal(TGenotickSessionId sessionId, const TGe
 		return jni::HandleJavaException(m_javaEnv, exception);
 	}
 }
+
+
+EGenotickResult CGenotick::GetTimePointsInternal(TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) const
+{
+	return EGenotickResult::ErrorInvalidSession;
+}
+
+EGenotickResult CGenotick::GetPredictionsInternal(TGenotickSessionId sessionId, IGenotickPredictions** ppPredictions) const
+{
+	return EGenotickResult::ErrorInvalidSession;
+}
+
+EGenotickResult CGenotick::GetNewestTimePointInternal(TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) const
+{
+	return EGenotickResult::ErrorInvalidSession;
+}
+
+EGenotickResult CGenotick::GetNewestPredictionInternal(TGenotickSessionId sessionId, EGenotickPrediction* pPrediction) const
+{
+	return EGenotickResult::ErrorInvalidSession;
+}
+
 
 EGenotickResult CGenotick::ReleaseInternal() const
 {

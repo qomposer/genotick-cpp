@@ -30,26 +30,58 @@ public:
 	virtual ~CGenotick();
 
 private:
-	static TGenotickInt32 GENOTICK_CALL GetInterfaceVersionThis(IGenotick* pThis) {
+	static TGenotickInt32 GENOTICK_CALL GetInterfaceVersion(IGenotick* pThis) {
 		return static_cast<const CGenotick*>(pThis)->GetInterfaceVersionInternal();
-	};
-	static EGenotickResult GENOTICK_CALL GetSettingsThis(IGenotick* pThis, TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) {
+	}
+	static EGenotickResult GENOTICK_CALL CreateSession(IGenotick* pThis, TGenotickSessionId sessionId) {
+		return static_cast<const CGenotick*>(pThis)->CreateSessionInternal(sessionId);
+	}
+	static EGenotickResult GENOTICK_CALL RemoveSession(IGenotick* pThis, TGenotickSessionId sessionId) {
+		return static_cast<const CGenotick*>(pThis)->RemoveSessionInternal(sessionId);
+	}
+	static EGenotickResult GENOTICK_CALL RemoveAllSessions(IGenotick* pThis) {
+		return static_cast<const CGenotick*>(pThis)->RemoveAllSessionsInternal();
+	}
+	static EGenotickResult GENOTICK_CALL GetSettings(IGenotick* pThis, TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) {
 		return static_cast<const CGenotick*>(pThis)->GetSettingsInternal(sessionId, pSettings);
-	};
-	static EGenotickResult GENOTICK_CALL ChangeSettingsThis(IGenotick* pThis, TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings) {
+	}
+	static EGenotickResult GENOTICK_CALL ChangeSettings(IGenotick* pThis, TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings) {
 		return static_cast<const CGenotick*>(pThis)->ChangeSettingsInternal(sessionId, pSettings);
-	};
-	static EGenotickResult GENOTICK_CALL StartThis(IGenotick* pThis, TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs) {
+	}
+	static EGenotickResult GENOTICK_CALL SetAssetData(IGenotick* pThis, TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData) {
+		return static_cast<const CGenotick*>(pThis)->SetAssetDataInternal(sessionId, pAssetData);
+	}
+	static EGenotickResult GENOTICK_CALL Start(IGenotick* pThis, TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs) {
 		return static_cast<const CGenotick*>(pThis)->StartInternal(sessionId, pArgs);
-	};
-	static EGenotickResult GENOTICK_CALL ReleaseThis(IGenotick* pThis) {
+	}
+	static EGenotickResult GENOTICK_CALL GetTimePoints(IGenotick* pThis, TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) {
+		return static_cast<const CGenotick*>(pThis)->GetTimePointsInternal(sessionId, ppTimePoints);
+	}
+	static EGenotickResult GENOTICK_CALL GetPredictions(IGenotick* pThis, TGenotickSessionId sessionId, IGenotickPredictions** ppPredictions) {
+		return static_cast<const CGenotick*>(pThis)->GetPredictionsInternal(sessionId, ppPredictions);
+	}
+	static EGenotickResult GENOTICK_CALL GetNewestTimePoint(IGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) {
+		return static_cast<const CGenotick*>(pThis)->GetNewestTimePointInternal(sessionId, pTimePoint);
+	}
+	static EGenotickResult GENOTICK_CALL GetNewestPrediction(IGenotick* pThis, TGenotickSessionId sessionId, EGenotickPrediction* pPrediction) {
+		return static_cast<const CGenotick*>(pThis)->GetNewestPredictionInternal(sessionId, pPrediction);
+	}
+	static EGenotickResult GENOTICK_CALL Release(IGenotick* pThis) {
 		return static_cast<const CGenotick*>(pThis)->ReleaseInternal();
-	};
-	
+	}
+
 	TGenotickInt32 GetInterfaceVersionInternal() const;
+	EGenotickResult CreateSessionInternal(TGenotickSessionId sessionId) const;
+	EGenotickResult RemoveSessionInternal(TGenotickSessionId sessionId) const;
+	EGenotickResult RemoveAllSessionsInternal() const;
 	EGenotickResult GetSettingsInternal(TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) const;
 	EGenotickResult ChangeSettingsInternal(TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings) const;
+	EGenotickResult SetAssetDataInternal(TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData) const;
 	EGenotickResult StartInternal(TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs) const;
+	EGenotickResult GetTimePointsInternal(TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) const;
+	EGenotickResult GetPredictionsInternal(TGenotickSessionId sessionId, IGenotickPredictions** ppPredictions) const;
+	EGenotickResult GetNewestTimePointInternal(TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) const;
+	EGenotickResult GetNewestPredictionInternal(TGenotickSessionId sessionId, EGenotickPrediction* pPrediction) const;
 	EGenotickResult ReleaseInternal() const;
 
 	template <class D, class S> void ToNative(D& dst, const S src) const {
