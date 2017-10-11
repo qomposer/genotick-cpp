@@ -44,7 +44,7 @@ EGenotickResult CJavaLoader::LoadGenotick(IGenotick** ppInstance, const SGenotic
 		JavaVMInitArgs vm_args = { 0 };
 		JavaVMOption options[] = { const_cast<char*>(javaClassPathOption.c_str()) };
 		vm_args.version = JNI_VERSION_1_8;
-		vm_args.nOptions = utils::GetArrayLength(options);
+		vm_args.nOptions = utils::GetArraySize(options);
 		vm_args.options = options;
 		vm_args.ignoreUnrecognized = false;
 

@@ -14,6 +14,10 @@ static_assert(sizeof(TGenotickChar) == sizeof(jni::jchar), MISMATCH_MESSAGE);
 static_assert(sizeof(TGenotickShort) == sizeof(jni::jshort), MISMATCH_MESSAGE);
 static_assert(sizeof(TGenotickFloat) == sizeof(jni::jfloat), MISMATCH_MESSAGE);
 static_assert(sizeof(TGenotickDouble) == sizeof(jni::jdouble), MISMATCH_MESSAGE);
+static_assert(sizeof(EGenotickWeightMode) == sizeof(TGenotickInt32), MISMATCH_MESSAGE);
+static_assert(sizeof(EGenotickInheritedWeightMode) == sizeof(TGenotickInt32), MISMATCH_MESSAGE);
+static_assert(sizeof(EGenotickChartMode) == sizeof(TGenotickInt32), MISMATCH_MESSAGE);
+static_assert(sizeof(EGenotickPrediction) == sizeof(TGenotickInt32), MISMATCH_MESSAGE);
 #undef MISMATCH_MESSAGE
 
 namespace jni {
@@ -61,7 +65,7 @@ ToNative(pSettings->NAME, this->m_mainSettings.Get_##NAME(settingsObject)); }
 auto value = ToJava<typename jni::genotick::CMainSettings::TYPE::FieldType>(pSettings->NAME); \
 this->m_mainSettings.Set_##NAME(settingsObject, value); }
 
-EGenotickResult CGenotick::GetSettingsInternal(TGenotickInt32 sessionId, SGenotickMainSettings* pSettings) const
+EGenotickResult CGenotick::GetSettingsInternal(TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) const
 {
 	if (!pSettings)
 		return EGenotickResult::InvalidArgument;
@@ -85,7 +89,7 @@ EGenotickResult CGenotick::GetSettingsInternal(TGenotickInt32 sessionId, SGenoti
 	}
 }
 
-EGenotickResult CGenotick::ChangeSettingsInternal(TGenotickInt32 sessionId, const SGenotickMainSettings* pSettings) const
+EGenotickResult CGenotick::ChangeSettingsInternal(TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings) const
 {
 	if (!pSettings)
 		return EGenotickResult::InvalidArgument;
@@ -112,18 +116,18 @@ EGenotickResult CGenotick::ChangeSettingsInternal(TGenotickInt32 sessionId, cons
 #undef GENOTICK_UNROLL_FIELDS_TO_NATIVE
 #undef GENOTICK_UNROLL_FIELDS_TO_JAVA
 
-EGenotickResult CGenotick::StartInternal(TGenotickInt32 sessionId, const SGenotickStartArgs* pArgs) const
+EGenotickResult CGenotick::StartInternal(TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs) const
 {
 	if (!pArgs)
 		return EGenotickResult::InvalidArgument;
 
 	try
 	{
-		const jni::jsize length = pArgs->argumentCount;
-		jni::StringArray args = jni::StringArray::New(m_javaEnv, length, *m_stringClass.get());
-		for (jni::jsize i = 0; i < length; ++i)
+		const jni::jsize count = pArgs->elementCount;
+		jni::StringArray args = jni::StringArray::New(m_javaEnv, count, *m_stringClass.get());
+		for (jni::jsize i = 0; i < count; ++i)
 		{
-			const char* parameter = pArgs->arguments[i];
+			const char* parameter = pArgs->elements[i];
 			jni::String newString = jni::Make<jni::String>(m_javaEnv, parameter);
 			args.Set(m_javaEnv, i, newString);
 		}

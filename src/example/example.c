@@ -59,8 +59,8 @@ int main(int argc, char** argv)
 			"outdir=" GENOTICK_OUTDIR,
 		};
 		TGenotickStartArgs startArgs = { 0 };
-		startArgs.arguments = arguments;
-		startArgs.argumentCount = ARRAY_SIZE(arguments);
+		startArgs.elements = arguments;
+		startArgs.elementCount = ARRAY_SIZE(arguments);
 
 		result = pInstance->Start(pInstance, sessionId, &startArgs);
 

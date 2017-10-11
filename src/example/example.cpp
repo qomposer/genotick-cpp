@@ -9,7 +9,7 @@
 #define JVM_PATH "C:\\Program Files (x86)\\Java\\jre1.8.0_144\\bin\\client\\jvm.dll"
 
 template<typename T, unsigned int size>
-unsigned int GetArrayLength(T(&)[size])
+unsigned int GetArraySize(T(&)[size])
 {
 	return size;
 }
@@ -64,8 +64,8 @@ int main(int argc, char** argv)
 			"outdir=" GENOTICK_OUTDIR,
 		};
 		TGenotickStartArgs startArgs;
-		startArgs.arguments = arguments;
-		startArgs.argumentCount = GetArrayLength(arguments);
+		startArgs.elements = arguments;
+		startArgs.elementCount = GetArraySize(arguments);
 
 		result = pInstance->Start(sessionId, &startArgs);
 
