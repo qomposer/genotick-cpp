@@ -2,6 +2,12 @@
 #pragma once
 
 #include "jni_genotick_settings.h"
+#include "jni_genotick_data_lines.h"
+#include "jni_genotick_main_app_data.h"
+#include "jni_genotick_timepoint.h"
+#include "jni_genotick_timepoints.h"
+#include "jni_genotick_prediction.h"
+#include "jni_genotick_predictions.h"
 
 namespace jni {
 namespace genotick {
@@ -14,11 +20,27 @@ public:
 	using TGetInterfaceVersionMethod = jni::StaticMethod<TagType, jni::jint()>;
 	using TStartMethod = jni::StaticMethod<TagType, jni::jint(jni::jint /* sessionId */, jni::StringArray /* args */)>;
 	using TGetSettingsMethod = jni::StaticMethod<TagType, CMainSettings::TObject(jni::jint /* sessionId */)>;
+	using TGetDataMethod = jni::StaticMethod<TagType, CMainAppData::TObject(jni::jint /* sessionId */)>;
+	using TGetTimePointsMethod = jni::StaticMethod<TagType, CTimePoints::TObject(jni::jint /* sessionId */)>;
+	using TGetPredictionsMethod = jni::StaticMethod<TagType, CPredictions::TObject(jni::jint /* sessionId */, jni::String /* assetName */)>;
+	using TGetNewestTimePointMethod = jni::StaticMethod<TagType, CTimePoint::TObject(jni::jint /* sessionId */)>;
+	using TGetNewestPredictionsMethod = jni::StaticMethod<TagType, CPrediction::TObject(jni::jint /* sessionId */, jni::String /* assetName */)>;
+	using TCreateSessionMethod = jni::StaticMethod<TagType, void(jni::jint /* sessionId */)>;
+	using TClearSessionMethod = jni::StaticMethod<TagType, void(jni::jint /* sessionId */)>;
+	using TClearSessionsMethod = jni::StaticMethod<TagType, void()>;
 
 #define GENOTICK_CLASS_STATIC_METHODS(f) \
-	f(TGetInterfaceVersionMethod, getInterfaceVersion) \
-	f(TStartMethod              , start              ) \
-	f(TGetSettingsMethod        , getSettings        ) \
+	f(TGetInterfaceVersionMethod  , getInterfaceVersion) \
+	f(TStartMethod                , start              ) \
+	f(TGetSettingsMethod          , getSettings        ) \
+	f(TGetDataMethod              , getData            ) \
+	f(TGetTimePointsMethod        , getTimePoints      ) \
+	f(TGetPredictionsMethod       , getPredictions     ) \
+	f(TGetNewestTimePointMethod   , getNewestTimePoint ) \
+	f(TGetNewestPredictionsMethod , getNewestPrediction) \
+	f(TCreateSessionMethod        , createSession      ) \
+	f(TClearSessionMethod         , clearSession       ) \
+	f(TClearSessionsMethod        , clearSessions      ) \
 
 	explicit CMainInterface(jni::JNIEnv* pJavaEnv)
 		: CClass<TagType>(pJavaEnv)
@@ -38,6 +60,46 @@ public:
 	CMainSettings::TObject getSettings(const jni::jint sessionId) const
 	{
 		return GetUniqueClass()->Call(GetJavaEnv(), m_getSettings, sessionId);
+	}
+
+	CMainAppData::TObject getData(const jni::jint sessionId) const
+	{
+		return GetUniqueClass()->Call(GetJavaEnv(), m_getData, sessionId);
+	}
+
+	CTimePoints::TObject getTimePoints(const jni::jint sessionId) const
+	{
+		return GetUniqueClass()->Call(GetJavaEnv(), m_getTimePoints, sessionId);
+	}
+
+	CPredictions::TObject getPredictions(const jni::jint sessionId, const jni::String assetName) const
+	{
+		return GetUniqueClass()->Call(GetJavaEnv(), m_getPredictions, sessionId, assetName);
+	}
+
+	CTimePoint::TObject getNewestTimePoint(const jni::jint sessionId) const
+	{
+		return GetUniqueClass()->Call(GetJavaEnv(), m_getNewestTimePoint, sessionId);
+	}
+
+	CPrediction::TObject getNewestPrediction(const jni::jint sessionId, const jni::String assetName) const
+	{
+		return GetUniqueClass()->Call(GetJavaEnv(), m_getNewestPrediction, sessionId, assetName);
+	}
+
+	void createSession(const jni::jint sessionId) const
+	{
+		GetUniqueClass()->Call(GetJavaEnv(), m_createSession, sessionId);
+	}
+
+	void clearSession(const jni::jint sessionId) const
+	{
+		GetUniqueClass()->Call(GetJavaEnv(), m_clearSession, sessionId);
+	}
+
+	void clearSessions() const
+	{
+		GetUniqueClass()->Call(GetJavaEnv(), m_clearSessions);
 	}
 
 private:
