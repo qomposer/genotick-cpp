@@ -1,24 +1,24 @@
 
 #pragma once
 
-#include <genotick/jni/wrapper/enum.h>
+#include <genotick/jni/remote/enum.h>
 #include <genotick/interface.h>
 
 namespace genotick {
 namespace jni {
 namespace wrapper {
 
-struct SChartModeTag { static constexpr auto Name() { return "com/alphatica/genotick/chart/GenoChartMode"; } };
+struct SPredictionTag { static constexpr auto Name() { return "com/alphatica/genotick/genotick/Prediction"; } };
 
-class CChartMode : public CEnum<SChartModeTag, EGenotickChartMode>
+class CPrediction : public CEnum<SPredictionTag, EGenotickPrediction>
 {
 public:
 	using TValueMethod = ::jni::Method<TagType, ::jni::jint()>;
 
 #define GENOTICK_CLASS_METHODS(f) \
-	f(TValueMethod, value) \
+	f(TValueMethod, getValue) \
 
-	explicit CChartMode(::jni::JNIEnv* pJavaEnv)
+	explicit CPrediction(::jni::JNIEnv* pJavaEnv)
 		: CEnum<TagType, TEnumClass>(pJavaEnv)
 		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
@@ -27,7 +27,7 @@ public:
 
 	::jni::jint value(const TObject& object) const
 	{
-		return object.Call(GetJavaEnv(), m_value);
+		return object.Call(GetJavaEnv(), m_getValue);
 	}
 
 	::jni::jint GetEnumValue(const TObject& object) const override final

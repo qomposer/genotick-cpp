@@ -22,8 +22,8 @@
     <Filter Include="src\genotick\jni">
       <UniqueIdentifier>{6cbda31c-d6aa-4636-8aaf-96be2525d63a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\genotick\jni\wrapper">
-      <UniqueIdentifier>{0cf2e74d-9328-49d1-a6a1-1ed612f7ea02}</UniqueIdentifier>
+    <Filter Include="src\genotick\jni\remote">
+      <UniqueIdentifier>{6e4ec4b1-a030-4b48-966e-a04a75918969}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -141,51 +141,6 @@
     <ClInclude Include="..\include\igenotick_utils.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\wrapper\chart_mode.h">
-      <Filter>src\genotick\jni\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\wrapper\class.h">
-      <Filter>src\genotick\jni\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\wrapper\data_lines.h">
-      <Filter>src\genotick\jni\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\wrapper\enum.h">
-      <Filter>src\genotick\jni\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\wrapper\enum_impl.h">
-      <Filter>src\genotick\jni\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\wrapper\error_code.h">
-      <Filter>src\genotick\jni\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\wrapper\inherited_weight_mode.h">
-      <Filter>src\genotick\jni\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\wrapper\main_app_data.h">
-      <Filter>src\genotick\jni\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\wrapper\main_interface.h">
-      <Filter>src\genotick\jni\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\wrapper\main_settings.h">
-      <Filter>src\genotick\jni\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\wrapper\prediction.h">
-      <Filter>src\genotick\jni\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\wrapper\predictions.h">
-      <Filter>src\genotick\jni\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\wrapper\timepoint.h">
-      <Filter>src\genotick\jni\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\wrapper\timepoints.h">
-      <Filter>src\genotick\jni\wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\wrapper\weight_mode.h">
-      <Filter>src\genotick\jni\wrapper</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\genotick\jni\error.h">
       <Filter>src\genotick\jni</Filter>
     </ClInclude>
@@ -203,6 +158,51 @@
     </ClInclude>
     <ClInclude Include="..\src\genotick\interface.h">
       <Filter>src\genotick</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\chart_mode.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\class.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\data_lines.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\enum.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\enum_impl.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\error_code.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\inherited_weight_mode.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\main_app_data.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\main_interface.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\main_settings.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\prediction.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\predictions.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\timepoint.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\timepoints.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\weight_mode.h">
+      <Filter>src\genotick\jni\remote</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

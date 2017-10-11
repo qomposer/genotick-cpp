@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <genotick/jni/wrapper/enum.h>
+#include <genotick/jni/remote/enum.h>
 #include <genotick/interface.h>
 
 namespace genotick {

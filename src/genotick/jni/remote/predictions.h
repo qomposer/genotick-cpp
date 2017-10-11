@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <genotick/jni/wrapper/prediction.h>
+#include <genotick/jni/remote/prediction.h>
 
 namespace genotick {
 namespace jni {

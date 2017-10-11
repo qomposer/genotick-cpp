@@ -1,10 +1,10 @@
 
 #pragma once
 
-#include <genotick/jni/wrapper/timepoint.h>
-#include <genotick/jni/wrapper/weight_mode.h>
-#include <genotick/jni/wrapper/inherited_weight_mode.h>
-#include <genotick/jni/wrapper/chart_mode.h>
+#include <genotick/jni/remote/timepoint.h>
+#include <genotick/jni/remote/weight_mode.h>
+#include <genotick/jni/remote/inherited_weight_mode.h>
+#include <genotick/jni/remote/chart_mode.h>
 
 namespace genotick {
 namespace jni {

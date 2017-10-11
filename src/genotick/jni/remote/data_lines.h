@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <genotick/jni/wrapper/class.h>
+#include <genotick/jni/remote/class.h>
 
 namespace genotick {
 namespace jni {

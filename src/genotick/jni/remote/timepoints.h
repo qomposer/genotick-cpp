@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <genotick/jni/wrapper/timepoint.h>
+#include <genotick/jni/remote/timepoint.h>
 
 namespace genotick {
 namespace jni {

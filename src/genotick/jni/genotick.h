@@ -2,18 +2,18 @@
 #pragma once
 
 #include <genotick/loader.h>
-#include <genotick/jni/wrapper/main_interface.h>
-#include <genotick/jni/wrapper/main_settings.h>
-#include <genotick/jni/wrapper/data_lines.h>
-#include <genotick/jni/wrapper/main_app_data.h>
-#include <genotick/jni/wrapper/timepoint.h>
-#include <genotick/jni/wrapper/timepoints.h>
-#include <genotick/jni/wrapper/weight_mode.h>
-#include <genotick/jni/wrapper/inherited_weight_mode.h>
-#include <genotick/jni/wrapper/chart_mode.h>
-#include <genotick/jni/wrapper/error_code.h>
-#include <genotick/jni/wrapper/prediction.h>
-#include <genotick/jni/wrapper/predictions.h>
+#include <genotick/jni/remote/main_interface.h>
+#include <genotick/jni/remote/main_settings.h>
+#include <genotick/jni/remote/data_lines.h>
+#include <genotick/jni/remote/main_app_data.h>
+#include <genotick/jni/remote/timepoint.h>
+#include <genotick/jni/remote/timepoints.h>
+#include <genotick/jni/remote/weight_mode.h>
+#include <genotick/jni/remote/inherited_weight_mode.h>
+#include <genotick/jni/remote/chart_mode.h>
+#include <genotick/jni/remote/error_code.h>
+#include <genotick/jni/remote/prediction.h>
+#include <genotick/jni/remote/predictions.h>
 #include <genotick/jni/exceptions.h>
 #include <strlcpy.h>
 
