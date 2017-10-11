@@ -5,7 +5,7 @@
 
 namespace genotick {
 namespace jni {
-namespace wrapper {
+namespace remote {
 
 struct STimePointTag { static constexpr auto Name() { return "com/alphatica/genotick/timepoint/TimePoint"; } };
 
@@ -42,6 +42,6 @@ private:
 
 #undef GENOTICK_CLASS_METHODS
 
-} // namespace wrapper
+} // namespace remote
 } // namespace jni
 } // namespace genotick

@@ -6,7 +6,7 @@
 
 namespace genotick {
 namespace jni {
-namespace wrapper {
+namespace remote {
 
 template <class Tag, class Enum>
 class CEnum : public CClass<Tag>
@@ -84,7 +84,7 @@ private:
 #undef JAVA_ENUM_METHODS
 #undef JAVA_ENUM_STATIC_METHODS
 
-} // namespace wrapper
+} // namespace remote
 } // namespace jni
 } // namespace genotick
 

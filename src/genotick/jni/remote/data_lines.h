@@ -5,7 +5,7 @@
 
 namespace genotick {
 namespace jni {
-namespace wrapper {
+namespace remote {
 
 struct SDataLinesTag { static constexpr auto Name() { return "com/alphatica/genotick/data/DataLines"; } };
 
@@ -84,6 +84,6 @@ private:
 
 #undef GENOTICK_CLASS_METHODS
 
-} // namespace wrapper
+} // namespace remote
 } // namespace jni
 } // namespace genotick

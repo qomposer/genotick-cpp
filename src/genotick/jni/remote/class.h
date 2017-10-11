@@ -5,7 +5,7 @@
 
 namespace genotick {
 namespace jni {
-namespace wrapper {
+namespace remote {
 
 template <class Tag>
 class CClass
@@ -31,6 +31,6 @@ private:
 	TUniqueClass m_uniqueClass;
 };
 
-} // namespace wrapper
+} // namespace remote
 } // namespace jni
 } // namespace genotick

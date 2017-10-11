@@ -6,7 +6,7 @@
 
 namespace genotick {
 namespace jni {
-namespace wrapper {
+namespace remote {
 
 struct SGenotickErrorCodeMeta
 {
@@ -70,6 +70,6 @@ private:
 #undef GENOTICK_CLASS_METHODS
 #undef GENOTICK_ENUM_ERROR_CODE
 
-} // namespace wrapper
+} // namespace remote
 } // namespace jni
 } // namespace genotick

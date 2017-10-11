@@ -6,7 +6,7 @@
 
 namespace genotick {
 namespace jni {
-namespace wrapper {
+namespace remote {
 
 struct SInheritedWeightModeTag { static constexpr auto Name() { return "com/alphatica/genotick/breeder/InheritedWeightMode"; } };
 
@@ -30,6 +30,6 @@ public:
 	}
 };
 
-} // namespace wrapper
+} // namespace remote
 } // namespace jni
 } // namespace genotick

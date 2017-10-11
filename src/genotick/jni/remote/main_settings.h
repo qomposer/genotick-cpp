@@ -8,7 +8,7 @@
 
 namespace genotick {
 namespace jni {
-namespace wrapper {
+namespace remote {
 
 struct SMainSettingsTag { static constexpr auto Name() { return "com/alphatica/genotick/genotick/MainSettings"; } };
 
@@ -72,6 +72,6 @@ private:
 	GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 };
 
-} // namespace wrapper
+} // namespace remote
 } // namespace jni
 } // namespace genotick

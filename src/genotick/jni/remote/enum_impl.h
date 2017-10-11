@@ -3,7 +3,7 @@
 
 namespace genotick {
 namespace jni {
-namespace wrapper {
+namespace remote {
 
 template <class Tag, class Enum>
 typename CEnum<Tag, Enum>::TObject CEnum<Tag, Enum>::GetEnumObjectBySearch(const ::jni::jint value) const
@@ -99,6 +99,6 @@ void CEnum<Tag, Enum>::VerifyEnumValueCount(typename TEnumClass::ordinal_type na
 	}
 }
 
-} // namespace wrapper
+} // namespace remote
 } // namespace jni
 } // namespace genotick

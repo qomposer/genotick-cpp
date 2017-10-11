@@ -95,19 +95,19 @@ private:
 		}
 	}
 
-	template <> void ToNative(TGenotickTimePoint& dst, const wrapper::CTimePoint::TObject src) const {
+	template <> void ToNative(TGenotickTimePoint& dst, const remote::CTimePoint::TObject src) const {
 		dst = static_cast<TGenotickTimePoint>(m_timePoint.getValue(src));
 	}
 
-	template <> void ToNative(EGenotickWeightMode& dst, const wrapper::CWeightMode::TObject src) const {
+	template <> void ToNative(EGenotickWeightMode& dst, const remote::CWeightMode::TObject src) const {
 		dst = EGenotickWeightMode::getByValue(m_weightMode.GetEnumValue(src));
 	}
 
-	template <> void ToNative(EGenotickInheritedWeightMode& dst, const wrapper::CInheritedWeightMode::TObject src) const {
+	template <> void ToNative(EGenotickInheritedWeightMode& dst, const remote::CInheritedWeightMode::TObject src) const {
 		dst = EGenotickInheritedWeightMode::getByValue(m_inheritedWeightMode.GetEnumValue(src));
 	}
 
-	template <> void ToNative(EGenotickChartMode& dst, const wrapper::CChartMode::TObject src) const {
+	template <> void ToNative(EGenotickChartMode& dst, const remote::CChartMode::TObject src) const {
 		dst = EGenotickChartMode::getByValue(m_chartMode.GetEnumValue(src));
 	}
 
@@ -120,19 +120,19 @@ private:
 		return ::jni::Make<::jni::String>(m_javaEnv, buf);
 	}
 
-	template <> wrapper::CTimePoint::TObject ToJava(const TGenotickTimePoint src) const {
+	template <> remote::CTimePoint::TObject ToJava(const TGenotickTimePoint src) const {
 		return m_timePoint.New(static_cast<::jni::jlong>(src));
 	}
 
-	template <> wrapper::CWeightMode::TObject ToJava(const EGenotickWeightMode src) const {
+	template <> remote::CWeightMode::TObject ToJava(const EGenotickWeightMode src) const {
 		return m_weightMode.GetEnumObject(src.value());
 	}
 
-	template <> wrapper::CInheritedWeightMode::TObject ToJava(const EGenotickInheritedWeightMode src) const {
+	template <> remote::CInheritedWeightMode::TObject ToJava(const EGenotickInheritedWeightMode src) const {
 		return m_inheritedWeightMode.GetEnumObject(src.value());
 	}
 
-	template <> wrapper::CChartMode::TObject ToJava(const EGenotickChartMode src) const {
+	template <> remote::CChartMode::TObject ToJava(const EGenotickChartMode src) const {
 		return m_chartMode.GetEnumObject(src.value());
 	}
 
@@ -141,18 +141,18 @@ private:
 	JNIEnv& m_javaEnv;
 	
 	::jni::UniqueStringClass m_stringClass;
-	wrapper::CMainInterface m_mainInterface;
-	wrapper::CMainSettings m_mainSettings;
-	wrapper::CDataLines m_dataLines;
-	wrapper::CMainAppData m_mainAppData;
-	wrapper::CTimePoint m_timePoint;
-	wrapper::CTimePoints m_timePoints;
-	wrapper::CWeightMode m_weightMode;
-	wrapper::CInheritedWeightMode m_inheritedWeightMode;
-	wrapper::CChartMode m_chartMode;
-	wrapper::CErrorCode m_errorCode;
-	wrapper::CPrediction m_prediction;
-	wrapper::CPredictions m_predictions;
+	remote::CMainInterface m_mainInterface;
+	remote::CMainSettings m_mainSettings;
+	remote::CDataLines m_dataLines;
+	remote::CMainAppData m_mainAppData;
+	remote::CTimePoint m_timePoint;
+	remote::CTimePoints m_timePoints;
+	remote::CWeightMode m_weightMode;
+	remote::CInheritedWeightMode m_inheritedWeightMode;
+	remote::CChartMode m_chartMode;
+	remote::CErrorCode m_errorCode;
+	remote::CPrediction m_prediction;
+	remote::CPredictions m_predictions;
 };
 
 } // namespace jni

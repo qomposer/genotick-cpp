@@ -87,7 +87,7 @@ EGenotickResult CGenotick::RemoveAllSessionsInternal() const
 ToNative(pSettings->NAME, this->m_mainSettings.Get_##NAME(settingsObject)); }
 
 #define GENOTICK_UNROLL_FIELDS_TO_JAVA(TYPE, NAME) { \
-auto value = ToJava<typename wrapper::CMainSettings::TYPE::FieldType>(pSettings->NAME); \
+auto value = ToJava<typename remote::CMainSettings::TYPE::FieldType>(pSettings->NAME); \
 this->m_mainSettings.Set_##NAME(settingsObject, value); }
 
 EGenotickResult CGenotick::GetSettingsInternal(TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) const
@@ -97,7 +97,7 @@ EGenotickResult CGenotick::GetSettingsInternal(TGenotickSessionId sessionId, TGe
 
 	try
 	{
-		const wrapper::CMainSettings::TObject settingsObject = m_mainInterface.getSettings(sessionId);
+		const remote::CMainSettings::TObject settingsObject = m_mainInterface.getSettings(sessionId);
 		if (settingsObject.Get() == nullptr)
 			return EGenotickResult::ErrorInvalidSession;
 
@@ -121,7 +121,7 @@ EGenotickResult CGenotick::ChangeSettingsInternal(TGenotickSessionId sessionId, 
 
 	try
 	{
-		const wrapper::CMainSettings::TObject settingsObject = m_mainInterface.getSettings(sessionId);
+		const remote::CMainSettings::TObject settingsObject = m_mainInterface.getSettings(sessionId);
 		if (settingsObject.Get() == nullptr)
 			return EGenotickResult::ErrorInvalidSession;
 
@@ -163,7 +163,7 @@ EGenotickResult CGenotick::StartInternal(TGenotickSessionId sessionId, const TGe
 			args.Set(m_javaEnv, i, newString);
 		}
 		const ::jni::jint error = m_mainInterface.start(sessionId, args);
-		return wrapper::ErrorCodeToGenotickResult(error);
+		return remote::ErrorCodeToGenotickResult(error);
 	}
 	catch (const ::jni::PendingJavaException& exception)
 	{

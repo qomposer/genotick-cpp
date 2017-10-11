@@ -11,7 +11,7 @@
 
 namespace genotick {
 namespace jni {
-namespace wrapper {
+namespace remote {
 
 struct SMainInterfaceTag { static constexpr auto Name() { return "com/alphatica/genotick/genotick/MainInterface"; } };
 
@@ -109,6 +109,6 @@ private:
 
 #undef GENOTICK_CLASS_STATIC_METHODS
 
-} // namespace wrapper
+} // namespace remote
 } // namespace jni
 } // namespace genotick
