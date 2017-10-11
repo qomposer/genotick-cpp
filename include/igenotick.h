@@ -24,24 +24,9 @@
 
 #ifdef __cplusplus
 #define GENOTICK_ZERO_INIT = {}
-template <class T>
-inline void GenotickSafeRelease(T* p) {
-	if (p) {
-		p->Release();
-		p = nullptr;
-	}
-}
 #else
 #define GENOTICK_ZERO_INIT
-#define GENOTICK_SAFE_RELEASE(p) if(p) { p->Release(p); p = 0; }
 #endif
-
-struct SGenotickString
-{
-	char* utf8_buffer;
-	unsigned long capacity;
-};
-typedef struct SGenotickString TGenotickString;
 
 #ifdef ZORRO_LITE_C
 struct longlong
@@ -64,6 +49,13 @@ typedef double         TGenotickDouble;
 typedef TGenotickInt64 TGenotickTimePoint;
 typedef TGenotickInt32 TGenotickSessionId;
 typedef unsigned long  TGenotickSize;
+
+struct SGenotickString
+{
+	char* utf8_buffer;
+	TGenotickSize capacity;
+};
+typedef struct SGenotickString TGenotickString;
 
 const TGenotickBoolean GenotickFalse = 0;
 const TGenotickBoolean GenotickTrue = 1;

@@ -222,6 +222,7 @@
   <ItemGroup>
     <ClInclude Include="..\include\igenotick.h" />
     <ClInclude Include="..\include\enumdef.h" />
+    <ClInclude Include="..\include\igenotick_utils.h" />
     <ClInclude Include="..\src\jni_class.h" />
     <ClInclude Include="..\src\jni_enum.h" />
     <ClInclude Include="..\src\jni_enum_impl.h" />

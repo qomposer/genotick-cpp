@@ -1,5 +1,6 @@
 
 #include <igenotick.h>
+#include <igenotick_utils.h>
 
 #pragma comment(lib, "genotickcpp.lib")
 
@@ -7,25 +8,6 @@
 #define GENOTICK_DATADIR "D:\\Trading\\Code\\genotick\\.jar\\spx_data"
 #define JAVA_CLASS_PATH "D:\\Trading\\Code\\genotick\\.jar\\genotick.jar"
 #define JVM_PATH "C:\\Program Files (x86)\\Java\\jre1.8.0_144\\bin\\client\\jvm.dll"
-
-template<typename T, unsigned int size>
-unsigned int GetArraySize(T(&)[size])
-{
-	return size;
-}
-
-template<int size>
-void SetString(TGenotickString& dst, char(&src)[size])
-{
-	dst.utf8_buffer = src;
-	dst.capacity = size;
-}
-
-void SetConstString(TGenotickString& dst, const char* src)
-{
-	dst.utf8_buffer = const_cast<char*>(src);
-	dst.capacity = 0;
-}
 
 int main(int argc, char** argv)
 {
@@ -47,14 +29,14 @@ int main(int argc, char** argv)
 		TGenotickMainSettings mainSettings;
 		char buffer1[260] = { 0 };
 		char buffer2[260] = { 0 };
-		SetString(mainSettings.populationDAO, buffer1);
-		SetString(mainSettings.dataDirectory, buffer2);
+		GenotickSetString(mainSettings.populationDAO, buffer1);
+		GenotickSetString(mainSettings.dataDirectory, buffer2);
 
 		result = pInstance->GetSettings(sessionId, &mainSettings);
 
 		mainSettings.startTimePoint = 20130101;
 		mainSettings.endTimePoint = 20150101;
-		SetConstString(mainSettings.dataDirectory, GENOTICK_DATADIR);
+		GenotickSetConstString(mainSettings.dataDirectory, GENOTICK_DATADIR);
 
 		result = pInstance->ChangeSettings(sessionId, &mainSettings);
 
@@ -65,7 +47,7 @@ int main(int argc, char** argv)
 		};
 		TGenotickStartArgs startArgs;
 		startArgs.elements = arguments;
-		startArgs.elementCount = GetArraySize(arguments);
+		startArgs.elementCount = GenotickArraySize(arguments);
 
 		result = pInstance->Start(sessionId, &startArgs);
 
