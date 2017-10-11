@@ -1,9 +1,9 @@
 
 #include <genotick/loader.h>
 
-CJavaLoader g_javaLoader;
+CLoader g_genotickLoader;
 
-EGenotickResult GENOTICK_CALL LoadGenotick(IGenotick** ppInstance, const TGenotickJvmSettings* pSettings)
+EGenotickResult GENOTICK_CALL LoadGenotick(IGenotick** ppInstance, const TGenotickLoadSettings* pSettings)
 {
-	return g_javaLoader.LoadGenotick(ppInstance, pSettings);
+	return g_genotickLoader.LoadGenotick(ppInstance, pSettings);
 }

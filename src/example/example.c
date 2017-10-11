@@ -15,7 +15,7 @@ int main(int argc, char** argv)
 	(void)argv;
 
 	IGenotick* pInstance = 0;
-	TGenotickJvmSettings jvmSettings = { 0 };
+	TGenotickLoadSettings jvmSettings = { 0 };
 	jvmSettings.utf8_jvmDllPath = JVM_PATH;
 	jvmSettings.utf8_javaClassPath = JAVA_CLASS_PATH;
 

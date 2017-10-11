@@ -242,7 +242,7 @@ struct SGenotickStartArgs
 	TGenotickSize      elementCount GENOTICK_ZERO_INIT;
 };
 
-struct SGenotickJvmSettings
+struct SGenotickLoadSettings
 {
 	const char* utf8_jvmDllPath    GENOTICK_ZERO_INIT;
 	const char* utf8_javaClassPath GENOTICK_ZERO_INIT;
@@ -252,7 +252,7 @@ typedef struct SGenotickMainSettings TGenotickMainSettings;
 typedef struct SGenotickDataColumns  TGenotickDataColumns;
 typedef struct SGenotickAssetData    TGenotickAssetData;
 typedef struct SGenotickStartArgs    TGenotickStartArgs;
-typedef struct SGenotickJvmSettings  TGenotickJvmSettings;
+typedef struct SGenotickLoadSettings TGenotickLoadSettings;
 
 #ifdef ZORRO_LITE_C
 
@@ -444,7 +444,7 @@ extern "C" {
 // Unfortunately as of Java 8, JNI allows for one JavaVM instance per process only - ever.
 // After releasing a JavaVM, you cannot even start a new one (shame).
 // So keep the returned instance sacred and use it until the process dies.
-GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL LoadGenotick(IGenotick** ppInstance, const TGenotickJvmSettings* pSettings);
+GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL LoadGenotick(IGenotick** ppInstance, const TGenotickLoadSettings* pSettings);
 
 #ifdef __cplusplus
 }

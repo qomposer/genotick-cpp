@@ -23,7 +23,7 @@ static_assert(sizeof(EGenotickPrediction) == sizeof(TGenotickInt32), MISMATCH_ME
 namespace jni {
 namespace genotick {
 
-CGenotick::CGenotick(CJavaLoader* pJavaLoader, jni::JavaVM* pJavaVM, jni::JNIEnv* pJavaEnv)
+CGenotick::CGenotick(CLoader* pJavaLoader, jni::JavaVM* pJavaVM, jni::JNIEnv* pJavaEnv)
 	: m_javaLoader(*static_cast<CJavaLoaderGenotick*>(pJavaLoader))
 	, m_javaVM(*pJavaVM)
 	, m_javaEnv(*pJavaEnv)

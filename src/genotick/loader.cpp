@@ -17,7 +17,7 @@ namespace
 	}
 }
 
-CJavaLoader::CJavaLoader()
+CLoader::CLoader()
 	: JNI_GetDefaultJavaVMInitArgs_FuncPtr(nullptr)
 	, JNI_CreateJavaVM_FuncPtr(nullptr)
 	, JNI_CreatedJavaVMs_FuncPtr(nullptr)
@@ -25,12 +25,12 @@ CJavaLoader::CJavaLoader()
 {
 }
 
-CJavaLoader::~CJavaLoader()
+CLoader::~CLoader()
 {
 	ReleaseAllJvmInstances();
 }
 
-EGenotickResult CJavaLoader::LoadGenotick(IGenotick** ppInstance, const SGenotickJvmSettings* pSettings)
+EGenotickResult CLoader::LoadGenotick(IGenotick** ppInstance, const SGenotickLoadSettings* pSettings)
 {
 	if (!ppInstance || !pSettings)
 		return EGenotickResult::InvalidArgument;
@@ -75,7 +75,7 @@ EGenotickResult CJavaLoader::LoadGenotick(IGenotick** ppInstance, const SGenotic
 	return result;
 }
 
-EGenotickResult CJavaLoader::RemoveInstance(const IGenotick* pInstance, JavaVM& javaVM)
+EGenotickResult CLoader::RemoveInstance(const IGenotick* pInstance, JavaVM& javaVM)
 {
 	auto predicate = [pInstance](TGenotickPtr& p) { return p.get() == pInstance; };
 	stl::find_and_erase_if(m_instances, predicate);
@@ -89,7 +89,7 @@ EGenotickResult CJavaLoader::RemoveInstance(const IGenotick* pInstance, JavaVM& 
 	return jni::JniErrorToGenotickResult(jniResult);
 }
 
-EGenotickResult CJavaLoader::LoadJvmModule(const char* path)
+EGenotickResult CLoader::LoadJvmModule(const char* path)
 {
 	if (JvmModuleLoaded())
 		return EGenotickResult::Success;
@@ -113,7 +113,7 @@ EGenotickResult CJavaLoader::LoadJvmModule(const char* path)
 	return EGenotickResult::Success;
 }
 
-void CJavaLoader::FreeJvmModule()
+void CLoader::FreeJvmModule()
 {
 	if (m_jvmModule != 0)
 	{
@@ -125,7 +125,7 @@ void CJavaLoader::FreeJvmModule()
 	}
 }
 
-EGenotickResult CJavaLoader::ReleaseAllJvmInstances()
+EGenotickResult CLoader::ReleaseAllJvmInstances()
 {
 	EGenotickResult result = EGenotickResult::Success;
 	while (!m_instances.empty() && (result == EGenotickResult::Success))
@@ -136,7 +136,7 @@ EGenotickResult CJavaLoader::ReleaseAllJvmInstances()
 	return result;
 }
 
-std::string CJavaLoader::MakeJavaOptionString(const char* option, const char* value)
+std::string CLoader::MakeJavaOptionString(const char* option, const char* value)
 {
 	return ::stl::string_format("%s=%s", option, value);
 }

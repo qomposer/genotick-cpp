@@ -18,7 +18,7 @@
 #include <strlcpy.h>
 
 class CJavaLoaderGenotick;
-class CJavaLoader;
+class CLoader;
 
 namespace jni {
 namespace genotick {
@@ -26,7 +26,7 @@ namespace genotick {
 class CGenotick : public IGenotickDestructable
 {
 public:
-	CGenotick(CJavaLoader* pJavaLoader, jni::JavaVM* pJavaVM, jni::JNIEnv* pJavaEnv);
+	CGenotick(CLoader* pJavaLoader, jni::JavaVM* pJavaVM, jni::JNIEnv* pJavaEnv);
 	virtual ~CGenotick();
 
 private:

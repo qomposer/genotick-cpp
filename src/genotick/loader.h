@@ -7,13 +7,13 @@
 #include <vector>
 #include <memory>
 
-class CJavaLoader
+class CLoader
 {
 public:
-	CJavaLoader();
-	~CJavaLoader();
+	CLoader();
+	~CLoader();
 
-	EGenotickResult LoadGenotick(IGenotick** ppInstance, const SGenotickJvmSettings* pSettings);
+	EGenotickResult LoadGenotick(IGenotick** ppInstance, const SGenotickLoadSettings* pSettings);
 
 protected:
 	EGenotickResult RemoveInstance(const IGenotick* pInstance, JavaVM& javaVM);
@@ -41,8 +41,8 @@ private:
 	TGenotickPtrs m_instances;
 };
 
-class CJavaLoaderGenotick : public CJavaLoader
+class CJavaLoaderGenotick : public CLoader
 {
 public:
-	using CJavaLoader::RemoveInstance;
+	using CLoader::RemoveInstance;
 };
