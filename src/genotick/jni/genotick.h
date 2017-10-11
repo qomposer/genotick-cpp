@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <genotick/interface.h>
 #include <genotick/loader.h>
 #include <genotick/jni/remote/main_interface.h>
 #include <genotick/jni/remote/main_settings.h>
@@ -16,9 +17,6 @@
 #include <genotick/jni/remote/predictions.h>
 #include <genotick/jni/exceptions.h>
 #include <strlcpy.h>
-
-class CJavaLoaderGenotick;
-class CLoader;
 
 namespace genotick {
 namespace jni {
