@@ -1,13 +1,12 @@
 
 #pragma once
 
-#include <jni/functions.hpp>
-#include <jni/errors.hpp>
-#include <jni/types.hpp>
 #include <exception>
 #include <iostream>
 #include <genotick/interface.h>
+#include <genotick/jni/jni_helpers.h>
 
+namespace genotick {
 namespace jni {
 
 class EnumMismatchException : public std::exception
@@ -22,13 +21,13 @@ public:
 	{}
 };
 
-inline EGenotickResult HandleJavaException(jni::JNIEnv& env, const PendingJavaException& exception)
+inline EGenotickResult HandleJavaException(::jni::JNIEnv& env, const ::jni::PendingJavaException& exception)
 {
 	(void)exception;
 	// TODO get and store exception description
 	//jni::ThrowableObject throwableObj(jni::ExceptionOccurred(env));
-	jni::ExceptionDescribe(env);
-	jni::ExceptionClear(env);
+	::jni::ExceptionDescribe(env);
+	::jni::ExceptionClear(env);
 	return EGenotickResult::JavaException;
 }
 
@@ -41,3 +40,4 @@ inline EGenotickResult HandleEnumMismatchException(const EnumMismatchException& 
 }
 
 } // namespace jni
+} // namespace genotick

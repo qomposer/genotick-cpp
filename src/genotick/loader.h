@@ -7,6 +7,8 @@
 #include <vector>
 #include <memory>
 
+namespace genotick {
+
 class CLoader
 {
 public:
@@ -41,8 +43,10 @@ private:
 	TGenotickPtrs m_instances;
 };
 
-class CJavaLoaderGenotick : public CLoader
+class CLoaderFriend : public CLoader
 {
 public:
 	using CLoader::RemoveInstance;
 };
+
+} // namespace genotick

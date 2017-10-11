@@ -4,37 +4,38 @@
 #include <genotick/jni/wrapper/enum.h>
 #include <genotick/interface.h>
 
-namespace jni {
 namespace genotick {
+namespace jni {
+namespace wrapper {
 
 struct SPredictionTag { static constexpr auto Name() { return "com/alphatica/genotick/genotick/Prediction"; } };
 
 class CPrediction : public CEnum<SPredictionTag, EGenotickPrediction>
 {
 public:
-	using TValueMethod = jni::Method<TagType, jni::jint()>;
+	using TValueMethod = ::jni::Method<TagType, ::jni::jint()>;
 
 #define GENOTICK_CLASS_METHODS(f) \
 	f(TValueMethod, getValue) \
 
-	explicit CPrediction(jni::JNIEnv* pJavaEnv)
+	explicit CPrediction(::jni::JNIEnv* pJavaEnv)
 		: CEnum<TagType, TEnumClass>(pJavaEnv)
 		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
 		VerifyEnumValues();
 	}
 
-	jni::jint value(const TObject& object) const
+	::jni::jint value(const TObject& object) const
 	{
 		return object.Call(GetJavaEnv(), m_getValue);
 	}
 
-	jni::jint GetEnumValue(const TObject& object) const override final
+	::jni::jint GetEnumValue(const TObject& object) const override final
 	{
 		return value(object);
 	}
 
-	TObject GetEnumObject(const jni::jint value) const override final
+	TObject GetEnumObject(const ::jni::jint value) const override final
 	{
 		return GetEnumObjectBySearch(value);
 	}
@@ -45,5 +46,6 @@ private:
 
 #undef GENOTICK_CLASS_METHODS
 
-} // namespace genotick
+} // namespace wrapper
 } // namespace jni
+} // namespace genotick

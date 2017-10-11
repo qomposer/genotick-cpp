@@ -8,6 +8,8 @@
 #include <array>
 #include <assert.h>
 
+namespace genotick {
+
 namespace
 {
 	template<typename F>
@@ -49,8 +51,8 @@ EGenotickResult CLoader::LoadGenotick(IGenotick** ppInstance, const SGenotickLoa
 		vm_args.options = options;
 		vm_args.ignoreUnrecognized = false;
 
-		const jni::jint jniResult = JNI_CreateJavaVM_FuncPtr(&pJvm, reinterpret_cast<void**>(&pEnv), &vm_args);
-		result = jni::JniErrorToGenotickResult(jniResult);
+		const ::jni::jint jniResult = JNI_CreateJavaVM_FuncPtr(&pJvm, reinterpret_cast<void**>(&pEnv), &vm_args);
+		result = ::genotick::jni::JniErrorToGenotickResult(jniResult);
 
 		if (result == EGenotickResult::Success)
 		{
@@ -58,17 +60,17 @@ EGenotickResult CLoader::LoadGenotick(IGenotick** ppInstance, const SGenotickLoa
 			assert(pEnv);
 			try
 			{
-				jni::genotick::CGenotick* pNewInstance = new jni::genotick::CGenotick(this, pJvm, pEnv);
+				::genotick::jni::CGenotick* pNewInstance = new ::genotick::jni::CGenotick(this, pJvm, pEnv);
 				m_instances.push_back(TGenotickPtr(pNewInstance));
 				*ppInstance = pNewInstance;
 			}
-			catch (const jni::PendingJavaException& exception)
+			catch (const ::jni::PendingJavaException& exception)
 			{
-				result = jni::HandleJavaException(*pEnv, exception);
+				result = ::genotick::jni::HandleJavaException(*pEnv, exception);
 			}
-			catch (const jni::EnumMismatchException& exception)
+			catch (const ::genotick::jni::EnumMismatchException& exception)
 			{
-				result = jni::HandleEnumMismatchException(exception);
+				result = ::genotick::jni::HandleEnumMismatchException(exception);
 			}
 		}
 	}
@@ -86,7 +88,7 @@ EGenotickResult CLoader::RemoveInstance(const IGenotick* pInstance, JavaVM& java
 		FreeJvmModule();
 	}
 
-	return jni::JniErrorToGenotickResult(jniResult);
+	return ::genotick::jni::JniErrorToGenotickResult(jniResult);
 }
 
 EGenotickResult CLoader::LoadJvmModule(const char* path)
@@ -140,3 +142,5 @@ std::string CLoader::MakeJavaOptionString(const char* option, const char* value)
 {
 	return ::stl::string_format("%s=%s", option, value);
 }
+
+} // namespace genotick

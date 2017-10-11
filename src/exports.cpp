@@ -1,7 +1,7 @@
 
 #include <genotick/loader.h>
 
-CLoader g_genotickLoader;
+::genotick::CLoader g_genotickLoader;
 
 EGenotickResult GENOTICK_CALL LoadGenotick(IGenotick** ppInstance, const TGenotickLoadSettings* pSettings)
 {

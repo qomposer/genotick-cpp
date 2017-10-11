@@ -20,14 +20,14 @@ static_assert(sizeof(EGenotickChartMode) == sizeof(TGenotickInt32), MISMATCH_MES
 static_assert(sizeof(EGenotickPrediction) == sizeof(TGenotickInt32), MISMATCH_MESSAGE);
 #undef MISMATCH_MESSAGE
 
-namespace jni {
 namespace genotick {
+namespace jni {
 
-CGenotick::CGenotick(CLoader* pJavaLoader, jni::JavaVM* pJavaVM, jni::JNIEnv* pJavaEnv)
-	: m_javaLoader(*static_cast<CJavaLoaderGenotick*>(pJavaLoader))
+CGenotick::CGenotick(CLoader* pLoader, ::jni::JavaVM* pJavaVM, ::jni::JNIEnv* pJavaEnv)
+	: m_loader(*static_cast<CLoaderFriend*>(pLoader))
 	, m_javaVM(*pJavaVM)
 	, m_javaEnv(*pJavaEnv)
-	, m_stringClass(jni::StringClass::Find(m_javaEnv).NewGlobalRef(m_javaEnv))
+	, m_stringClass(::jni::StringClass::Find(m_javaEnv).NewGlobalRef(m_javaEnv))
 	, m_mainInterface(pJavaEnv)
 	, m_mainSettings(pJavaEnv)
 	, m_dataLines(pJavaEnv)
@@ -87,7 +87,7 @@ EGenotickResult CGenotick::RemoveAllSessionsInternal() const
 ToNative(pSettings->NAME, this->m_mainSettings.Get_##NAME(settingsObject)); }
 
 #define GENOTICK_UNROLL_FIELDS_TO_JAVA(TYPE, NAME) { \
-auto value = ToJava<typename jni::genotick::CMainSettings::TYPE::FieldType>(pSettings->NAME); \
+auto value = ToJava<typename wrapper::CMainSettings::TYPE::FieldType>(pSettings->NAME); \
 this->m_mainSettings.Set_##NAME(settingsObject, value); }
 
 EGenotickResult CGenotick::GetSettingsInternal(TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) const
@@ -97,20 +97,20 @@ EGenotickResult CGenotick::GetSettingsInternal(TGenotickSessionId sessionId, TGe
 
 	try
 	{
-		const jni::genotick::CMainSettings::TObject settingsObject = m_mainInterface.getSettings(sessionId);
+		const wrapper::CMainSettings::TObject settingsObject = m_mainInterface.getSettings(sessionId);
 		if (settingsObject.Get() == nullptr)
 			return EGenotickResult::ErrorInvalidSession;
 
 		GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_FIELDS_TO_NATIVE);
 		return EGenotickResult::Success;
 	}
-	catch (const jni::PendingJavaException& exception)
+	catch (const ::jni::PendingJavaException& exception)
 	{
-		return jni::HandleJavaException(m_javaEnv, exception);
+		return HandleJavaException(m_javaEnv, exception);
 	}
-	catch (const jni::EnumMismatchException& exception)
+	catch (const EnumMismatchException& exception)
 	{
-		return jni::HandleEnumMismatchException(exception);
+		return HandleEnumMismatchException(exception);
 	}
 }
 
@@ -121,20 +121,20 @@ EGenotickResult CGenotick::ChangeSettingsInternal(TGenotickSessionId sessionId, 
 
 	try
 	{
-		const jni::genotick::CMainSettings::TObject settingsObject = m_mainInterface.getSettings(sessionId);
+		const wrapper::CMainSettings::TObject settingsObject = m_mainInterface.getSettings(sessionId);
 		if (settingsObject.Get() == nullptr)
 			return EGenotickResult::ErrorInvalidSession;
 
 		GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_FIELDS_TO_JAVA);
 		return EGenotickResult::Success;
 	}
-	catch (const jni::PendingJavaException& exception)
+	catch (const ::jni::PendingJavaException& exception)
 	{
-		return jni::HandleJavaException(m_javaEnv, exception);
+		return HandleJavaException(m_javaEnv, exception);
 	}
-	catch (const jni::EnumMismatchException& exception)
+	catch (const EnumMismatchException& exception)
 	{
-		return jni::HandleEnumMismatchException(exception);
+		return HandleEnumMismatchException(exception);
 	}
 }
 
@@ -154,20 +154,20 @@ EGenotickResult CGenotick::StartInternal(TGenotickSessionId sessionId, const TGe
 
 	try
 	{
-		const jni::jsize count = pArgs->elementCount;
-		jni::StringArray args = jni::StringArray::New(m_javaEnv, count, *m_stringClass.get());
-		for (jni::jsize i = 0; i < count; ++i)
+		const ::jni::jsize count = pArgs->elementCount;
+		::jni::StringArray args = ::jni::StringArray::New(m_javaEnv, count, *m_stringClass.get());
+		for (::jni::jsize i = 0; i < count; ++i)
 		{
 			const char* parameter = pArgs->elements[i];
-			jni::String newString = jni::Make<jni::String>(m_javaEnv, parameter);
+			::jni::String newString = ::jni::Make<::jni::String>(m_javaEnv, parameter);
 			args.Set(m_javaEnv, i, newString);
 		}
-		const jni::jint error = m_mainInterface.start(sessionId, args);
-		return jni::genotick::ErrorCodeToGenotickResult(error);
+		const ::jni::jint error = m_mainInterface.start(sessionId, args);
+		return wrapper::ErrorCodeToGenotickResult(error);
 	}
-	catch (const jni::PendingJavaException& exception)
+	catch (const ::jni::PendingJavaException& exception)
 	{
-		return jni::HandleJavaException(m_javaEnv, exception);
+		return HandleJavaException(m_javaEnv, exception);
 	}
 }
 
@@ -195,8 +195,8 @@ EGenotickResult CGenotick::GetNewestPredictionInternal(TGenotickSessionId sessio
 
 EGenotickResult CGenotick::ReleaseInternal() const
 {
-	return m_javaLoader.RemoveInstance(this, m_javaVM);
+	return m_loader.RemoveInstance(this, m_javaVM);
 }
 
-} // namespace genotick
 } // namespace jni
+} // namespace genotick

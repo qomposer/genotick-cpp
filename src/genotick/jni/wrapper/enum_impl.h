@@ -1,17 +1,19 @@
 
 #include <utils.h>
 
+namespace genotick {
 namespace jni {
+namespace wrapper {
 
 template <class Tag, class Enum>
-typename CEnum<Tag, Enum>::TObject CEnum<Tag, Enum>::GetEnumObjectBySearch(const jni::jint value) const
+typename CEnum<Tag, Enum>::TObject CEnum<Tag, Enum>::GetEnumObjectBySearch(const ::jni::jint value) const
 {
 	const TObjectArray enumObjects = values();
-	const jni::jsize length = enumObjects.Length(GetJavaEnv());
-	for (jni::jsize i = 0; i < length; ++i)
+	const ::jni::jsize length = enumObjects.Length(GetJavaEnv());
+	for (::jni::jsize i = 0; i < length; ++i)
 	{
 		const TObject enumObject = enumObjects.Get(GetJavaEnv(), i);
-		const jni::jint givenValue = GetEnumValue(enumObject);
+		const ::jni::jint givenValue = GetEnumValue(enumObject);
 		if (value == givenValue)
 		{
 			return enumObject;
@@ -22,11 +24,11 @@ typename CEnum<Tag, Enum>::TObject CEnum<Tag, Enum>::GetEnumObjectBySearch(const
 }
 
 template <class Tag, class Enum>
-typename CEnum<Tag, Enum>::TObject CEnum<Tag, Enum>::GetEnumObjectByOrdinal(const jni::jint ordinal) const
+typename CEnum<Tag, Enum>::TObject CEnum<Tag, Enum>::GetEnumObjectByOrdinal(const ::jni::jint ordinal) const
 {
 	const TObjectArray enumValues = values();
-	const jni::jsize length = enumValues.Length(GetJavaEnv());
-	if (static_cast<jni::jsize>(ordinal) < length) {
+	const ::jni::jsize length = enumValues.Length(GetJavaEnv());
+	if (static_cast<::jni::jsize>(ordinal) < length) {
 		return enumValues.Get(GetJavaEnv(), ordinal);
 	}
 	throw EnumMismatchException(stl::string_format(
@@ -45,11 +47,11 @@ void CEnum<Tag, Enum>::VerifyEnumValues()
 }
 
 template <class Tag, class Enum>
-void CEnum<Tag, Enum>::VerifyEnumValue(const jni::jint nativeValue, const char* const javaValueName)
+void CEnum<Tag, Enum>::VerifyEnumValue(const ::jni::jint nativeValue, const char* const javaValueName)
 {
-	const jni::String javaValueString = jni::Make<jni::String>(GetJavaEnv(), javaValueName);
+	const ::jni::String javaValueString = ::jni::Make<::jni::String>(GetJavaEnv(), javaValueName);
 	const TObject enumObject = valueOf(javaValueString);
-	const jni::jint javaValue = GetEnumValue(enumObject);
+	const ::jni::jint javaValue = GetEnumValue(enumObject);
 	if (nativeValue != javaValue)
 	{
 		throw EnumMismatchException(stl::string_format(
@@ -71,11 +73,11 @@ void CEnum<Tag, Enum>::VerifyEnumBasics()
 }
 
 template <class Tag, class Enum>
-void CEnum<Tag, Enum>::VerifyEnumOrdinal(const jni::jint nativeOrdinal, const char* const javaValueName)
+void CEnum<Tag, Enum>::VerifyEnumOrdinal(const ::jni::jint nativeOrdinal, const char* const javaValueName)
 {
-	const jni::String javaValueString = jni::Make<jni::String>(GetJavaEnv(), javaValueName);
+	const ::jni::String javaValueString = ::jni::Make<::jni::String>(GetJavaEnv(), javaValueName);
 	const TObject enumObject = valueOf(javaValueString);
-	const jni::jint javaOrdinal = ordinal(enumObject);
+	const ::jni::jint javaOrdinal = ordinal(enumObject);
 	if (nativeOrdinal != javaOrdinal)
 	{
 		throw EnumMismatchException(stl::string_format(
@@ -88,13 +90,15 @@ template <class Tag, class Enum>
 void CEnum<Tag, Enum>::VerifyEnumValueCount(typename TEnumClass::ordinal_type nativeValueCount)
 {
 	const TObjectArray enumObjects = values();
-	const jni::jsize javaValueCount = enumObjects.Length(GetJavaEnv());
+	const ::jni::jsize javaValueCount = enumObjects.Length(GetJavaEnv());
 	if (nativeValueCount != javaValueCount)
 	{
-		throw jni::EnumMismatchException(stl::string_format(
+		throw EnumMismatchException(stl::string_format(
 			"Enum value count of enum class '%s' does not match. Expected: %d. Actual: %d.",
 			TagType::Name(), nativeValueCount, javaValueCount));
 	}
 }
 
+} // namespace wrapper
 } // namespace jni
+} // namespace genotick

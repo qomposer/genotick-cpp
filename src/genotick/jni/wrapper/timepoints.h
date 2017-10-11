@@ -3,32 +3,33 @@
 
 #include <genotick/jni/wrapper/timepoint.h>
 
-namespace jni {
 namespace genotick {
+namespace jni {
+namespace wrapper {
 
 struct STimePointsTag { static constexpr auto Name() { return "com/alphatica/genotick/timepoint/TimePoints"; } };
 
 class CTimePoints : public CClass<STimePointsTag>
 {
 public:
-	using TGetMethod = jni::Method<TagType, CTimePoint::TObject(jni::jint /* index */)>;
-	using TGetIndexMethod = jni::Method<TagType, jni::jint(CTimePoint::TObject)>;
+	using TGetMethod = ::jni::Method<TagType, CTimePoint::TObject(::jni::jint /* index */)>;
+	using TGetIndexMethod = ::jni::Method<TagType, ::jni::jint(CTimePoint::TObject)>;
 
 #define GENOTICK_CLASS_METHODS(f) \
 	f(TGetMethod, get) \
 	f(TGetIndexMethod, getIndex) \
 
-	explicit CTimePoints(jni::JNIEnv* pJavaEnv)
+	explicit CTimePoints(::jni::JNIEnv* pJavaEnv)
 		: CClass<TagType>(pJavaEnv)
 		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{}
 
-	CTimePoint::TObject get(const TObject& object, const jni::jint index) const
+	CTimePoint::TObject get(const TObject& object, const ::jni::jint index) const
 	{
 		return object.Call(GetJavaEnv(), m_get, index);
 	}
 
-	jni::jint getIndex(const TObject& object, const CTimePoint::TObject& timePoint) const
+	::jni::jint getIndex(const TObject& object, const CTimePoint::TObject& timePoint) const
 	{
 		return object.Call(GetJavaEnv(), m_getIndex, timePoint);
 	}
@@ -39,5 +40,6 @@ private:
 
 #undef GENOTICK_CLASS_METHODS
 
-} // namespace genotick
+} // namespace wrapper
 } // namespace jni
+} // namespace genotick

@@ -4,7 +4,9 @@
 #include <genotick/jni/wrapper/class.h>
 #include <genotick/jni/exceptions.h>
 
+namespace genotick {
 namespace jni {
+namespace wrapper {
 
 template <class Tag, class Enum>
 class CEnum : public CClass<Tag>
@@ -12,11 +14,11 @@ class CEnum : public CClass<Tag>
 public:
 	using TEnumClass = Enum;
 
-	using TNameMethod = jni::Method<TagType, jni::String()>;
-	using TOrdinalMethod = jni::Method<TagType, jni::jint()>;
-	using TGetDeclaringClassMethod = jni::Method<TagType, jni::ClassObject()>;
-	using TValuesMethod = jni::StaticMethod<TagType, TObjectArray()>;
-	using TValueOfMethod = jni::StaticMethod<TagType, TObject(jni::String)>;
+	using TNameMethod = ::jni::Method<TagType, ::jni::String()>;
+	using TOrdinalMethod = ::jni::Method<TagType, ::jni::jint()>;
+	using TGetDeclaringClassMethod = ::jni::Method<TagType, ::jni::ClassObject()>;
+	using TValuesMethod = ::jni::StaticMethod<TagType, TObjectArray()>;
+	using TValueOfMethod = ::jni::StaticMethod<TagType, TObject(::jni::String)>;
 
 #define JAVA_ENUM_METHODS(f) \
 	f(TNameMethod, name) \
@@ -27,7 +29,7 @@ public:
 	f(TValuesMethod, values) \
 	f(TValueOfMethod, valueOf) \
 
-	explicit CEnum(jni::JNIEnv* pJavaEnv)
+	explicit CEnum(::jni::JNIEnv* pJavaEnv)
 		: CClass<Tag>(pJavaEnv)
 		JAVA_ENUM_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 		JAVA_ENUM_STATIC_METHODS(GENOTICK_UNROLL_STATIC_METHOD_INITIALIZERS)
@@ -35,20 +37,20 @@ public:
 		VerifyEnumBasics();
 	}
 
-	virtual jni::jint GetEnumValue(const TObject& object) const = 0;
-	virtual TObject GetEnumObject(const jni::jint value) const = 0;
+	virtual ::jni::jint GetEnumValue(const TObject& object) const = 0;
+	virtual TObject GetEnumObject(const ::jni::jint value) const = 0;
 
-	jni::String name(const TObject& object) const
+	::jni::String name(const TObject& object) const
 	{
 		return object.Call(GetJavaEnv(), m_name);
 	}
 
-	jni::jint ordinal(const TObject& object) const
+	::jni::jint ordinal(const TObject& object) const
 	{
 		return object.Call(GetJavaEnv(), m_ordinal);
 	}
 
-	jni::ClassObject getDeclaringClass(const TObject& object) const
+	::jni::ClassObject getDeclaringClass(const TObject& object) const
 	{
 		return object.Call(GetJavaEnv(), m_getDeclaringClass);
 	}
@@ -58,20 +60,20 @@ public:
 		return GetUniqueClass()->Call(GetJavaEnv(), m_values);
 	}
 
-	TObject valueOf(const jni::String& enumName) const
+	TObject valueOf(const ::jni::String& enumName) const
 	{
 		return GetUniqueClass()->Call(GetJavaEnv(), m_valueOf, enumName);
 	}
 
 protected:
-	TObject GetEnumObjectBySearch(const jni::jint value) const;
-	TObject GetEnumObjectByOrdinal(const jni::jint ordinal) const;
+	TObject GetEnumObjectBySearch(const ::jni::jint value) const;
+	TObject GetEnumObjectByOrdinal(const ::jni::jint ordinal) const;
 	void VerifyEnumValues();
-	void VerifyEnumValue(const jni::jint nativeValue, const char* const javaValueName);
+	void VerifyEnumValue(const ::jni::jint nativeValue, const char* const javaValueName);
 
 private:
 	void VerifyEnumBasics();
-	void VerifyEnumOrdinal(const jni::jint nativeOrdinal, const char* const javaValueName);
+	void VerifyEnumOrdinal(const ::jni::jint nativeOrdinal, const char* const javaValueName);
 	void VerifyEnumValueCount(typename TEnumClass::ordinal_type nativeValueCount);
 
 private:
@@ -82,6 +84,8 @@ private:
 #undef JAVA_ENUM_METHODS
 #undef JAVA_ENUM_STATIC_METHODS
 
+} // namespace wrapper
 } // namespace jni
+} // namespace genotick
 
 #include "enum_impl.h"

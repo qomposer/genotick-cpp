@@ -6,23 +6,24 @@
 #include <genotick/jni/wrapper/inherited_weight_mode.h>
 #include <genotick/jni/wrapper/chart_mode.h>
 
-namespace jni {
 namespace genotick {
+namespace jni {
+namespace wrapper {
 
 struct SMainSettingsTag { static constexpr auto Name() { return "com/alphatica/genotick/genotick/MainSettings"; } };
 
 class CMainSettings : public CClass<SMainSettingsTag>
 {
 public:
-	using TIntField = jni::IntField<TagType>;
-	using TLongField = jni::LongField<TagType>;
-	using TDoubleField = jni::DoubleField<TagType>;
-	using TBooleanField = jni::BooleanField<TagType>;
-	using TStringField = jni::StringField<TagType>;
-	using TTimePointField = jni::Field<TagType, CTimePoint::TObject>;
-	using TWeightModeField = jni::Field<TagType, CWeightMode::TObject>;
-	using TInheritedWeightModeField = jni::Field<TagType, CInheritedWeightMode::TObject>;
-	using TChartModeField = jni::Field<TagType, CChartMode::TObject>;
+	using TIntField = ::jni::IntField<TagType>;
+	using TLongField = ::jni::LongField<TagType>;
+	using TDoubleField = ::jni::DoubleField<TagType>;
+	using TBooleanField = ::jni::BooleanField<TagType>;
+	using TStringField = ::jni::StringField<TagType>;
+	using TTimePointField = ::jni::Field<TagType, CTimePoint::TObject>;
+	using TWeightModeField = ::jni::Field<TagType, CWeightMode::TObject>;
+	using TInheritedWeightModeField = ::jni::Field<TagType, CInheritedWeightMode::TObject>;
+	using TChartModeField = ::jni::Field<TagType, CChartMode::TObject>;
 
 #define GENOTICK_MAINSETTINGS_FIELDS(f) \
 	f(TTimePointField          , startTimePoint                   ) \
@@ -58,7 +59,7 @@ public:
 	f(TLongField               , randomSeed                       ) \
 	f(TChartModeField          , chartMode                        ) \
 
-	explicit CMainSettings::CMainSettings(jni::JNIEnv* pJavaEnv)
+	explicit CMainSettings::CMainSettings(::jni::JNIEnv* pJavaEnv)
 		: CClass<TagType>(pJavaEnv)
 		GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_FIELD_INITIALIZERS)
 	{
@@ -71,5 +72,6 @@ private:
 	GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 };
 
-} // namespace genotick
+} // namespace wrapper
 } // namespace jni
+} // namespace genotick

@@ -62,24 +62,24 @@ namespace jni
 
 	struct ThrowableTag { static constexpr auto Name() { return "java/lang/Throwable"; } };
 	struct ClassTag { static constexpr auto Name() { return "java/lang/Class"; } };
-	template <> struct UntaggedObjectType<ThrowableTag> { using Type = jni::jthrowable; };
-	template <> struct UntaggedObjectType<ClassTag> { using Type = jni::jclass; };
-	using ThrowableObject = jni::Object<ThrowableTag>;
-	using ClassObject = jni::Object<ClassTag>;
+	template <> struct UntaggedObjectType<ThrowableTag> { using Type = ::jni::jthrowable; };
+	template <> struct UntaggedObjectType<ClassTag> { using Type = ::jni::jclass; };
+	using ThrowableObject = ::jni::Object<ThrowableTag>;
+	using ClassObject = ::jni::Object<ClassTag>;
 
-	using StringArray = jni::Array<jni::String>;
-	using StringClass = jni::Class<jni::StringTag>;
-	using UniqueStringClass = jni::UniqueClass<jni::StringTag>;
+	using StringArray = ::jni::Array<::jni::String>;
+	using StringClass = ::jni::Class<::jni::StringTag>;
+	using UniqueStringClass = ::jni::UniqueClass<::jni::StringTag>;
 
-	template <class ClassTag> using ObjectArray = jni::Array<jni::Object<ClassTag>>;
+	template <class ClassTag> using ObjectArray = ::jni::Array<::jni::Object<ClassTag>>;
 
-	template <class ClassTag> using IntField = jni::Field<ClassTag, jni::jint>;
-	template <class ClassTag> using LongField = jni::Field<ClassTag, jni::jlong>;
-	template <class ClassTag> using ByteField = jni::Field<ClassTag, jni::jbyte>;
-	template <class ClassTag> using BooleanField = jni::Field<ClassTag, jni::jboolean>;
-	template <class ClassTag> using CharField = jni::Field<ClassTag, jni::jchar>;
-	template <class ClassTag> using ShortField = jni::Field<ClassTag, jni::jshort>;
-	template <class ClassTag> using FloatField = jni::Field<ClassTag, jni::jfloat>;
-	template <class ClassTag> using DoubleField = jni::Field<ClassTag, jni::jdouble>;
-	template <class ClassTag> using StringField = jni::Field<ClassTag, jni::String>;
+	template <class ClassTag> using IntField = ::jni::Field<ClassTag, ::jni::jint>;
+	template <class ClassTag> using LongField = ::jni::Field<ClassTag, ::jni::jlong>;
+	template <class ClassTag> using ByteField = ::jni::Field<ClassTag, ::jni::jbyte>;
+	template <class ClassTag> using BooleanField = ::jni::Field<ClassTag, ::jni::jboolean>;
+	template <class ClassTag> using CharField = ::jni::Field<ClassTag, ::jni::jchar>;
+	template <class ClassTag> using ShortField = ::jni::Field<ClassTag, ::jni::jshort>;
+	template <class ClassTag> using FloatField = ::jni::Field<ClassTag, ::jni::jfloat>;
+	template <class ClassTag> using DoubleField = ::jni::Field<ClassTag, ::jni::jdouble>;
+	template <class ClassTag> using StringField = ::jni::Field<ClassTag, ::jni::String>;
 }

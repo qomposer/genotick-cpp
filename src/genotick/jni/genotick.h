@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <genotick/interface.h>
+#include <genotick/loader.h>
 #include <genotick/jni/wrapper/main_interface.h>
 #include <genotick/jni/wrapper/main_settings.h>
 #include <genotick/jni/wrapper/data_lines.h>
@@ -20,13 +20,13 @@
 class CJavaLoaderGenotick;
 class CLoader;
 
-namespace jni {
 namespace genotick {
+namespace jni {
 
 class CGenotick : public IGenotickDestructable
 {
 public:
-	CGenotick(CLoader* pJavaLoader, jni::JavaVM* pJavaVM, jni::JNIEnv* pJavaEnv);
+	CGenotick(CLoader* pLoader, ::jni::JavaVM* pJavaVM, ::jni::JNIEnv* pJavaEnv);
 	virtual ~CGenotick();
 
 private:
@@ -88,26 +88,26 @@ private:
 		dst = static_cast<D>(src);
 	}
 
-	template <> void ToNative(TGenotickString& dst, const jni::String src) const {
+	template <> void ToNative(TGenotickString& dst, const ::jni::String src) const {
 		if (dst.capacity > 0u) {
-			std::string buf = jni::Make<std::string>(m_javaEnv, src);
+			std::string buf = ::jni::Make<std::string>(m_javaEnv, src);
 			strlcpy(dst.utf8_buffer, buf.c_str(), dst.capacity);
 		}
 	}
 
-	template <> void ToNative(TGenotickTimePoint& dst, const jni::genotick::CTimePoint::TObject src) const {
+	template <> void ToNative(TGenotickTimePoint& dst, const wrapper::CTimePoint::TObject src) const {
 		dst = static_cast<TGenotickTimePoint>(m_timePoint.getValue(src));
 	}
 
-	template <> void ToNative(EGenotickWeightMode& dst, const jni::genotick::CWeightMode::TObject src) const {
+	template <> void ToNative(EGenotickWeightMode& dst, const wrapper::CWeightMode::TObject src) const {
 		dst = EGenotickWeightMode::getByValue(m_weightMode.GetEnumValue(src));
 	}
 
-	template <> void ToNative(EGenotickInheritedWeightMode& dst, const jni::genotick::CInheritedWeightMode::TObject src) const {
+	template <> void ToNative(EGenotickInheritedWeightMode& dst, const wrapper::CInheritedWeightMode::TObject src) const {
 		dst = EGenotickInheritedWeightMode::getByValue(m_inheritedWeightMode.GetEnumValue(src));
 	}
 
-	template <> void ToNative(EGenotickChartMode& dst, const jni::genotick::CChartMode::TObject src) const {
+	template <> void ToNative(EGenotickChartMode& dst, const wrapper::CChartMode::TObject src) const {
 		dst = EGenotickChartMode::getByValue(m_chartMode.GetEnumValue(src));
 	}
 
@@ -115,45 +115,46 @@ private:
 		return static_cast<D>(src);
 	}
 
-	template <> jni::String ToJava(const TGenotickString src) const {
+	template <> ::jni::String ToJava(const TGenotickString src) const {
 		const std::string buf = (src.utf8_buffer != nullptr) ? src.utf8_buffer : "";
-		return jni::Make<jni::String>(m_javaEnv, buf);
+		return ::jni::Make<::jni::String>(m_javaEnv, buf);
 	}
 
-	template <> jni::genotick::CTimePoint::TObject ToJava(const TGenotickTimePoint src) const {
-		return m_timePoint.New(static_cast<jni::jlong>(src));
+	template <> wrapper::CTimePoint::TObject ToJava(const TGenotickTimePoint src) const {
+		return m_timePoint.New(static_cast<::jni::jlong>(src));
 	}
 
-	template <> jni::genotick::CWeightMode::TObject ToJava(const EGenotickWeightMode src) const {
+	template <> wrapper::CWeightMode::TObject ToJava(const EGenotickWeightMode src) const {
 		return m_weightMode.GetEnumObject(src.value());
 	}
 
-	template <> jni::genotick::CInheritedWeightMode::TObject ToJava(const EGenotickInheritedWeightMode src) const {
+	template <> wrapper::CInheritedWeightMode::TObject ToJava(const EGenotickInheritedWeightMode src) const {
 		return m_inheritedWeightMode.GetEnumObject(src.value());
 	}
 
-	template <> jni::genotick::CChartMode::TObject ToJava(const EGenotickChartMode src) const {
+	template <> wrapper::CChartMode::TObject ToJava(const EGenotickChartMode src) const {
 		return m_chartMode.GetEnumObject(src.value());
 	}
 
-	CJavaLoaderGenotick& m_javaLoader;
+	CLoaderFriend& m_loader;
 	JavaVM& m_javaVM;
 	JNIEnv& m_javaEnv;
 	
-	jni::UniqueStringClass m_stringClass;
-	jni::genotick::CMainInterface m_mainInterface;
-	jni::genotick::CMainSettings m_mainSettings;
-	jni::genotick::CDataLines m_dataLines;
-	jni::genotick::CMainAppData m_mainAppData;
-	jni::genotick::CTimePoint m_timePoint;
-	jni::genotick::CTimePoints m_timePoints;
-	jni::genotick::CWeightMode m_weightMode;
-	jni::genotick::CInheritedWeightMode m_inheritedWeightMode;
-	jni::genotick::CChartMode m_chartMode;
-	jni::genotick::CErrorCode m_errorCode;
-	jni::genotick::CPrediction m_prediction;
-	jni::genotick::CPredictions m_predictions;
+	::jni::UniqueStringClass m_stringClass;
+	wrapper::CMainInterface m_mainInterface;
+	wrapper::CMainSettings m_mainSettings;
+	wrapper::CDataLines m_dataLines;
+	wrapper::CMainAppData m_mainAppData;
+	wrapper::CTimePoint m_timePoint;
+	wrapper::CTimePoints m_timePoints;
+	wrapper::CWeightMode m_weightMode;
+	wrapper::CInheritedWeightMode m_inheritedWeightMode;
+	wrapper::CChartMode m_chartMode;
+	wrapper::CErrorCode m_errorCode;
+	wrapper::CPrediction m_prediction;
+	wrapper::CPredictions m_predictions;
 };
 
-} // namespace genotick
 } // namespace jni
+} // namespace genotick
+

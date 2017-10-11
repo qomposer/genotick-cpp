@@ -4,8 +4,9 @@
 #include <genotick/jni/wrapper/enum.h>
 #include <genotick/interface.h>
 
-namespace jni {
 namespace genotick {
+namespace jni {
+namespace wrapper {
 
 struct SGenotickErrorCodeMeta
 {
@@ -24,9 +25,9 @@ struct SGenotickErrorCodeMeta
 	f(InvalidSession   , = 4 , (SGenotickErrorCodeMeta("INVALID_SESSION"  , EGenotickResult::ErrorInvalidSession  ))) \
 	f(InsufficientData , = 5 , (SGenotickErrorCodeMeta("INSUFFICIENT_DATA", EGenotickResult::ErrorInsufficientData))) \
 
-DEFINE_CUSTOM_ENUM_CLASS(EErrorCode, jni::jint, GENOTICK_ENUM_ERROR_CODE, SGenotickErrorCodeMeta)
+DEFINE_CUSTOM_ENUM_CLASS(EErrorCode, ::jni::jint, GENOTICK_ENUM_ERROR_CODE, SGenotickErrorCodeMeta)
 
-inline EGenotickResult ErrorCodeToGenotickResult(const jni::jint error)
+inline EGenotickResult ErrorCodeToGenotickResult(const ::jni::jint error)
 {
 	return EErrorCode::getByValue(error).meta().result;
 }
@@ -36,28 +37,28 @@ struct SErrorCodeTag { static constexpr auto Name() { return "com/alphatica/geno
 class CErrorCode : public CEnum<SErrorCodeTag, EErrorCode>
 {
 public:
-	using TValueMethod = jni::Method<TagType, jni::jint()>;
+	using TValueMethod = ::jni::Method<TagType, ::jni::jint()>;
 
 #define GENOTICK_CLASS_METHODS(f) \
 	f(TValueMethod, getValue) \
 
-	explicit CErrorCode(jni::JNIEnv* pJavaEnv)
+	explicit CErrorCode(::jni::JNIEnv* pJavaEnv)
 		: CEnum<TagType, TEnumClass>(pJavaEnv)
 		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
 	}
 
-	jni::jint value(const TObject& object) const
+	::jni::jint value(const TObject& object) const
 	{
 		return object.Call(GetJavaEnv(), m_getValue);
 	}
 
-	jni::jint GetEnumValue(const TObject& object) const override final
+	::jni::jint GetEnumValue(const TObject& object) const override final
 	{
 		return value(object);
 	}
 
-	TObject GetEnumObject(const jni::jint value) const override final
+	TObject GetEnumObject(const ::jni::jint value) const override final
 	{
 		return GetEnumObjectBySearch(value);
 	}
@@ -69,5 +70,6 @@ private:
 #undef GENOTICK_CLASS_METHODS
 #undef GENOTICK_ENUM_ERROR_CODE
 
-} // namespace genotick
+} // namespace wrapper
 } // namespace jni
+} // namespace genotick
