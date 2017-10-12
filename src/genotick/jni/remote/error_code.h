@@ -18,19 +18,15 @@ struct SGenotickErrorCodeMeta
 };
 
 #define GENOTICK_ENUM_ERROR_CODE(f) \
-	f(NoError          , = 0 , (SGenotickErrorCodeMeta("NO_ERROR"         , EGenotickResult::ErrorNoError         ))) \
+	f(NoError          , = 0 , (SGenotickErrorCodeMeta("NO_ERROR"         , EGenotickResult::Success              ))) \
 	f(NoInput          , = 1 , (SGenotickErrorCodeMeta("NO_INPUT"         , EGenotickResult::ErrorNoInput         ))) \
 	f(NoOutput         , = 2 , (SGenotickErrorCodeMeta("NO_OUTPUT"        , EGenotickResult::ErrorNoOutput        ))) \
 	f(UnknownArgument  , = 3 , (SGenotickErrorCodeMeta("UNKNOWN_ARGUMENT" , EGenotickResult::ErrorUnknownArgument ))) \
 	f(InvalidSession   , = 4 , (SGenotickErrorCodeMeta("INVALID_SESSION"  , EGenotickResult::ErrorInvalidSession  ))) \
-	f(InsufficientData , = 5 , (SGenotickErrorCodeMeta("INSUFFICIENT_DATA", EGenotickResult::ErrorInsufficientData))) \
+	f(DuplicateSession , = 5 , (SGenotickErrorCodeMeta("DUPLICATE_SESSION", EGenotickResult::ErrorInsufficientData))) \
+	f(InsufficientData , = 6 , (SGenotickErrorCodeMeta("INSUFFICIENT_DATA", EGenotickResult::ErrorInsufficientData))) \
 
 DEFINE_CUSTOM_ENUM_CLASS(EErrorCode, ::jni::jint, GENOTICK_ENUM_ERROR_CODE, SGenotickErrorCodeMeta)
-
-inline EGenotickResult ErrorCodeToGenotickResult(const ::jni::jint error)
-{
-	return EErrorCode::get_by_value(error).meta().result;
-}
 
 struct SErrorCodeTag { static constexpr auto Name() { return "com/alphatica/genotick/genotick/ErrorCode"; } };
 
@@ -48,14 +44,14 @@ public:
 	{
 	}
 
-	::jni::jint value(const TObject& object) const
+	::jni::jint getValue(const TObject& object) const
 	{
 		return object.Call(GetJavaEnv(), m_getValue);
 	}
 
 	::jni::jint GetEnumValue(const TObject& object) const override final
 	{
-		return value(object);
+		return getValue(object);
 	}
 
 	TObject GetEnumObject(const ::jni::jint value) const override final
@@ -66,6 +62,12 @@ public:
 private:
 	GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
 };
+
+inline EGenotickResult ErrorCodeToGenotickResult(const CErrorCode& errorCode, const CErrorCode::TObject& errorCodeObject)
+{
+	const ::jni::jint errorCodeValue = errorCode.getValue(errorCodeObject);
+	return EErrorCode::get_by_value(errorCodeValue).meta().result;
+}
 
 #undef GENOTICK_CLASS_METHODS
 #undef GENOTICK_ENUM_ERROR_CODE

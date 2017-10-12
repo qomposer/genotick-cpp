@@ -70,17 +70,20 @@ TGenotickInt32 CGenotick::GetInterfaceVersionInternal() const
 
 EGenotickResult CGenotick::CreateSessionInternal(TGenotickSessionId sessionId) const
 {
-	return EGenotickResult::ErrorInvalidSession;
+	const remote::CErrorCode::TObject errorObject = m_mainInterface.createSession(sessionId);
+	return remote::ErrorCodeToGenotickResult(m_errorCode, errorObject);
 }
 
 EGenotickResult CGenotick::RemoveSessionInternal(TGenotickSessionId sessionId) const
 {
-	return EGenotickResult::ErrorInvalidSession;
+	const remote::CErrorCode::TObject errorObject = m_mainInterface.clearSession(sessionId);
+	return remote::ErrorCodeToGenotickResult(m_errorCode, errorObject);
 }
 
 EGenotickResult CGenotick::RemoveAllSessionsInternal() const
 {
-	return EGenotickResult::ErrorInvalidSession;
+	m_mainInterface.clearSessions();
+	return EGenotickResult::Success;
 }
 
 #define GENOTICK_UNROLL_FIELDS_TO_NATIVE(TYPE, NAME) { \
@@ -162,8 +165,8 @@ EGenotickResult CGenotick::StartInternal(TGenotickSessionId sessionId, const TGe
 			::jni::String newString = ::jni::Make<::jni::String>(m_javaEnv, parameter);
 			args.Set(m_javaEnv, i, newString);
 		}
-		const ::jni::jint error = m_mainInterface.start(sessionId, args);
-		return remote::ErrorCodeToGenotickResult(error);
+		const remote::CErrorCode::TObject errorObject = m_mainInterface.start(sessionId, args);
+		return remote::ErrorCodeToGenotickResult(m_errorCode, errorObject);
 	}
 	catch (const ::jni::PendingJavaException& exception)
 	{

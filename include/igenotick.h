@@ -94,11 +94,11 @@ const TGenotickBoolean GenotickTrue = 1;
 #define GenotickResult_JavaClassMismatch     10
 #define GenotickResult_JavaEnumMismatch      11
 #define GenotickResult_JavaException         12
-#define GenotickResult_ErrorNoError          13
-#define GenotickResult_ErrorNoInput          14
-#define GenotickResult_ErrorNoOutput         15
-#define GenotickResult_ErrorUnknownArgument  16
-#define GenotickResult_ErrorInvalidSession   17
+#define GenotickResult_ErrorNoInput          13
+#define GenotickResult_ErrorNoOutput         14
+#define GenotickResult_ErrorUnknownArgument  15
+#define GenotickResult_ErrorInvalidSession   16
+#define GenotickResult_ErrorDuplicateSession 17
 #define GenotickResult_ErrorInsufficientData 18
 
 #ifdef __cplusplus
@@ -157,11 +157,11 @@ enum class EGenotickResult : TGenotickInt32
 	JavaClassMismatch     = GenotickResult_JavaClassMismatch,
 	JavaEnumMismatch      = GenotickResult_JavaEnumMismatch,
 	JavaException         = GenotickResult_JavaException,
-	ErrorNoError          = GenotickResult_ErrorNoError,
 	ErrorNoInput          = GenotickResult_ErrorNoInput,
 	ErrorNoOutput         = GenotickResult_ErrorNoOutput,
 	ErrorUnknownArgument  = GenotickResult_ErrorUnknownArgument,
 	ErrorInvalidSession   = GenotickResult_ErrorInvalidSession,
+	ErrorDuplicateSession = GenotickResult_ErrorDuplicateSession,
 	ErrorInsufficientData = GenotickResult_ErrorInsufficientData,
 };
 

@@ -26,6 +26,8 @@ int main(int argc, char** argv)
 		TGenotickInt32 version = pInstance->GetInterfaceVersion();
 
 		TGenotickInt32 sessionId = 0;
+		result = pInstance->CreateSession(sessionId);
+
 		TGenotickMainSettings mainSettings;
 		char buffer1[260] = { 0 };
 		char buffer2[260] = { 0 };
@@ -50,6 +52,7 @@ int main(int argc, char** argv)
 		startArgs.elementCount = GenotickArraySize(arguments);
 
 		result = pInstance->Start(sessionId, &startArgs);
+		result = pInstance->RemoveSession(sessionId);
 
 		GenotickSafeRelease(pInstance);
 	}
