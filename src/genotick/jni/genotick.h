@@ -55,14 +55,14 @@ private:
 	static EGenotickResult GENOTICK_CALL GetTimePoints(IGenotick* pThis, TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) {
 		return static_cast<const CGenotick*>(pThis)->GetTimePointsInternal(sessionId, ppTimePoints);
 	}
-	static EGenotickResult GENOTICK_CALL GetPredictions(IGenotick* pThis, TGenotickSessionId sessionId, IGenotickPredictions** ppPredictions) {
-		return static_cast<const CGenotick*>(pThis)->GetPredictionsInternal(sessionId, ppPredictions);
+	static EGenotickResult GENOTICK_CALL GetPredictions(IGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) {
+		return static_cast<const CGenotick*>(pThis)->GetPredictionsInternal(sessionId, assetName, ppPredictions);
 	}
 	static EGenotickResult GENOTICK_CALL GetNewestTimePoint(IGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) {
 		return static_cast<const CGenotick*>(pThis)->GetNewestTimePointInternal(sessionId, pTimePoint);
 	}
-	static EGenotickResult GENOTICK_CALL GetNewestPrediction(IGenotick* pThis, TGenotickSessionId sessionId, EGenotickPrediction* pPrediction) {
-		return static_cast<const CGenotick*>(pThis)->GetNewestPredictionInternal(sessionId, pPrediction);
+	static EGenotickResult GENOTICK_CALL GetNewestPrediction(IGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) {
+		return static_cast<const CGenotick*>(pThis)->GetNewestPredictionInternal(sessionId, assetName, pPrediction);
 	}
 	static EGenotickResult GENOTICK_CALL Release(IGenotick* pThis) {
 		return static_cast<const CGenotick*>(pThis)->ReleaseInternal();
@@ -77,9 +77,9 @@ private:
 	EGenotickResult SetAssetDataInternal(TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData) const;
 	EGenotickResult StartInternal(TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs) const;
 	EGenotickResult GetTimePointsInternal(TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) const;
-	EGenotickResult GetPredictionsInternal(TGenotickSessionId sessionId, IGenotickPredictions** ppPredictions) const;
+	EGenotickResult GetPredictionsInternal(TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) const;
 	EGenotickResult GetNewestTimePointInternal(TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) const;
-	EGenotickResult GetNewestPredictionInternal(TGenotickSessionId sessionId, EGenotickPrediction* pPrediction) const;
+	EGenotickResult GetNewestPredictionInternal(TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) const;
 	EGenotickResult ReleaseInternal() const;
 
 	template <class D, class S> void ToNative(D& dst, const S src) const {
@@ -94,19 +94,19 @@ private:
 	}
 
 	template <> void ToNative(TGenotickTimePoint& dst, const remote::CTimePoint::TObject src) const {
-		dst = static_cast<TGenotickTimePoint>(m_timePoint.getValue(src));
+		dst = static_cast<TGenotickTimePoint>(m_remoteTimePoint.getValue(src));
 	}
 
 	template <> void ToNative(EGenotickWeightMode& dst, const remote::CWeightMode::TObject src) const {
-		dst = EGenotickWeightMode::get_by_value(m_weightMode.GetEnumValue(src));
+		dst = EGenotickWeightMode::get_by_value(m_remoteWeightMode.GetEnumValue(src));
 	}
 
 	template <> void ToNative(EGenotickInheritedWeightMode& dst, const remote::CInheritedWeightMode::TObject src) const {
-		dst = EGenotickInheritedWeightMode::get_by_value(m_inheritedWeightMode.GetEnumValue(src));
+		dst = EGenotickInheritedWeightMode::get_by_value(m_remoteInheritedWeightMode.GetEnumValue(src));
 	}
 
 	template <> void ToNative(EGenotickChartMode& dst, const remote::CChartMode::TObject src) const {
-		dst = EGenotickChartMode::get_by_value(m_chartMode.GetEnumValue(src));
+		dst = EGenotickChartMode::get_by_value(m_remoteChartMode.GetEnumValue(src));
 	}
 
 	template <class D, class S> D ToJava(const S src) const {
@@ -119,38 +119,38 @@ private:
 	}
 
 	template <> remote::CTimePoint::TObject ToJava(const TGenotickTimePoint src) const {
-		return m_timePoint.New(static_cast<::jni::jlong>(src));
+		return m_remoteTimePoint.New(static_cast<::jni::jlong>(src));
 	}
 
 	template <> remote::CWeightMode::TObject ToJava(const EGenotickWeightMode src) const {
-		return m_weightMode.GetEnumObject(src.value());
+		return m_remoteWeightMode.GetEnumObject(src.value());
 	}
 
 	template <> remote::CInheritedWeightMode::TObject ToJava(const EGenotickInheritedWeightMode src) const {
-		return m_inheritedWeightMode.GetEnumObject(src.value());
+		return m_remoteInheritedWeightMode.GetEnumObject(src.value());
 	}
 
 	template <> remote::CChartMode::TObject ToJava(const EGenotickChartMode src) const {
-		return m_chartMode.GetEnumObject(src.value());
+		return m_remoteChartMode.GetEnumObject(src.value());
 	}
 
 	CLoaderFriend& m_loader;
 	JavaVM& m_javaVM;
 	JNIEnv& m_javaEnv;
 	
-	::jni::UniqueStringClass m_stringClass;
-	remote::CMainInterface m_mainInterface;
-	remote::CMainSettings m_mainSettings;
-	remote::CDataLines m_dataLines;
-	remote::CMainAppData m_mainAppData;
-	remote::CTimePoint m_timePoint;
-	remote::CTimePoints m_timePoints;
-	remote::CWeightMode m_weightMode;
-	remote::CInheritedWeightMode m_inheritedWeightMode;
-	remote::CChartMode m_chartMode;
-	remote::CErrorCode m_errorCode;
-	remote::CPrediction m_prediction;
-	remote::CPredictions m_predictions;
+	::jni::UniqueStringClass m_remoteString;
+	remote::CMainInterface m_remoteMainInterface;
+	remote::CMainSettings m_remoteMainSettings;
+	remote::CDataLines m_remoteDataLines;
+	remote::CMainAppData m_remoteMainAppData;
+	remote::CTimePoint m_remoteTimePoint;
+	remote::CTimePoints m_remoteTimePoints;
+	remote::CWeightMode m_remoteWeightMode;
+	remote::CInheritedWeightMode m_remoteInheritedWeightMode;
+	remote::CChartMode m_remoteChartMode;
+	remote::CErrorCode m_remoteErrorCode;
+	remote::CPrediction m_remotePrediction;
+	remote::CPredictions m_remotePredictions;
 };
 
 } // namespace jni

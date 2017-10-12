@@ -1,9 +1,10 @@
 
 #include "genotick.h"
 #include <genotick/jni/error.h>
-#include <genotick/loader.h>
+#include <genotick/jni/genotick_predictions.h>
+#include <genotick/jni/genotick_timepoints.h>
 #include <utils.h>
-#include <string>
+#include <cassert>
 
 #define MISMATCH_MESSAGE "Mismatching Data Type Found"
 static_assert(sizeof(TGenotickInt32) == sizeof(::jni::jint), MISMATCH_MESSAGE);
@@ -27,19 +28,19 @@ CGenotick::CGenotick(CLoader* pLoader, ::jni::JavaVM* pJavaVM, ::jni::JNIEnv* pJ
 	: m_loader(*static_cast<CLoaderFriend*>(pLoader))
 	, m_javaVM(*pJavaVM)
 	, m_javaEnv(*pJavaEnv)
-	, m_stringClass(::jni::StringClass::Find(m_javaEnv).NewGlobalRef(m_javaEnv))
-	, m_mainInterface(pJavaEnv)
-	, m_mainSettings(pJavaEnv)
-	, m_dataLines(pJavaEnv)
-	, m_mainAppData(pJavaEnv)
-	, m_timePoint(pJavaEnv)
-	, m_timePoints(pJavaEnv)
-	, m_weightMode(pJavaEnv)
-	, m_inheritedWeightMode(pJavaEnv)
-	, m_chartMode(pJavaEnv)
-	, m_errorCode(pJavaEnv)
-	, m_prediction(pJavaEnv)
-	, m_predictions(pJavaEnv)
+	, m_remoteString(::jni::StringClass::Find(m_javaEnv).NewGlobalRef(m_javaEnv))
+	, m_remoteMainInterface(pJavaEnv)
+	, m_remoteMainSettings(pJavaEnv)
+	, m_remoteDataLines(pJavaEnv)
+	, m_remoteMainAppData(pJavaEnv)
+	, m_remoteTimePoint(pJavaEnv)
+	, m_remoteTimePoints(pJavaEnv)
+	, m_remoteWeightMode(pJavaEnv)
+	, m_remoteInheritedWeightMode(pJavaEnv)
+	, m_remoteChartMode(pJavaEnv)
+	, m_remoteErrorCode(pJavaEnv)
+	, m_remotePrediction(pJavaEnv)
+	, m_remotePredictions(pJavaEnv)
 {
 	SGenotickFunctions& mutableFunctions = const_cast<SGenotickFunctions&>(functions);
 	mutableFunctions.GetInterfaceVersion = GetInterfaceVersion;
@@ -65,33 +66,33 @@ CGenotick::~CGenotick()
 
 TGenotickInt32 CGenotick::GetInterfaceVersionInternal() const
 {
-	return m_mainInterface.getInterfaceVersion();
+	return m_remoteMainInterface.getInterfaceVersion();
 }
 
 EGenotickResult CGenotick::CreateSessionInternal(TGenotickSessionId sessionId) const
 {
-	const remote::CErrorCode::TObject errorObject = m_mainInterface.createSession(sessionId);
-	return remote::ErrorCodeToGenotickResult(m_errorCode, errorObject);
+	const remote::CErrorCode::TObject errorObject = m_remoteMainInterface.createSession(sessionId);
+	return remote::ErrorCodeToGenotickResult(m_remoteErrorCode, errorObject);
 }
 
 EGenotickResult CGenotick::RemoveSessionInternal(TGenotickSessionId sessionId) const
 {
-	const remote::CErrorCode::TObject errorObject = m_mainInterface.clearSession(sessionId);
-	return remote::ErrorCodeToGenotickResult(m_errorCode, errorObject);
+	const remote::CErrorCode::TObject errorObject = m_remoteMainInterface.clearSession(sessionId);
+	return remote::ErrorCodeToGenotickResult(m_remoteErrorCode, errorObject);
 }
 
 EGenotickResult CGenotick::RemoveAllSessionsInternal() const
 {
-	m_mainInterface.clearSessions();
+	m_remoteMainInterface.clearSessions();
 	return EGenotickResult::Success;
 }
 
 #define GENOTICK_UNROLL_FIELDS_TO_NATIVE(TYPE, NAME) { \
-ToNative(pSettings->NAME, this->m_mainSettings.Get_##NAME(settingsObject)); }
+ToNative(pSettings->NAME, this->m_remoteMainSettings.Get_##NAME(settingsObject)); }
 
 #define GENOTICK_UNROLL_FIELDS_TO_JAVA(TYPE, NAME) { \
 auto value = ToJava<typename remote::CMainSettings::TYPE::FieldType>(pSettings->NAME); \
-this->m_mainSettings.Set_##NAME(settingsObject, value); }
+this->m_remoteMainSettings.Set_##NAME(settingsObject, value); }
 
 EGenotickResult CGenotick::GetSettingsInternal(TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) const
 {
@@ -100,7 +101,7 @@ EGenotickResult CGenotick::GetSettingsInternal(TGenotickSessionId sessionId, TGe
 
 	try
 	{
-		const remote::CMainSettings::TObject settingsObject = m_mainInterface.getSettings(sessionId);
+		const remote::CMainSettings::TObject settingsObject = m_remoteMainInterface.getSettings(sessionId);
 		if (settingsObject.Get() == nullptr)
 			return EGenotickResult::ErrorInvalidSession;
 
@@ -124,7 +125,7 @@ EGenotickResult CGenotick::ChangeSettingsInternal(TGenotickSessionId sessionId, 
 
 	try
 	{
-		const remote::CMainSettings::TObject settingsObject = m_mainInterface.getSettings(sessionId);
+		const remote::CMainSettings::TObject settingsObject = m_remoteMainInterface.getSettings(sessionId);
 		if (settingsObject.Get() == nullptr)
 			return EGenotickResult::ErrorInvalidSession;
 
@@ -158,15 +159,15 @@ EGenotickResult CGenotick::StartInternal(TGenotickSessionId sessionId, const TGe
 	try
 	{
 		const ::jni::jsize count = pArgs->elementCount;
-		::jni::StringArray args = ::jni::StringArray::New(m_javaEnv, count, *m_stringClass.get());
+		::jni::StringArray args = ::jni::StringArray::New(m_javaEnv, count, *m_remoteString.get());
 		for (::jni::jsize i = 0; i < count; ++i)
 		{
 			const char* parameter = pArgs->elements[i];
-			::jni::String newString = ::jni::Make<::jni::String>(m_javaEnv, parameter);
-			args.Set(m_javaEnv, i, newString);
+			::jni::String jniParameter = ::jni::Make<::jni::String>(m_javaEnv, parameter);
+			args.Set(m_javaEnv, i, jniParameter);
 		}
-		const remote::CErrorCode::TObject errorObject = m_mainInterface.start(sessionId, args);
-		return remote::ErrorCodeToGenotickResult(m_errorCode, errorObject);
+		const remote::CErrorCode::TObject errorObject = m_remoteMainInterface.start(sessionId, args);
+		return remote::ErrorCodeToGenotickResult(m_remoteErrorCode, errorObject);
 	}
 	catch (const ::jni::PendingJavaException& exception)
 	{
@@ -177,22 +178,52 @@ EGenotickResult CGenotick::StartInternal(TGenotickSessionId sessionId, const TGe
 
 EGenotickResult CGenotick::GetTimePointsInternal(TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) const
 {
-	return EGenotickResult::ErrorInvalidSession;
+	assert(ppTimePoints != nullptr);
+
+	const remote::CTimePoints::TObject object = m_remoteMainInterface.getTimePoints(sessionId);
+	if (object.Get() == nullptr)
+		return EGenotickResult::ErrorInvalidSession;
+
+	*ppTimePoints = new CGenotickTimePoints(object, m_remoteTimePoints, m_remoteTimePoint);
+	return EGenotickResult::Success;
 }
 
-EGenotickResult CGenotick::GetPredictionsInternal(TGenotickSessionId sessionId, IGenotickPredictions** ppPredictions) const
+EGenotickResult CGenotick::GetPredictionsInternal(TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) const
 {
-	return EGenotickResult::ErrorInvalidSession;
+	assert(ppPredictions != nullptr);
+
+	const ::jni::String jniAssetName = ::jni::Make<::jni::String>(m_javaEnv, assetName);
+	const remote::CPredictions::TObject object = m_remoteMainInterface.getPredictions(sessionId, jniAssetName);
+	if (object.Get() == nullptr)
+		return EGenotickResult::ErrorInvalidSession;
+
+	*ppPredictions = new CGenotickPredictions(object, m_remotePredictions, m_remotePrediction);
+	return EGenotickResult::Success;
 }
 
 EGenotickResult CGenotick::GetNewestTimePointInternal(TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) const
 {
-	return EGenotickResult::ErrorInvalidSession;
+	assert(pTimePoint != nullptr);
+
+	const remote::CTimePoint::TObject object = m_remoteMainInterface.getNewestTimePoint(sessionId);
+	if (object.Get() == nullptr)
+		return EGenotickResult::ErrorInvalidSession;
+
+	*pTimePoint = m_remoteTimePoint.getValue(object);
+	return EGenotickResult::Success;
 }
 
-EGenotickResult CGenotick::GetNewestPredictionInternal(TGenotickSessionId sessionId, EGenotickPrediction* pPrediction) const
+EGenotickResult CGenotick::GetNewestPredictionInternal(TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) const
 {
-	return EGenotickResult::ErrorInvalidSession;
+	assert(pPrediction != nullptr);
+
+	const ::jni::String jniAssetName = ::jni::Make<::jni::String>(m_javaEnv, assetName);
+	const remote::CPrediction::TObject object = m_remoteMainInterface.getNewestPrediction(sessionId, jniAssetName);
+	if (object.Get() == nullptr)
+		return EGenotickResult::ErrorInvalidSession;
+
+	*pPrediction = EGenotickPrediction::get_by_value(m_remotePrediction.getValue(object));
+	return EGenotickResult::Success;
 }
 
 

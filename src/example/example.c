@@ -52,6 +52,16 @@ int main(int argc, char** argv)
 		startArgs.elementCount = GENOTICK_ARRAY_SIZE(arguments);
 
 		result = pInstance->Start(pInstance, sessionId, &startArgs);
+
+		IGenotickTimePoints* pTimePoints = 0;
+		IGenotickPredictions* pPredictions = 0;
+		TGenotickTimePoint timePoint = 0;
+		EGenotickPrediction prediction = GenotickPrediction_Out;
+		result = pInstance->GetTimePoints(pInstance, sessionId, &pTimePoints);
+		result = pInstance->GetPredictions(pInstance, sessionId, "ASSET", &pPredictions);
+		result = pInstance->GetNewestTimePoint(pInstance, sessionId, &timePoint);
+		result = pInstance->GetNewestPrediction(pInstance, sessionId, "ASSET", &prediction);
+
 		result = pInstance->RemoveSession(pInstance, sessionId);
 
 		GENOTICK_SAFE_RELEASE(pInstance);

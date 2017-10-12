@@ -286,9 +286,9 @@ struct SGenotick
 	EGenotickResult GENOTICK_CALL SetAssetData(const struct SGenotick* pThis, TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData);
 	EGenotickResult GENOTICK_CALL Start(const struct SGenotick* pThis, TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs);
 	EGenotickResult GENOTICK_CALL GetTimePoints(const struct SGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoints** ppTimePoints);
-	EGenotickResult GENOTICK_CALL GetPredictions(const struct SGenotick* pThis, TGenotickSessionId sessionId, TGenotickPredictions** ppPredictions);
+	EGenotickResult GENOTICK_CALL GetPredictions(const struct SGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, TGenotickPredictions** ppPredictions);
 	EGenotickResult GENOTICK_CALL GetNewestTimePoint(const struct SGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint);
-	EGenotickResult GENOTICK_CALL GetNewestPrediction(const struct SGenotick* pThis, TGenotickSessionId sessionId, EGenotickPrediction* pPrediction);
+	EGenotickResult GENOTICK_CALL GetNewestPrediction(const struct SGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction);
 	EGenotickResult GENOTICK_CALL Release(const struct SGenotick* pThis);
 };
 
@@ -339,9 +339,9 @@ struct SGenotickFunctions
 	EGenotickResult (GENOTICK_CALL* SetAssetData)(IGenotick* pThis, TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData);
 	EGenotickResult (GENOTICK_CALL* Start)(IGenotick* pThis, TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs);
 	EGenotickResult (GENOTICK_CALL* GetTimePoints)(IGenotick* pThis, TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints);
-	EGenotickResult (GENOTICK_CALL* GetPredictions)(IGenotick* pThis, TGenotickSessionId sessionId, IGenotickPredictions** ppPredictions);
+	EGenotickResult (GENOTICK_CALL* GetPredictions)(IGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions);
 	EGenotickResult (GENOTICK_CALL* GetNewestTimePoint)(IGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint);
-	EGenotickResult (GENOTICK_CALL* GetNewestPrediction)(IGenotick* pThis, TGenotickSessionId sessionId, EGenotickPrediction* pPrediction);
+	EGenotickResult (GENOTICK_CALL* GetNewestPrediction)(IGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction);
 	EGenotickResult (GENOTICK_CALL* Release)(IGenotick* pThis);
 };
 
@@ -417,14 +417,14 @@ struct SGenotick
 	EGenotickResult GetTimePoints(TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) const {
 		return functions.GetTimePoints(this, sessionId, ppTimePoints);
 	}
-	EGenotickResult GetPredictions(TGenotickSessionId sessionId, IGenotickPredictions** ppPredictions) const {
-		return functions.GetPredictions(this, sessionId, ppPredictions);
+	EGenotickResult GetPredictions(TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) const {
+		return functions.GetPredictions(this, sessionId, assetName, ppPredictions);
 	}
 	EGenotickResult GetNewestTimePoint(TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) const {
 		return functions.GetNewestTimePoint(this, sessionId, pTimePoint);
 	}
-	EGenotickResult GetNewestPrediction(TGenotickSessionId sessionId, EGenotickPrediction* pPrediction) const {
-		return functions.GetNewestPrediction(this, sessionId, pPrediction);
+	EGenotickResult GetNewestPrediction(TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) const {
+		return functions.GetNewestPrediction(this, sessionId, assetName, pPrediction);
 	}
 	EGenotickResult Release() const {
 		return functions.Release(this);
