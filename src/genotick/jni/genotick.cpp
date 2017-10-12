@@ -56,7 +56,7 @@ CGenotick::CGenotick(CLoader* pLoader, ::jni::JavaVM* pJavaVM, ::jni::JNIEnv* pJ
 	mutableFunctions.GetNewestPrediction = GetNewestPrediction;
 	mutableFunctions.Release = Release;
 
-	utils::VerifyFunctionsStruct(functions);
+	::utils::VerifyFunctionsStruct(functions);
 }
 
 CGenotick::~CGenotick()

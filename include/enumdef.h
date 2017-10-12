@@ -31,6 +31,7 @@ private: \
 	enum_type m_value; \
 public: \
 	list(CUSTOM_ENUM_UNROLL_MEMBERS); \
+	constexpr clazz() : m_value(m_values[0]) {} \
 	constexpr clazz(enum_type value) : m_value(value) {} \
 	constexpr clazz(const class clazz& other) : clazz(other.m_value) {} \
 	constexpr static ordinal_type count() noexcept { \

@@ -12,19 +12,28 @@ struct SPredictionsTag { static constexpr auto Name() { return "com/alphatica/ge
 class CPredictions : public CClass<SPredictionsTag>
 {
 public:
-	using TGetMethod = ::jni::Method<TagType, CPrediction::TObject(::jni::jint /* index */)>;
+	using TElement = CPrediction;
+	using TElementObject = TElement::TObject;
+	using TGetMethod = ::jni::Method<TagType, TElementObject(::jni::jint /* index */)>;
+	using TSizeMethod = ::jni::Method<TagType, ::jni::jint()>;
 
 #define GENOTICK_CLASS_METHODS(f) \
 	f(TGetMethod, get) \
+	f(TSizeMethod, size) \
 
 	explicit CPredictions(::jni::JNIEnv* pJavaEnv)
 		: CClass<TagType>(pJavaEnv)
 		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{}
 
-	CPrediction::TObject get(const TObject& object, const ::jni::jint index) const
+	TElementObject get(const TObject& object, const ::jni::jint index) const
 	{
 		return object.Call(GetJavaEnv(), m_get, index);
+	}
+
+	::jni::jint size(const TObject& object) const
+	{
+		return object.Call(GetJavaEnv(), m_size);
 	}
 
 private:

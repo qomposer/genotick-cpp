@@ -2,16 +2,24 @@
 #pragma once
 
 #include <genotick/interface.h>
-#include <genotick/jni/jni_helpers.h>
+#include <genotick/jni/genotick_container.h>
+#include <genotick/jni/remote/timepoints.h>
 
 namespace genotick {
 namespace jni {
 
-class CGenotickTimePoints : public IGenotickTimePointsDestructable
+class CGenotickTimePoints
+	: public IGenotickTimePoints
+	, public CGenotickContainer<TGenotickTimePoint, remote::CTimePoints>
 {
+private:
+	using TRemoteValue = typename TRemoteElement::TGetValueMethod::ReturnType;
+
 public:
-	CGenotickTimePoints(::jni::JNIEnv* pJavaEnv);
-	virtual ~CGenotickTimePoints();
+	CGenotickTimePoints(
+		const TRemoteContainerObject& remoteContainerObject,
+		const TRemoteContainer& remoteContainer,
+		const TRemoteElement& remoteElement);
 
 private:
 	static TGenotickBoolean GENOTICK_CALL FindIndex(IGenotickTimePoints* pThis, TGenotickTimePoint timePoint, TGenotickInt32* pIndex) {
@@ -27,13 +35,8 @@ private:
 		return static_cast<const CGenotickTimePoints*>(pThis)->ReleaseInternal();
 	}
 
-	TGenotickBoolean FindIndexInternal(TGenotickTimePoint timePoint, TGenotickInt32* pIndex) const;
-	TGenotickTimePoint GetElementInternal(TGenotickInt32 index) const;
-	TGenotickSize GetElementCountInternal() const;
-	void ReleaseInternal() const;
-
 private:
-	JNIEnv& m_javaEnv;
+	virtual ~CGenotickTimePoints() {}
 };
 
 } // namespace jni

@@ -210,6 +210,9 @@
     <ClInclude Include="..\src\genotick\jni\genotick_timepoints.h">
       <Filter>src\genotick\jni</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\genotick_container.h">
+      <Filter>src\genotick\jni</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\dllmain.cpp">

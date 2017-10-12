@@ -2,16 +2,24 @@
 #pragma once
 
 #include <genotick/interface.h>
-#include <genotick/jni/jni_helpers.h>
+#include <genotick/jni/genotick_container.h>
+#include <genotick/jni/remote/predictions.h>
 
 namespace genotick {
 namespace jni {
 
-class CGenotickPredictions : public IGenotickPredictionsDestructable
+class CGenotickPredictions
+	: public IGenotickPredictions
+	, public CGenotickContainer<EGenotickPrediction, remote::CPredictions>
 {
+private:
+	using TRemoteValue = typename TRemoteElement::TGetValueMethod::ReturnType;
+
 public:
-	CGenotickPredictions(::jni::JNIEnv* pJavaEnv);
-	virtual ~CGenotickPredictions();
+	CGenotickPredictions(
+		const TRemoteContainerObject& remoteContainerObject,
+		const TRemoteContainer& remoteContainer,
+		const TRemoteElement& remoteElement);
 
 private:
 	static EGenotickPrediction GENOTICK_CALL GetElement(IGenotickPredictions* pThis, TGenotickInt32 index) {
@@ -24,12 +32,8 @@ private:
 		return static_cast<const CGenotickPredictions*>(pThis)->ReleaseInternal();
 	}
 
-	EGenotickPrediction GetElementInternal(TGenotickInt32 index) const;
-	TGenotickSize GetElementCountInternal() const;
-	void ReleaseInternal() const;
-
 private:
-	JNIEnv& m_javaEnv;
+	virtual ~CGenotickPredictions() {}
 };
 
 } // namespace jni

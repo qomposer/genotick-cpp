@@ -13,10 +13,10 @@ struct SPredictionTag { static constexpr auto Name() { return "com/alphatica/gen
 class CPrediction : public CEnum<SPredictionTag, EGenotickPrediction>
 {
 public:
-	using TValueMethod = ::jni::Method<TagType, ::jni::jint()>;
+	using TGetValueMethod = ::jni::Method<TagType, ::jni::jint()>;
 
 #define GENOTICK_CLASS_METHODS(f) \
-	f(TValueMethod, getValue) \
+	f(TGetValueMethod, getValue) \
 
 	explicit CPrediction(::jni::JNIEnv* pJavaEnv)
 		: CEnum<TagType, TEnumClass>(pJavaEnv)
@@ -25,14 +25,14 @@ public:
 		VerifyEnumValues();
 	}
 
-	::jni::jint value(const TObject& object) const
+	::jni::jint getValue(const TObject& object) const
 	{
 		return object.Call(GetJavaEnv(), m_getValue);
 	}
 
 	::jni::jint GetEnumValue(const TObject& object) const override final
 	{
-		return value(object);
+		return getValue(object);
 	}
 
 	TObject GetEnumObject(const ::jni::jint value) const override final

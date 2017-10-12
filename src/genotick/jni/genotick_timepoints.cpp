@@ -1,12 +1,21 @@
 
 #include "genotick_timepoints.h"
-#include <utils.h>
+#include <genotick/jni/remote/timepoint.h>
+#include <genotick/jni/remote/timepoints.h>
+#include <genotick/jni/remote/main_interface.h>
 
 namespace genotick {
 namespace jni {
 
-CGenotickTimePoints::CGenotickTimePoints(::jni::JNIEnv* pJavaEnv)
-	: m_javaEnv(*pJavaEnv)
+CGenotickTimePoints::CGenotickTimePoints(
+	const TRemoteContainerObject& remoteContainerObject,
+	const TRemoteContainer& remoteContainer,
+	const TRemoteElement& remoteElement)
+	: CGenotickContainer<TNativeElement, TRemoteContainer>(
+		remoteContainerObject,
+		remoteContainer,
+		[&remoteElement](TNativeElement& nativeElement, const TRemoteElementObject& remoteElementObject)
+			{ nativeElement = remoteElement.getValue(remoteElementObject); })
 {
 	SGenotickTimePointsFunctions& mutableFunctions = const_cast<SGenotickTimePointsFunctions&>(functions);
 	mutableFunctions.FindIndex = FindIndex;
@@ -14,31 +23,7 @@ CGenotickTimePoints::CGenotickTimePoints(::jni::JNIEnv* pJavaEnv)
 	mutableFunctions.GetElementCount = GetElementCount;
 	mutableFunctions.Release = Release;
 
-	utils::VerifyFunctionsStruct(functions);
-}
-
-CGenotickTimePoints::~CGenotickTimePoints()
-{
-}
-
-TGenotickBoolean CGenotickTimePoints::FindIndexInternal(TGenotickTimePoint timePoint, TGenotickInt32* pIndex) const
-{
-	return GenotickFalse;
-}
-
-TGenotickTimePoint CGenotickTimePoints::GetElementInternal(TGenotickInt32 index) const
-{
-	return 0;
-}
-
-TGenotickSize CGenotickTimePoints::GetElementCountInternal() const
-{
-	return 0;
-}
-
-void CGenotickTimePoints::ReleaseInternal() const
-{
-
+	::utils::VerifyFunctionsStruct(functions);
 }
 
 } // namespace jni

@@ -12,26 +12,28 @@ struct STimePointsTag { static constexpr auto Name() { return "com/alphatica/gen
 class CTimePoints : public CClass<STimePointsTag>
 {
 public:
-	using TGetMethod = ::jni::Method<TagType, CTimePoint::TObject(::jni::jint /* index */)>;
-	using TGetIndexMethod = ::jni::Method<TagType, ::jni::jint(CTimePoint::TObject)>;
+	using TElement = CTimePoint;
+	using TElementObject = TElement::TObject;
+	using TGetMethod = ::jni::Method<TagType, TElementObject(::jni::jint /* index */)>;
+	using TSizeMethod = ::jni::Method<TagType, ::jni::jint()>;
 
 #define GENOTICK_CLASS_METHODS(f) \
 	f(TGetMethod, get) \
-	f(TGetIndexMethod, getIndex) \
+	f(TSizeMethod, size) \
 
 	explicit CTimePoints(::jni::JNIEnv* pJavaEnv)
 		: CClass<TagType>(pJavaEnv)
 		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{}
 
-	CTimePoint::TObject get(const TObject& object, const ::jni::jint index) const
+	TElementObject get(const TObject& object, const ::jni::jint index) const
 	{
 		return object.Call(GetJavaEnv(), m_get, index);
 	}
 
-	::jni::jint getIndex(const TObject& object, const CTimePoint::TObject& timePoint) const
+	::jni::jint size(const TObject& object) const
 	{
-		return object.Call(GetJavaEnv(), m_getIndex, timePoint);
+		return object.Call(GetJavaEnv(), m_size);
 	}
 
 private:
