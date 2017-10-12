@@ -41,7 +41,7 @@ void CEnum<Tag, Enum>::VerifyEnumValues()
 	const TEnumClass::ordinal_type count = TEnumClass::count();
 	for (TEnumClass::ordinal_type i = 0; i < count; ++i)
 	{
-		const TEnumClass& instance = TEnumClass::getByOrdinal(i);
+		const TEnumClass& instance = TEnumClass::get_by_ordinal(i);
 		VerifyEnumValue(instance.value(), instance.meta().javaValueName);
 	}
 }
@@ -67,7 +67,7 @@ void CEnum<Tag, Enum>::VerifyEnumBasics()
 	VerifyEnumValueCount(count);
 	for (TEnumClass::ordinal_type i = 0; i < count; ++i)
 	{
-		const TEnumClass& instance = TEnumClass::getByOrdinal(i);
+		const TEnumClass& instance = TEnumClass::get_by_ordinal(i);
 		VerifyEnumOrdinal(instance.ordinal(), instance.meta().javaValueName);
 	}
 }

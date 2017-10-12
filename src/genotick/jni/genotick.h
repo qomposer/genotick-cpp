@@ -98,15 +98,15 @@ private:
 	}
 
 	template <> void ToNative(EGenotickWeightMode& dst, const remote::CWeightMode::TObject src) const {
-		dst = EGenotickWeightMode::getByValue(m_weightMode.GetEnumValue(src));
+		dst = EGenotickWeightMode::get_by_value(m_weightMode.GetEnumValue(src));
 	}
 
 	template <> void ToNative(EGenotickInheritedWeightMode& dst, const remote::CInheritedWeightMode::TObject src) const {
-		dst = EGenotickInheritedWeightMode::getByValue(m_inheritedWeightMode.GetEnumValue(src));
+		dst = EGenotickInheritedWeightMode::get_by_value(m_inheritedWeightMode.GetEnumValue(src));
 	}
 
 	template <> void ToNative(EGenotickChartMode& dst, const remote::CChartMode::TObject src) const {
-		dst = EGenotickChartMode::getByValue(m_chartMode.GetEnumValue(src));
+		dst = EGenotickChartMode::get_by_value(m_chartMode.GetEnumValue(src));
 	}
 
 	template <class D, class S> D ToJava(const S src) const {

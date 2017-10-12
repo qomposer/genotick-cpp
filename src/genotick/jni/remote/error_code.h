@@ -29,7 +29,7 @@ DEFINE_CUSTOM_ENUM_CLASS(EErrorCode, ::jni::jint, GENOTICK_ENUM_ERROR_CODE, SGen
 
 inline EGenotickResult ErrorCodeToGenotickResult(const ::jni::jint error)
 {
-	return EErrorCode::getByValue(error).meta().result;
+	return EErrorCode::get_by_value(error).meta().result;
 }
 
 struct SErrorCodeTag { static constexpr auto Name() { return "com/alphatica/genotick/genotick/ErrorCode"; } };
