@@ -218,23 +218,26 @@ struct SGenotickMainSettings
 	EGenotickChartMode  chartMode;
 };
 
-struct SGenotickDataColumns
+struct SGenotickDataPoint
 {
-	TGenotickTimePoint     time           GENOTICK_ZERO_INIT;
-	TGenotickDouble        open           GENOTICK_ZERO_INIT;
-	TGenotickDouble        high           GENOTICK_ZERO_INIT;
-	TGenotickDouble        low            GENOTICK_ZERO_INIT;
-	TGenotickDouble        close          GENOTICK_ZERO_INIT;
-	TGenotickDouble        volume         GENOTICK_ZERO_INIT;
-	const TGenotickDouble* otherData      GENOTICK_ZERO_INIT;
-	unsigned int           otherDataCount GENOTICK_ZERO_INIT;
+	TGenotickTimePoint     time             GENOTICK_ZERO_INIT;
+	TGenotickDouble        open             GENOTICK_ZERO_INIT;
+	TGenotickDouble        high             GENOTICK_ZERO_INIT;
+	TGenotickDouble        low              GENOTICK_ZERO_INIT;
+	TGenotickDouble        close            GENOTICK_ZERO_INIT;
+	TGenotickDouble        volume           GENOTICK_ZERO_INIT;
+	const TGenotickDouble* otherColumns     GENOTICK_ZERO_INIT;
+	TGenotickSize          otherColumnCount GENOTICK_ZERO_INIT;
 };
+
+const TGenotickSize GenotickMinColumnCount = 6;
 
 struct SGenotickAssetData
 {
-	const char*                        assetName   GENOTICK_ZERO_INIT;
-	const struct SGenotickDataColumns* columns     GENOTICK_ZERO_INIT;
-	TGenotickSize                      columnCount GENOTICK_ZERO_INIT;
+	const char*                      assetName              GENOTICK_ZERO_INIT;
+	const struct SGenotickDataPoint* dataPoints             GENOTICK_ZERO_INIT;
+	TGenotickSize                    dataPointCount         GENOTICK_ZERO_INIT;
+	TGenotickBoolean                 firstDataPointIsNewest GENOTICK_ZERO_INIT;
 };
 
 struct SGenotickStartArgs
@@ -250,7 +253,7 @@ struct SGenotickLoadSettings
 };
 
 typedef struct SGenotickMainSettings TGenotickMainSettings;
-typedef struct SGenotickDataColumns  TGenotickDataColumns;
+typedef struct SGenotickDataPoint    TGenotickDataPoint;
 typedef struct SGenotickAssetData    TGenotickAssetData;
 typedef struct SGenotickStartArgs    TGenotickStartArgs;
 typedef struct SGenotickLoadSettings TGenotickLoadSettings;
