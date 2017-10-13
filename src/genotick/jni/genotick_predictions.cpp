@@ -13,7 +13,7 @@ CGenotickPredictions::CGenotickPredictions(
 		remoteContainerObject,
 		remoteContainer,
 		[&remoteElement](TNativeElement& nativeElement, const TRemoteElementObject& remoteElementObject)
-			{ nativeElement = TNativeElement::get_by_value(remoteElement.getValue(remoteElementObject)); })
+			{ nativeElement = TNativeElement::get_by_value(remoteElement.GetEnumValue(remoteElementObject)); })
 {
 	SGenotickPredictionsFunctions& mutableFunctions = const_cast<SGenotickPredictionsFunctions&>(functions);
 	mutableFunctions.GetElement = GetElement;

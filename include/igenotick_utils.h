@@ -7,7 +7,7 @@
 #ifdef __cplusplus
 
 template <class T>
-inline void GenotickSafeRelease(T* p) {
+inline void GenotickSafeRelease(T*& p) {
 	if (p) {
 		p->Release();
 		p = nullptr;
@@ -35,7 +35,9 @@ inline void GenotickSetConstString(TGenotickString& dst, const char* src)
 
 #else
 
+#ifndef ZORRO_LITE_C
 #define GENOTICK_SAFE_RELEASE(p) if(p) { p->Release(p); p = 0; }
+#endif
 #define GENOTICK_ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
 inline void GenotickSetString(TGenotickString* dst, char* src, unsigned int capacity)
@@ -50,6 +52,14 @@ inline void GenotickSetConstString(TGenotickString* dst, const char* src)
 	dst->capacity = 0;
 }
 
-#endif
+#ifdef ZORRO_LITE_C
+inline void GenotickSetTimePoint(TGenotickTimePoint* timePoint, long lo, long hi)
+{
+	timePoint->lo = lo;
+	timePoint->hi = hi;
+}
+#endif // ZORRO_LITE_C
+
+#endif // __cplusplus
 
 #endif // I_GENOTICK_UTILS_H

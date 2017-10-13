@@ -28,6 +28,8 @@
 #define GENOTICK_ZERO_INIT
 #endif
 
+#pragma pack(push, 4)
+
 #ifdef ZORRO_LITE_C
 struct longlong
 {
@@ -184,38 +186,39 @@ struct SGenotickMainSettings
 		, chartMode(EGenotickChartMode::None)
 	{}
 #endif
-	TGenotickTimePoint  startTimePoint                    GENOTICK_ZERO_INIT;
-	TGenotickTimePoint  endTimePoint                      GENOTICK_ZERO_INIT;
-	TGenotickInt32      populationDesiredSize             GENOTICK_ZERO_INIT;
-	TGenotickString     populationDAO                     GENOTICK_ZERO_INIT;
-	TGenotickBoolean    performTraining                   GENOTICK_ZERO_INIT;
-	TGenotickString     dataDirectory                     GENOTICK_ZERO_INIT;
-	TGenotickInt32      minimumRobotInstructions          GENOTICK_ZERO_INIT;
-	TGenotickInt32      maximumRobotInstructions          GENOTICK_ZERO_INIT;
-	TGenotickInt32      maximumProcessorInstructionFactor GENOTICK_ZERO_INIT;
 	TGenotickDouble     maximumDeathByAge                 GENOTICK_ZERO_INIT;
 	TGenotickDouble     maximumDeathByWeight              GENOTICK_ZERO_INIT;
 	TGenotickDouble     probabilityOfDeathByAge           GENOTICK_ZERO_INIT;
 	TGenotickDouble     probabilityOfDeathByWeight        GENOTICK_ZERO_INIT;
-	EGenotickWeightMode weightMode;
 	TGenotickDouble     weightExponent                    GENOTICK_ZERO_INIT;
 	TGenotickDouble     inheritedChildWeight              GENOTICK_ZERO_INIT;
-	EGenotickInheritedWeightMode inheritedChildWeightMode;
-	TGenotickInt32      maximumDataOffset                 GENOTICK_ZERO_INIT;
-	TGenotickInt32      protectRobotsUntilOutcomes        GENOTICK_ZERO_INIT;
 	TGenotickDouble     newInstructionProbability         GENOTICK_ZERO_INIT;
 	TGenotickDouble     instructionMutationProbability    GENOTICK_ZERO_INIT;
 	TGenotickDouble     skipInstructionProbability        GENOTICK_ZERO_INIT;
-	TGenotickInt32      minimumOutcomesToAllowBreeding    GENOTICK_ZERO_INIT;
-	TGenotickInt32      minimumOutcomesBetweenBreeding    GENOTICK_ZERO_INIT;
-	TGenotickBoolean    killNonPredictingRobots           GENOTICK_ZERO_INIT;
 	TGenotickDouble     randomRobotsAtEachUpdate          GENOTICK_ZERO_INIT;
 	TGenotickDouble     protectBestRobots                 GENOTICK_ZERO_INIT;
-	TGenotickBoolean    requireSymmetricalRobots          GENOTICK_ZERO_INIT;
 	TGenotickDouble     resultThreshold                   GENOTICK_ZERO_INIT;
-	TGenotickInt32      ignoreColumns                     GENOTICK_ZERO_INIT;
+	TGenotickTimePoint  startTimePoint                    GENOTICK_ZERO_INIT;
+	TGenotickTimePoint  endTimePoint                      GENOTICK_ZERO_INIT;
 	TGenotickInt64      randomSeed                        GENOTICK_ZERO_INIT;
-	EGenotickChartMode  chartMode;
+	TGenotickString     dataDirectory                     GENOTICK_ZERO_INIT;
+	TGenotickString     populationDAO                     GENOTICK_ZERO_INIT;
+	TGenotickInt32      populationDesiredSize             GENOTICK_ZERO_INIT;
+	TGenotickInt32      minimumRobotInstructions          GENOTICK_ZERO_INIT;
+	TGenotickInt32      maximumRobotInstructions          GENOTICK_ZERO_INIT;
+	TGenotickInt32      maximumProcessorInstructionFactor GENOTICK_ZERO_INIT;
+	TGenotickInt32      maximumDataOffset                 GENOTICK_ZERO_INIT;
+	TGenotickInt32      protectRobotsUntilOutcomes        GENOTICK_ZERO_INIT;
+	TGenotickInt32      minimumOutcomesToAllowBreeding    GENOTICK_ZERO_INIT;
+	TGenotickInt32      minimumOutcomesBetweenBreeding    GENOTICK_ZERO_INIT;
+	TGenotickInt32      ignoreColumns                     GENOTICK_ZERO_INIT;
+	EGenotickWeightMode          weightMode;
+	EGenotickInheritedWeightMode inheritedChildWeightMode;
+	EGenotickChartMode           chartMode;
+	TGenotickBoolean    performTraining                   GENOTICK_ZERO_INIT;
+	TGenotickBoolean    killNonPredictingRobots           GENOTICK_ZERO_INIT;
+	TGenotickBoolean    requireSymmetricalRobots          GENOTICK_ZERO_INIT;
+	TGenotickByte       padding[1]                        GENOTICK_ZERO_INIT;
 };
 
 struct SGenotickDataPoint
@@ -238,6 +241,7 @@ struct SGenotickAssetData
 	const struct SGenotickDataPoint* dataPoints             GENOTICK_ZERO_INIT;
 	TGenotickSize                    dataPointCount         GENOTICK_ZERO_INIT;
 	TGenotickBoolean                 firstDataPointIsNewest GENOTICK_ZERO_INIT;
+	TGenotickByte                    padding[3]             GENOTICK_ZERO_INIT;
 };
 
 struct SGenotickStartArgs
@@ -288,8 +292,8 @@ struct SGenotick
 	EGenotickResult GENOTICK_CALL ChangeSettings(const struct SGenotick* pThis, TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings);
 	EGenotickResult GENOTICK_CALL SetAssetData(const struct SGenotick* pThis, TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData);
 	EGenotickResult GENOTICK_CALL Start(const struct SGenotick* pThis, TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs);
-	EGenotickResult GENOTICK_CALL GetTimePoints(const struct SGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoints** ppTimePoints);
-	EGenotickResult GENOTICK_CALL GetPredictions(const struct SGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, TGenotickPredictions** ppPredictions);
+	EGenotickResult GENOTICK_CALL GetTimePoints(const struct SGenotick* pThis, TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints);
+	EGenotickResult GENOTICK_CALL GetPredictions(const struct SGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions);
 	EGenotickResult GENOTICK_CALL GetNewestTimePoint(const struct SGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint);
 	EGenotickResult GENOTICK_CALL GetNewestPrediction(const struct SGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction);
 	EGenotickResult GENOTICK_CALL Release(const struct SGenotick* pThis);
@@ -453,6 +457,8 @@ GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL LoadGenotick(IGenotick**
 #ifdef __cplusplus
 }
 #endif
+
+#pragma pack(pop)
 
 #undef GENOTICK_ZERO_INIT
 

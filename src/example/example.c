@@ -87,6 +87,8 @@ int main(int argc, char** argv)
 
 		result = pInstance->RemoveSession(pInstance, sessionId);
 
+		GENOTICK_SAFE_RELEASE(pTimePoints);
+		GENOTICK_SAFE_RELEASE(pPredictions);
 		GENOTICK_SAFE_RELEASE(pInstance);
 	}
 
