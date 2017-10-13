@@ -21,7 +21,7 @@ public:
 		const TRemoteElement& remoteElement);
 
 private:
-	static EGenotickPrediction GENOTICK_CALL GetElement(IGenotickPredictions* pThis, TGenotickInt32 index) {
+	static EGenotickPrediction GENOTICK_CALL GetElement(IGenotickPredictions* pThis, TGenotickSize index) {
 		return static_cast<const CGenotickPredictions*>(pThis)->GetElementInternal(index);
 	}
 	static TGenotickSize GENOTICK_CALL GetElementCount(IGenotickPredictions* pThis) {

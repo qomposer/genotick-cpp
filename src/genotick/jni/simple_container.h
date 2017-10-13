@@ -31,18 +31,18 @@ protected:
 		m_container.resize(size);
 	}
 
-	inline void Set(TGenotickInt32 index, TElement element)
+	inline void Set(TGenotickSize index, const TElement& element)
 	{
 		m_container[index] = element;
 	}
 
 	template <class TForeignElement, class TAssignPred>
-	inline void Set(TGenotickInt32 index, TForeignElement element, const TAssignPred& AssignPred)
+	inline void Set(TGenotickSize index, const TForeignElement& element, const TAssignPred& AssignPred)
 	{
 		AssignPred(m_container[index], element);
 	}
 
-	inline TGenotickBoolean FindIndexInternal(TElement element, TGenotickInt32* pIndex) const
+	inline TGenotickBoolean FindIndexInternal(TElement element, TGenotickSize* pIndex) const
 	{
 		assert(pIndex != nullptr);
 		const TConstIterator first = m_container.cbegin();
@@ -51,13 +51,13 @@ protected:
 		if (it != last)
 		{
 			const TDifferenceType index = ::std::distance(first, it);
-			*pIndex = static_cast<TGenotickInt32>(index);
+			*pIndex = static_cast<TGenotickSize>(index);
 			return GenotickTrue;
 		}
 		return GenotickFalse;
 	}
 
-	inline TElement GetElementInternal(TGenotickInt32 index) const
+	inline TElement GetElementInternal(TGenotickSize index) const
 	{
 		return m_container[index];
 	}

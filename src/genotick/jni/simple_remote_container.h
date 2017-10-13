@@ -26,10 +26,10 @@ protected:
 		const TRemoteContainer& remoteContainer,
 		const TAssignPred& AssignPred)
 	{
-		const size_t size = static_cast<size_t>(remoteContainer.size(remoteContainerObject));
+		const TGenotickSize size = static_cast<TGenotickSize>(remoteContainer.size(remoteContainerObject));
 		Resize(size);
 
-		for (size_t index = 0; index < size; ++index)
+		for (TGenotickSize index = 0; index < size; ++index)
 		{
 			const TRemoteElementObject remoteElementObject = remoteContainer.get(remoteContainerObject, index);
 			Set(index, remoteElementObject, AssignPred);

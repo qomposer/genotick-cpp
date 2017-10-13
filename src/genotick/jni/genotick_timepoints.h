@@ -21,10 +21,10 @@ public:
 		const TRemoteElement& remoteElement);
 
 private:
-	static TGenotickBoolean GENOTICK_CALL FindIndex(IGenotickTimePoints* pThis, TGenotickTimePoint timePoint, TGenotickInt32* pIndex) {
+	static TGenotickBoolean GENOTICK_CALL FindIndex(IGenotickTimePoints* pThis, TGenotickTimePoint timePoint, TGenotickSize* pIndex) {
 		return static_cast<const CGenotickTimePoints*>(pThis)->FindIndexInternal(timePoint, pIndex);
 	}
-	static TGenotickTimePoint GENOTICK_CALL GetElement(IGenotickTimePoints* pThis, TGenotickInt32 index) {
+	static TGenotickTimePoint GENOTICK_CALL GetElement(IGenotickTimePoints* pThis, TGenotickSize index) {
 		return static_cast<const CGenotickTimePoints*>(pThis)->GetElementInternal(index);
 	}
 	static TGenotickSize GENOTICK_CALL GetElementCount(IGenotickTimePoints* pThis) {
