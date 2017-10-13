@@ -301,23 +301,35 @@ struct SGenotick
 
 typedef const struct SGenotick IGenotick;
 
+struct SGenotickList
+{
+	IGenotick*    (GENOTICK_CALL* GetElement)(const struct SGenotickList* pThis, TGenotickSize index);
+	TGenotickSize (GENOTICK_CALL* GetElementCount)(const struct SGenotickList* pThis);
+	void          (GENOTICK_CALL* Release)(const struct SGenotickList* pThis);
+};
+
+typedef const struct SGenotickList IGenotickList;
+
 #else
 
-struct SGenotickFunctions;
-struct SGenotick;
 struct SGenotickTimePointsFunctions;
 struct SGenotickTimePoints;
 struct SGenotickPredictionsFunctions;
 struct SGenotickPredictions;
-
+struct SGenotickFunctions;
+struct SGenotick;
+struct SGenotickListFunctions;
+struct SGenotickList;
 #ifdef __cplusplus
-typedef const struct SGenotick IGenotick;
 typedef const struct SGenotickTimePoints IGenotickTimePoints;
 typedef const struct SGenotickPredictions IGenotickPredictions;
+typedef const struct SGenotick IGenotick;
+typedef const struct SGenotickList IGenotickList;
 #else
-typedef const struct SGenotickFunctions IGenotick;
 typedef const struct SGenotickTimePointsFunctions IGenotickTimePoints;
 typedef const struct SGenotickPredictionsFunctions IGenotickPredictions;
+typedef const struct SGenotickFunctions IGenotick;
+typedef const struct SGenotickListFunctions IGenotickList;
 #endif
 
 struct SGenotickTimePointsFunctions
@@ -350,6 +362,13 @@ struct SGenotickFunctions
 	EGenotickResult (GENOTICK_CALL* GetNewestTimePoint)(IGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint);
 	EGenotickResult (GENOTICK_CALL* GetNewestPrediction)(IGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction);
 	EGenotickResult (GENOTICK_CALL* Release)(IGenotick* pThis);
+};
+
+struct SGenotickListFunctions
+{
+	IGenotick*    (GENOTICK_CALL* GetElement)(IGenotickList* pThis, TGenotickSize index);
+	TGenotickSize (GENOTICK_CALL* GetElementCount)(IGenotickList* pThis);
+	void          (GENOTICK_CALL* Release)(IGenotickList* pThis);
 };
 
 #ifdef __cplusplus
@@ -441,6 +460,24 @@ protected:
 	~SGenotick() {}
 };
 
+struct SGenotickList
+{
+	const struct SGenotickListFunctions functions;
+
+	IGenotick* GetElement(TGenotickSize index) const {
+		return functions.GetElement(this, index);
+	}
+	TGenotickSize GetElementCount() const {
+		return functions.GetElementCount(this);
+	}
+	void Release() const {
+		return functions.Release(this);
+	}
+protected:
+	SGenotickList() : functions{ 0 } {}
+	~SGenotickList() {}
+};
+
 #endif // __cplusplus
 
 #endif // ZORRO_LITE_C
@@ -449,10 +486,17 @@ protected:
 extern "C" {
 #endif
 
+// This function attempts to load a new Java VM and create a new Genotick instance.
 // Unfortunately as of Java 8, JNI allows for one JavaVM instance per process only - ever.
-// After releasing a JavaVM, you cannot even start a new one (shame).
+// After releasing a JavaVM, you cannot even start a new one.
 // So keep the returned instance sacred and use it until the process dies.
+// Do not bother calling IGenotick::Release() at any time.
 GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL LoadGenotick(IGenotick** ppInstance, const TGenotickLoadSettings* pSettings);
+
+// If you use a platform where you cannot keep hold of a IGenotick instance
+// from one test run to another while the process itself remains alive,
+// then use this function to retrieve previously created Genotick instance(s).
+GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GetGenotickInstances(IGenotickList** ppInstances, const TGenotickLoadSettings* pSettings);
 
 #ifdef __cplusplus
 }

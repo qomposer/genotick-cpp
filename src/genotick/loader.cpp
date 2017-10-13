@@ -3,9 +3,9 @@
 #include <genotick/jni/genotick.h>
 #include <genotick/jni/error.h>
 #include <genotick/jni/exceptions.h>
+#include <genotick/jni/genotick_list.h>
 #include <utils.h>
 #include <utf8.h>
-#include <array>
 #include <assert.h>
 
 namespace genotick {
@@ -29,66 +29,148 @@ CLoader::CLoader()
 
 CLoader::~CLoader()
 {
-	ReleaseAllJvmInstances();
+	ReleaseAllInstances();
 }
 
-EGenotickResult CLoader::LoadGenotick(IGenotick** ppInstance, const SGenotickLoadSettings* pSettings)
+EGenotickResult CLoader::LoadGenotick(IGenotick** ppInstance, const TGenotickLoadSettings* pSettings)
 {
 	if (!ppInstance || !pSettings)
 		return EGenotickResult::InvalidArgument;
 
 	EGenotickResult result = LoadJvmModule(pSettings->utf8_jvmDllPath);
-	if (result == EGenotickResult::Success)
-	{
-		const std::string javaClassPathOption = MakeJavaOptionString("-Djava.class.path", pSettings->utf8_javaClassPath);
+	if (result != EGenotickResult::Success)
+		return result;
 
-		JavaVM* pJvm = nullptr;
-		JNIEnv* pEnv = nullptr;
-		JavaVMInitArgs vm_args = { 0 };
-		JavaVMOption options[] = { const_cast<char*>(javaClassPathOption.c_str()) };
-		vm_args.version = JNI_VERSION_1_8;
-		vm_args.nOptions = utils::GetArraySize(options);
-		vm_args.options = options;
-		vm_args.ignoreUnrecognized = false;
+	const std::string javaClassPathOption = MakeJavaOptionString("-Djava.class.path", pSettings->utf8_javaClassPath);
 
-		const ::jni::jint jniResult = JNI_CreateJavaVM_FuncPtr(&pJvm, reinterpret_cast<void**>(&pEnv), &vm_args);
-		result = ::genotick::jni::JniErrorToGenotickResult(jniResult);
+	JavaVM* pJavaVM = nullptr;
+	JNIEnv* pJavaEnv = nullptr;
+	JavaVMInitArgs vm_args = { 0 };
+	JavaVMOption options[] = { const_cast<char*>(javaClassPathOption.c_str()) };
+	vm_args.version = JNI_VERSION_1_8;
+	vm_args.nOptions = ::utils::GetArraySize(options);
+	vm_args.options = options;
+	vm_args.ignoreUnrecognized = false;
 
-		if (result == EGenotickResult::Success)
-		{
-			assert(pJvm != nullptr);
-			assert(pEnv != nullptr);
-			try
-			{
-				::genotick::jni::CGenotick* pNewInstance = new ::genotick::jni::CGenotick(*this, *pJvm, *pEnv);
-				m_instances.push_back(TGenotickPtr(pNewInstance));
-				*ppInstance = pNewInstance;
-			}
-			catch (const ::jni::PendingJavaException& exception)
-			{
-				result = ::genotick::jni::HandleJavaException(*pEnv, exception);
-			}
-			catch (const ::genotick::jni::EnumMismatchException& exception)
-			{
-				result = ::genotick::jni::HandleEnumMismatchException(exception);
-			}
-		}
-	}
-	return result;
+	jint jniResult = JNI_CreateJavaVM_FuncPtr(&pJavaVM, reinterpret_cast<void**>(&pJavaEnv), &vm_args);
+	if (jniResult != JNI_OK)
+		return ::genotick::jni::JniErrorToGenotickResult(jniResult);
+
+	assert(pJavaVM != nullptr);
+	assert(pJavaEnv != nullptr);
+	result = AddNewInstanceFor(*pJavaVM);
+	if (result != EGenotickResult::Success)
+		return result;
+
+	*ppInstance = m_instancePtrs.back().get();
+
+	return EGenotickResult::Success;
 }
 
-EGenotickResult CLoader::RemoveInstance(const IGenotick* pInstance, JavaVM& javaVM)
+EGenotickResult CLoader::GetGenotickInstances(IGenotickList** ppInstances, const TGenotickLoadSettings* pSettings)
 {
-	auto predicate = [pInstance](TGenotickPtr& p) { return p.get() == pInstance; };
-	stl::find_and_erase_if(m_instances, predicate);
-	const jint jniResult = javaVM.DestroyJavaVM();
+	if (!ppInstances || !pSettings)
+		return EGenotickResult::InvalidArgument;
 
-	if (m_instances.empty())
+	EGenotickResult result = LoadJvmModule(pSettings->utf8_jvmDllPath);
+	if (result != EGenotickResult::Success)
+		return result;
+
+	jsize javaVMCount = 0;
+	jint jniResult = JNI_CreatedJavaVMs_FuncPtr(nullptr, 0, &javaVMCount);
+	if (jniResult != JNI_OK)
+		return ::genotick::jni::JniErrorToGenotickResult(jniResult);
+
+	::std::unique_ptr<JavaVM*[]> javaVMs(new JavaVM*[javaVMCount]);
+	JavaVM** ppJavaVMs = javaVMs.get();
+	jniResult = JNI_CreatedJavaVMs_FuncPtr(ppJavaVMs, javaVMCount, &javaVMCount);
+	if (jniResult != JNI_OK)
+		return ::genotick::jni::JniErrorToGenotickResult(jniResult);
+
+	for (jsize i = 0; i < javaVMCount; ++i)
+	{
+		JavaVM& javaVM = *ppJavaVMs[i];
+		if (!HasInstanceFor(javaVM))
+		{
+			result = AddNewInstanceFor(javaVM);
+			if (result != EGenotickResult::Success)
+				return result;
+		}
+	}
+
+	if (m_instancePtrs.size() == 0)
 	{
 		FreeJvmModule();
 	}
 
-	return ::genotick::jni::JniErrorToGenotickResult(jniResult);
+	*ppInstances = CreateGenotickList();
+
+	return EGenotickResult::Success;
+}
+
+IGenotickList* CLoader::CreateGenotickList()
+{
+	TGenotickSize size = static_cast<TGenotickSize>(m_instancePtrs.size());
+	::genotick::jni::CGenotickList* pInstances = new ::genotick::jni::CGenotickList(size);
+
+	for (TGenotickSize index = 0; index < size; ++index)
+	{
+		pInstances->Set(index, m_instancePtrs[index].get());
+	}
+
+	return pInstances;
+}
+
+EGenotickResult CLoader::AddNewInstanceFor(JavaVM& javaVM)
+{
+	JNIEnv& javaEnv = ::jni::GetEnv(javaVM, ::jni::version(JNI_VERSION_1_8));
+
+	try
+	{
+		IGenotickDestructable* pNewInstance = new ::genotick::jni::CGenotick(*this, javaVM, javaEnv);
+		m_instancePtrs.push_back(TGenotickPtr(pNewInstance));
+		return EGenotickResult::Success;
+	}
+	catch (const ::jni::PendingJavaException& exception)
+	{
+		return ::genotick::jni::HandleJavaException(javaEnv, exception);
+	}
+	catch (const ::genotick::jni::EnumMismatchException& exception)
+	{
+		return ::genotick::jni::HandleEnumMismatchException(exception);
+	}
+}
+
+EGenotickResult CLoader::ReleaseInstanceFor(JavaVM& javaVM)
+{
+	TGenotickPtrsIterator instanceIter = FindInstanceFor(javaVM);
+
+	if (instanceIter == m_instancePtrs.end())
+		return EGenotickResult::InvalidArgument;
+
+	jint jniResult = javaVM.DestroyJavaVM();
+	if (jniResult != JNI_OK)
+		return ::genotick::jni::JniErrorToGenotickResult(jniResult);
+
+	m_instancePtrs.erase(instanceIter);
+
+	if (m_instancePtrs.empty())
+	{
+		FreeJvmModule();
+	}
+	
+	return EGenotickResult::Success;
+}
+
+CLoader::TGenotickPtrsIterator CLoader::FindInstanceFor(JavaVM& javaVM)
+{
+	auto Compare = [&javaVM](TGenotickPtr& p) { return p->Contains(javaVM); };
+	return ::std::find_if(m_instancePtrs.begin(), m_instancePtrs.end(), Compare);
+}
+
+bool CLoader::HasInstanceFor(JavaVM& javaVM)
+{
+	return FindInstanceFor(javaVM) != m_instancePtrs.end();
 }
 
 EGenotickResult CLoader::LoadJvmModule(const char* path)
@@ -98,7 +180,6 @@ EGenotickResult CLoader::LoadJvmModule(const char* path)
 
 	const std::wstring wpath = utf8::to_ucs2(path);
 	m_jvmModule = ::LoadLibraryW(wpath.c_str());
-
 	if (!JvmModuleLoaded())
 		return EGenotickResult::JvmDllNotFound;
 
@@ -120,19 +201,19 @@ void CLoader::FreeJvmModule()
 	if (m_jvmModule != 0)
 	{
 		::FreeLibrary(m_jvmModule);
-		m_jvmModule = 0;
+		m_jvmModule = HMODULE(0);
 		JNI_GetDefaultJavaVMInitArgs_FuncPtr = nullptr;
 		JNI_CreateJavaVM_FuncPtr = nullptr;
 		JNI_CreatedJavaVMs_FuncPtr = nullptr;
 	}
 }
 
-EGenotickResult CLoader::ReleaseAllJvmInstances()
+EGenotickResult CLoader::ReleaseAllInstances()
 {
 	EGenotickResult result = EGenotickResult::Success;
-	while (!m_instances.empty() && (result == EGenotickResult::Success))
+	while (!m_instancePtrs.empty() && (result == EGenotickResult::Success))
 	{
-		IGenotick* pInstance = m_instances.back().get();
+		TGenotickPtr& pInstance = m_instancePtrs.back();
 		result = pInstance->Release();
 	}
 	return result;

@@ -134,6 +134,11 @@ private:
 		return m_remoteChartMode.GetEnumObject(src.value());
 	}
 
+	virtual bool Contains(JavaVM& javaVM) const override final
+	{
+		return (&m_javaVM == &javaVM);
+	}
+
 	CLoaderFriend& m_loader;
 	JavaVM& m_javaVM;
 	JNIEnv& m_javaEnv;

@@ -274,7 +274,7 @@ EGenotickResult CGenotick::GetNewestPredictionInternal(TGenotickSessionId sessio
 
 EGenotickResult CGenotick::ReleaseInternal() const
 {
-	return m_loader.RemoveInstance(this, m_javaVM);
+	return m_loader.ReleaseInstanceFor(m_javaVM);
 }
 
 } // namespace jni

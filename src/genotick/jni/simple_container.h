@@ -11,7 +11,7 @@ namespace jni {
 template <class Element>
 class CSimpleContainer
 {
-public:
+protected:
 	using TElement = Element;
 	using TContainer = ::std::vector<Element>;
 
@@ -19,11 +19,10 @@ private:
 	using TConstIterator = typename TContainer::const_iterator;
 	using TDifferenceType = typename TContainer::const_iterator::difference_type;
 
-public:
-	inline CSimpleContainer() {}
-	inline CSimpleContainer(TGenotickSize size) { m_container.resize(size); }
-
 protected:
+	inline CSimpleContainer() {}
+	inline CSimpleContainer(TGenotickSize size) : m_container(static_cast<size_t>(size)) {}
+
 	virtual ~CSimpleContainer() {}
 
 	inline void Resize(TGenotickSize size)

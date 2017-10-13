@@ -7,3 +7,8 @@ EGenotickResult GENOTICK_CALL LoadGenotick(IGenotick** ppInstance, const TGenoti
 {
 	return g_genotickLoader.LoadGenotick(ppInstance, pSettings);
 }
+
+EGenotickResult GENOTICK_CALL GetGenotickInstances(IGenotickList** ppInstances, const TGenotickLoadSettings* pSettings)
+{
+	return g_genotickLoader.GetGenotickInstances(ppInstances, pSettings);
+}

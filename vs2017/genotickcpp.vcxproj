@@ -227,6 +227,7 @@
     <ClInclude Include="..\src\genotick\jni\error.h" />
     <ClInclude Include="..\src\genotick\jni\exceptions.h" />
     <ClInclude Include="..\src\genotick\jni\genotick.h" />
+    <ClInclude Include="..\src\genotick\jni\genotick_list.h" />
     <ClInclude Include="..\src\genotick\jni\genotick_predictions.h" />
     <ClInclude Include="..\src\genotick\jni\genotick_timepoints.h" />
     <ClInclude Include="..\src\genotick\jni\jni_helpers.h" />

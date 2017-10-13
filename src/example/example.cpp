@@ -27,12 +27,20 @@ int main(int argc, char** argv)
 	(void)argc;
 	(void)argv;
 
+	EGenotickResult result;
+
 	IGenotick* pInstance = nullptr;
 	TGenotickLoadSettings jvmSettings;
 	jvmSettings.utf8_jvmDllPath = JVM_PATH;
 	jvmSettings.utf8_javaClassPath = JAVA_CLASS_PATH;
 
-	EGenotickResult result = LoadGenotick(&pInstance, &jvmSettings);
+	result = LoadGenotick(&pInstance, &jvmSettings);
+
+	IGenotickList* pInstances = nullptr;
+
+	result = GetGenotickInstances(&pInstances, &jvmSettings);
+
+	GenotickSafeRelease(pInstances);
 
 	if (result == EGenotickResult::Success)
 	{

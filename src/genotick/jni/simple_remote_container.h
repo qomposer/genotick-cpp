@@ -9,7 +9,7 @@ namespace jni {
 template <class NativeElement, class RemoteContainer>
 class CSimpleRemoteContainer : public CSimpleContainer<NativeElement>
 {
-public:
+protected:
 	using TNativeContainer = ::std::vector<NativeElement>;
 	using TNativeElement = NativeElement;
 	using TRemoteContainer = RemoteContainer;
@@ -18,8 +18,6 @@ public:
 	using TRemoteElementObject = typename RemoteContainer::TElementObject;
 
 protected:
-	virtual ~CSimpleRemoteContainer() {}
-
 	template <typename TAssignPred>
 	CSimpleRemoteContainer(
 		const TRemoteContainerObject& remoteContainerObject,
@@ -35,6 +33,8 @@ protected:
 			Set(index, remoteElementObject, AssignPred);
 		}
 	}
+
+	virtual ~CSimpleRemoteContainer() {}
 };
 
 } // namespace jni
