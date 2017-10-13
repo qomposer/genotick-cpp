@@ -148,18 +148,15 @@ EGenotickResult CLoader::ReleaseInstanceFor(JavaVM& javaVM)
 	if (instanceIter == m_instancePtrs.end())
 		return EGenotickResult::InvalidArgument;
 
-	jint jniResult = javaVM.DestroyJavaVM();
-	if (jniResult != JNI_OK)
-		return ::genotick::jni::JniErrorToGenotickResult(jniResult);
-
 	m_instancePtrs.erase(instanceIter);
+	const jint jniResult = javaVM.DestroyJavaVM();
 
 	if (m_instancePtrs.empty())
 	{
 		FreeJvmModule();
 	}
 	
-	return EGenotickResult::Success;
+	return ::genotick::jni::JniErrorToGenotickResult(jniResult);
 }
 
 CLoader::TGenotickPtrsIterator CLoader::FindInstanceFor(JavaVM& javaVM)
