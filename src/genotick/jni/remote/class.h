@@ -17,8 +17,8 @@ public:
 	using TObject = ::jni::Object<TagType>;
 	using TObjectArray = ::jni::Array<TObject>;
 
-	explicit CClass(::jni::JNIEnv* pJavaEnv)
-		: m_javaEnv(*pJavaEnv)
+	explicit CClass(::jni::JNIEnv& javaEnv)
+		: m_javaEnv(javaEnv)
 		, m_uniqueClass(TClass::Find(m_javaEnv).NewGlobalRef(m_javaEnv))
 	{}
 

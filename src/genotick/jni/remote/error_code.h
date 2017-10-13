@@ -38,8 +38,8 @@ public:
 #define GENOTICK_CLASS_METHODS(f) \
 	f(TValueMethod, getValue) \
 
-	explicit CErrorCode(::jni::JNIEnv* pJavaEnv)
-		: CEnum<TagType, TEnumClass>(pJavaEnv)
+	explicit CErrorCode(::jni::JNIEnv& javaEnv)
+		: CEnum<TagType, TEnumClass>(javaEnv)
 		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
 	}

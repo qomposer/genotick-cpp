@@ -29,8 +29,8 @@ public:
 	f(TValuesMethod, values) \
 	f(TValueOfMethod, valueOf) \
 
-	explicit CEnum(::jni::JNIEnv* pJavaEnv)
-		: CClass<Tag>(pJavaEnv)
+	explicit CEnum(::jni::JNIEnv& javaEnv)
+		: CClass<Tag>(javaEnv)
 		JAVA_ENUM_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 		JAVA_ENUM_STATIC_METHODS(GENOTICK_UNROLL_STATIC_METHOD_INITIALIZERS)
 	{

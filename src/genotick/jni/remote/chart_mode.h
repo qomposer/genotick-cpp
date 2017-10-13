@@ -18,8 +18,8 @@ public:
 #define GENOTICK_CLASS_METHODS(f) \
 	f(TValueMethod, value) \
 
-	explicit CChartMode(::jni::JNIEnv* pJavaEnv)
-		: CEnum<TagType, TEnumClass>(pJavaEnv)
+	explicit CChartMode(::jni::JNIEnv& javaEnv)
+		: CEnum<TagType, TEnumClass>(javaEnv)
 		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
 		VerifyEnumValues();

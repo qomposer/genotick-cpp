@@ -59,8 +59,8 @@ public:
 	f(TLongField               , randomSeed                       ) \
 	f(TChartModeField          , chartMode                        ) \
 
-	explicit CMainSettings::CMainSettings(::jni::JNIEnv* pJavaEnv)
-		: CClass<TagType>(pJavaEnv)
+	explicit CMainSettings::CMainSettings(::jni::JNIEnv& javaEnv)
+		: CClass<TagType>(javaEnv)
 		GENOTICK_MAINSETTINGS_FIELDS(GENOTICK_UNROLL_FIELD_INITIALIZERS)
 	{
 	}

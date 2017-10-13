@@ -56,11 +56,11 @@ EGenotickResult CLoader::LoadGenotick(IGenotick** ppInstance, const SGenotickLoa
 
 		if (result == EGenotickResult::Success)
 		{
-			assert(pJvm);
-			assert(pEnv);
+			assert(pJvm != nullptr);
+			assert(pEnv != nullptr);
 			try
 			{
-				::genotick::jni::CGenotick* pNewInstance = new ::genotick::jni::CGenotick(this, pJvm, pEnv);
+				::genotick::jni::CGenotick* pNewInstance = new ::genotick::jni::CGenotick(*this, *pJvm, *pEnv);
 				m_instances.push_back(TGenotickPtr(pNewInstance));
 				*ppInstance = pNewInstance;
 			}

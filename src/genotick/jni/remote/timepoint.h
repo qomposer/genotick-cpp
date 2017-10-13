@@ -18,8 +18,8 @@ public:
 #define GENOTICK_CLASS_METHODS(f) \
 	f(TGetValueMethod, getValue) \
 
-	explicit CTimePoint(::jni::JNIEnv* pJavaEnv)
-		: CClass<TagType>(pJavaEnv)
+	explicit CTimePoint(::jni::JNIEnv& javaEnv)
+		: CClass<TagType>(javaEnv)
 		, m_constructor(GetUniqueClass()->GetConstructor<::jni::jlong>(GetJavaEnv()))
 		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{

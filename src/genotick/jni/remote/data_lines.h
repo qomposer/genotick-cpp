@@ -30,8 +30,8 @@ public:
 	f(TSetVolumeMethod, setVolume) \
 	f(TSetOtherMethod , setOther ) \
 
-	explicit CDataLines(::jni::JNIEnv* pJavaEnv)
-		: CClass<TagType>(pJavaEnv)
+	explicit CDataLines(::jni::JNIEnv& javaEnv)
+		: CClass<TagType>(javaEnv)
 		, m_constructor1(GetUniqueClass()->GetConstructor<::jni::jint, ::jni::jint, ::jni::jboolean>(GetJavaEnv()))
 		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{

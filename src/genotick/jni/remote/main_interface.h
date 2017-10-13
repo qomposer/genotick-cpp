@@ -44,8 +44,8 @@ public:
 	f(TClearSessionMethod         , clearSession       ) \
 	f(TClearSessionsMethod        , clearSessions      ) \
 
-	explicit CMainInterface(::jni::JNIEnv* pJavaEnv)
-		: CClass<TagType>(pJavaEnv)
+	explicit CMainInterface(::jni::JNIEnv& javaEnv)
+		: CClass<TagType>(javaEnv)
 		GENOTICK_CLASS_STATIC_METHODS(GENOTICK_UNROLL_STATIC_METHOD_INITIALIZERS)
 	{}
 

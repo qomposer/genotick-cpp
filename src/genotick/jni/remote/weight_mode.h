@@ -13,8 +13,8 @@ struct SWeightModeTag { static constexpr auto Name() { return "com/alphatica/gen
 class CWeightMode : public CEnum<SWeightModeTag, EGenotickWeightMode>
 {
 public:
-	explicit CWeightMode(::jni::JNIEnv* pJavaEnv)
-		: CEnum<TagType, TEnumClass>(pJavaEnv)
+	explicit CWeightMode(::jni::JNIEnv& javaEnv)
+		: CEnum<TagType, TEnumClass>(javaEnv)
 	{
 		VerifyEnumValues();
 	}

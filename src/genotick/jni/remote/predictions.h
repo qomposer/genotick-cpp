@@ -21,8 +21,8 @@ public:
 	f(TGetMethod, get) \
 	f(TSizeMethod, size) \
 
-	explicit CPredictions(::jni::JNIEnv* pJavaEnv)
-		: CClass<TagType>(pJavaEnv)
+	explicit CPredictions(::jni::JNIEnv& javaEnv)
+		: CClass<TagType>(javaEnv)
 		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{}
 

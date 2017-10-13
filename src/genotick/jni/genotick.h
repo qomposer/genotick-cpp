@@ -24,7 +24,7 @@ namespace jni {
 class CGenotick : public IGenotickDestructable
 {
 public:
-	CGenotick(CLoader* pLoader, ::jni::JavaVM* pJavaVM, ::jni::JNIEnv* pJavaEnv);
+	CGenotick(CLoader& loader, ::jni::JavaVM& javaVM, ::jni::JNIEnv& javaEnv);
 	virtual ~CGenotick();
 
 private:

@@ -13,8 +13,8 @@ struct SInheritedWeightModeTag { static constexpr auto Name() { return "com/alph
 class CInheritedWeightMode : public CEnum<SInheritedWeightModeTag, EGenotickInheritedWeightMode>
 {
 public:
-	explicit CInheritedWeightMode(::jni::JNIEnv* pJavaEnv)
-		: CEnum<TagType, TEnumClass>(pJavaEnv)
+	explicit CInheritedWeightMode(::jni::JNIEnv& javaEnv)
+		: CEnum<TagType, TEnumClass>(javaEnv)
 	{
 		VerifyEnumValues();
 	}

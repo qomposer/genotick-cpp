@@ -17,8 +17,8 @@ public:
 #define GENOTICK_CLASS_METHODS(f) \
 	f(TPutMethod, put) \
 
-	explicit CMainAppData(::jni::JNIEnv* pJavaEnv)
-		: CClass<TagType>(pJavaEnv)
+	explicit CMainAppData(::jni::JNIEnv& javaEnv)
+		: CClass<TagType>(javaEnv)
 		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
 	}
