@@ -1,8 +1,7 @@
 
 #pragma once
 
-#include <genotick/interface.h>
-#include <genotick/jni/genotick_container.h>
+#include <genotick/jni/simple_remote_container.h>
 #include <genotick/jni/remote/timepoints.h>
 
 namespace genotick {
@@ -10,7 +9,7 @@ namespace jni {
 
 class CGenotickTimePoints
 	: public IGenotickTimePoints
-	, public CGenotickContainer<TGenotickTimePoint, remote::CTimePoints>
+	, public CSimpleRemoteContainer<TGenotickTimePoint, remote::CTimePoints>
 {
 private:
 	using TRemoteValue = typename TRemoteElement::TGetValueMethod::ReturnType;

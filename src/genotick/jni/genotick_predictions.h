@@ -1,8 +1,7 @@
 
 #pragma once
 
-#include <genotick/interface.h>
-#include <genotick/jni/genotick_container.h>
+#include <genotick/jni/simple_remote_container.h>
 #include <genotick/jni/remote/predictions.h>
 
 namespace genotick {
@@ -10,7 +9,7 @@ namespace jni {
 
 class CGenotickPredictions
 	: public IGenotickPredictions
-	, public CGenotickContainer<EGenotickPrediction, remote::CPredictions>
+	, public CSimpleRemoteContainer<EGenotickPrediction, remote::CPredictions>
 {
 private:
 	using TRemoteValue = typename TRemoteElement::TGetValueMethod::ReturnType;

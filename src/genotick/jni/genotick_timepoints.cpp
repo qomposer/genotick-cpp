@@ -11,7 +11,7 @@ CGenotickTimePoints::CGenotickTimePoints(
 	const TRemoteContainerObject& remoteContainerObject,
 	const TRemoteContainer& remoteContainer,
 	const TRemoteElement& remoteElement)
-	: CGenotickContainer<TNativeElement, TRemoteContainer>(
+	: CSimpleRemoteContainer<TNativeElement, TRemoteContainer>(
 		remoteContainerObject,
 		remoteContainer,
 		[&remoteElement](TNativeElement& nativeElement, const TRemoteElementObject& remoteElementObject)
