@@ -10,20 +10,22 @@
 namespace utils
 {
 template<typename T, unsigned int size>
-unsigned int GetArraySize(T(&)[size])
+inline unsigned int GetArraySize(T(&)[size])
 {
 	return size;
 }
 
 template <class T>
-void VerifyFunctionsStruct(const T& instance)
+inline void VerifyFunctionsStruct(const T& instance)
 {
+#ifdef _DEBUG
 	const size_t size = sizeof(T) / sizeof(::std::uintptr_t);
 	for (int i = 0; i < size; ++i)
 	{
 		auto ptr = reinterpret_cast<const ::std::uintptr_t*>(&instance) + i;
 		assert(*ptr != 0);
 	}
+#endif
 }
 } // namespace utils
 
