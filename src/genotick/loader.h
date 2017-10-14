@@ -37,7 +37,6 @@ private:
 	EGenotickResult       AddNewInstanceFor(JavaVM& javaVM);
 	TGenotickPtrsIterator FindInstanceFor(JavaVM& javaVM);
 	bool                  HasInstanceFor(JavaVM& javaVM);
-	EGenotickResult       ReleaseAllInstances();
 	
 	static ::std::string MakeJavaOptionString(const char* option, const char* value);
 	inline bool JvmModuleLoaded() { return m_jvmModule != 0; }

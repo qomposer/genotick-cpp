@@ -29,7 +29,9 @@ CLoader::CLoader()
 
 CLoader::~CLoader()
 {
-	ReleaseAllInstances();
+	// On destruction this class does not release any Java VM's automatically intentionally.
+	// If the destruction is caused by a process shutdown, then the Java DLL's might have been unloaded already.
+	// Or the Java VM's might be needed later if the process was not yet shutdown.
 }
 
 EGenotickResult CLoader::GenotickCreate(IGenotick** ppInstance, const TGenotickCreationSettings* pSettings)
@@ -203,17 +205,6 @@ void CLoader::FreeJvmModule()
 		JNI_CreateJavaVM_FuncPtr = nullptr;
 		JNI_CreatedJavaVMs_FuncPtr = nullptr;
 	}
-}
-
-EGenotickResult CLoader::ReleaseAllInstances()
-{
-	EGenotickResult result = EGenotickResult::Success;
-	while (!m_instancePtrs.empty() && (result == EGenotickResult::Success))
-	{
-		TGenotickPtr& pInstance = m_instancePtrs.back();
-		result = pInstance->Release();
-	}
-	return result;
 }
 
 std::string CLoader::MakeJavaOptionString(const char* option, const char* value)
