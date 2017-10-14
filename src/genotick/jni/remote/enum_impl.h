@@ -19,7 +19,7 @@ typename CEnum<Tag, Enum>::TObject CEnum<Tag, Enum>::GetEnumObjectBySearch(const
 			return enumObject;
 		}
 	}
-	throw EnumMismatchException(stl::string_format(
+	throw EnumMismatchException(::stl::string_format(
 		"Enum constant of enum class '%s' with value %d was not found", TagType::Name(), value));
 }
 
@@ -31,7 +31,7 @@ typename CEnum<Tag, Enum>::TObject CEnum<Tag, Enum>::GetEnumObjectByOrdinal(cons
 	if (static_cast<::jni::jsize>(ordinal) < length) {
 		return enumValues.Get(GetJavaEnv(), ordinal);
 	}
-	throw EnumMismatchException(stl::string_format(
+	throw EnumMismatchException(::stl::string_format(
 		"Enum constant of enum class '%s' with ordinal %d was not found", TagType::Name(), ordinal));
 }
 
@@ -54,7 +54,7 @@ void CEnum<Tag, Enum>::VerifyEnumValue(const ::jni::jint nativeValue, const char
 	const ::jni::jint javaValue = GetEnumValue(enumObject);
 	if (nativeValue != javaValue)
 	{
-		throw EnumMismatchException(stl::string_format(
+		throw EnumMismatchException(::stl::string_format(
 			"Enum value of '%s' of enum class '%s' does not match. Expected: %d. Actual: %d.",
 			javaValueName, TagType::Name(), nativeValue, javaValue));
 	}
@@ -68,7 +68,7 @@ void CEnum<Tag, Enum>::VerifyEnumBasics()
 	for (TEnumClass::ordinal_type i = 0; i < count; ++i)
 	{
 		const TEnumClass& instance = TEnumClass::get_by_ordinal(i);
-		VerifyEnumOrdinal(instance.ordinal(), instance.meta().javaValueName);
+		VerifyEnumOrdinal(static_cast<::jni::jint>(instance.ordinal()), instance.meta().javaValueName);
 	}
 }
 
@@ -80,7 +80,7 @@ void CEnum<Tag, Enum>::VerifyEnumOrdinal(const ::jni::jint nativeOrdinal, const 
 	const ::jni::jint javaOrdinal = ordinal(enumObject);
 	if (nativeOrdinal != javaOrdinal)
 	{
-		throw EnumMismatchException(stl::string_format(
+		throw EnumMismatchException(::stl::string_format(
 			"Enum ordinal of '%s' of enum class '%s' does not match. Expected: %d. Actual: %d.",
 			javaValueName, TagType::Name(), nativeOrdinal, javaOrdinal));
 	}
@@ -93,7 +93,7 @@ void CEnum<Tag, Enum>::VerifyEnumValueCount(typename TEnumClass::ordinal_type na
 	const ::jni::jsize javaValueCount = enumObjects.Length(GetJavaEnv());
 	if (nativeValueCount != javaValueCount)
 	{
-		throw EnumMismatchException(stl::string_format(
+		throw EnumMismatchException(::stl::string_format(
 			"Enum value count of enum class '%s' does not match. Expected: %d. Actual: %d.",
 			TagType::Name(), nativeValueCount, javaValueCount));
 	}

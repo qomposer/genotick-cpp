@@ -18,6 +18,7 @@ inline unsigned int GetArraySize(T(&)[size])
 template <class T>
 inline void VerifyFunctionsStruct(const T& instance)
 {
+	(void)instance;
 #ifdef _DEBUG
 	const size_t size = sizeof(T) / sizeof(::std::uintptr_t);
 	for (int i = 0; i < size; ++i)
