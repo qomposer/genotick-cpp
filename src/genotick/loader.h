@@ -24,8 +24,8 @@ public:
 	CLoader();
 	~CLoader();
 
-	EGenotickResult LoadGenotick(IGenotick** ppInstance, const SGenotickLoadSettings* pSettings);
-	EGenotickResult GetGenotickInstances(IGenotickList** ppInstances, const TGenotickLoadSettings* pSettings);
+	EGenotickResult GenotickCreate(IGenotick** ppInstance, const SGenotickLoadSettings* pSettings);
+	EGenotickResult GenotickGetInstances(IGenotickList** ppInstances, const TGenotickLoadSettings* pSettings);
 
 protected:
 	EGenotickResult ReleaseInstanceFor(JavaVM& javaVM);

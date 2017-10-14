@@ -35,12 +35,12 @@ int main(int argc, char** argv)
 	jvmSettings.utf8_jvmDllPath = JVM_PATH;
 	jvmSettings.utf8_javaClassPath = JAVA_CLASS_PATH;
 
-	result = LoadGenotick(&pInstance, &jvmSettings);
+	result = GenotickCreate(&pInstance, &jvmSettings);
 	assert(result == GenotickResult_Success);
 
 	IGenotickList* pInstances = 0;
 
-	result = GetGenotickInstances(&pInstances, &jvmSettings);
+	result = GenotickGetInstances(&pInstances, &jvmSettings);
 	assert(result == GenotickResult_Success);
 
 	GENOTICK_SAFE_RELEASE(pInstances);

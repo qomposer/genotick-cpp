@@ -179,13 +179,6 @@ typedef TGenotickInt32 EGenotickResult;
 
 struct SGenotickMainSettings
 {
-#ifdef __cplusplus
-	SGenotickMainSettings()
-		: weightMode(EGenotickWeightMode::WinCount)
-		, inheritedChildWeightMode(EGenotickInheritedWeightMode::Parents)
-		, chartMode(EGenotickChartMode::None)
-	{}
-#endif
 	TGenotickDouble     maximumDeathByAge                 GENOTICK_ZERO_INIT;
 	TGenotickDouble     maximumDeathByWeight              GENOTICK_ZERO_INIT;
 	TGenotickDouble     probabilityOfDeathByAge           GENOTICK_ZERO_INIT;
@@ -491,12 +484,12 @@ extern "C" {
 // After releasing a JavaVM, you cannot even start a new one.
 // So keep the returned instance sacred and use it until the process dies.
 // Do not bother calling IGenotick::Release() at any time.
-GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL LoadGenotick(IGenotick** ppInstance, const TGenotickLoadSettings* pSettings);
+GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GenotickCreate(IGenotick** ppInstance, const TGenotickLoadSettings* pSettings);
 
 // If you use a platform where you cannot keep hold of a IGenotick instance
 // from one test run to another while the process itself remains alive,
 // then use this function to retrieve previously created Genotick instance(s).
-GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GetGenotickInstances(IGenotickList** ppInstances, const TGenotickLoadSettings* pSettings);
+GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GenotickGetInstances(IGenotickList** ppInstances, const TGenotickLoadSettings* pSettings);
 
 #ifdef __cplusplus
 }
