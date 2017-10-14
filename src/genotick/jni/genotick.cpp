@@ -71,20 +71,41 @@ TGenotickInt32 CGenotick::GetInterfaceVersionInternal() const
 
 EGenotickResult CGenotick::CreateSessionInternal(TGenotickSessionId sessionId) const
 {
-	const remote::CErrorCode::TObject errorObject = m_remoteMainInterface.createSession(sessionId);
-	return remote::ErrorCodeToGenotickResult(m_remoteErrorCode, errorObject);
+	try
+	{
+		const remote::CErrorCode::TObject errorObject = m_remoteMainInterface.createSession(sessionId);
+		return remote::ErrorCodeToGenotickResult(m_remoteErrorCode, errorObject);
+	}
+	catch (const ::jni::PendingJavaException& exception)
+	{
+		return HandleJavaException(m_javaEnv, exception);
+	}
 }
 
 EGenotickResult CGenotick::RemoveSessionInternal(TGenotickSessionId sessionId) const
 {
-	const remote::CErrorCode::TObject errorObject = m_remoteMainInterface.clearSession(sessionId);
-	return remote::ErrorCodeToGenotickResult(m_remoteErrorCode, errorObject);
+	try
+	{
+		const remote::CErrorCode::TObject errorObject = m_remoteMainInterface.clearSession(sessionId);
+		return remote::ErrorCodeToGenotickResult(m_remoteErrorCode, errorObject);
+	}
+	catch (const ::jni::PendingJavaException& exception)
+	{
+		return HandleJavaException(m_javaEnv, exception);
+	}
 }
 
 EGenotickResult CGenotick::RemoveAllSessionsInternal() const
 {
-	m_remoteMainInterface.clearSessions();
-	return EGenotickResult::Success;
+	try
+	{
+		m_remoteMainInterface.clearSessions();
+		return EGenotickResult::Success;
+	}
+	catch (const ::jni::PendingJavaException& exception)
+	{
+		return HandleJavaException(m_javaEnv, exception);
+	}
 }
 
 #define GENOTICK_UNROLL_FIELDS_TO_NATIVE(TYPE, NAME) { \
@@ -148,48 +169,57 @@ EGenotickResult CGenotick::ChangeSettingsInternal(TGenotickSessionId sessionId, 
 
 EGenotickResult CGenotick::SetAssetDataInternal(TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData) const
 {
-	if (pAssetData == nullptr || pAssetData->dataPoints == nullptr || pAssetData->assetName == nullptr || *pAssetData->assetName == 0)
+	if (pAssetData == nullptr ||
+		pAssetData->dataPoints == nullptr ||
+		pAssetData->assetName == nullptr ||
+		*pAssetData->assetName == 0)
 		return EGenotickResult::InvalidArgument;
 
 	if (pAssetData->dataPointCount == 0)
 		return EGenotickResult::ErrorInsufficientData;
 
-	const remote::CMainAppData::TObject mainAppDataObject = m_remoteMainInterface.getData(sessionId);
-	if (mainAppDataObject.Get() == nullptr)
-		return EGenotickResult::ErrorInvalidSession;
-
-	const ::jni::jint lineCount = static_cast<::jni::jint>(pAssetData->dataPointCount);
-	const ::jni::jint otherColumnCount = static_cast<::jni::jint>(pAssetData->dataPoints[0].otherColumnCount);
-	const ::jni::jint columnCount = static_cast<::jni::jint>(GenotickMinColumnCount) + otherColumnCount;
-	const ::jni::jboolean firstIsNewest = pAssetData->firstDataPointIsNewest;
-	const ::jni::String jniAssetName = ::jni::Make<::jni::String>(m_javaEnv, pAssetData->assetName);
-
-	remote::CDataLines::TObject jniDataLines = m_remoteDataLines.New(lineCount, columnCount, firstIsNewest);
-	if (jniDataLines.Get() == nullptr)
-		return EGenotickResult::ErrorInsufficientData;
-
-	for (::jni::jint line = 0; line < lineCount; ++line)
+	try
 	{
-		const TGenotickDataPoint& dataPoint = pAssetData->dataPoints[line];
+		const remote::CMainAppData::TObject mainAppDataObject = m_remoteMainInterface.getData(sessionId);
+		if (mainAppDataObject.Get() == nullptr)
+			return EGenotickResult::ErrorInvalidSession;
 
-		assert(static_cast<::jni::jint>(dataPoint.otherColumnCount) == otherColumnCount);
+		const ::jni::jint lineCount = static_cast<::jni::jint>(pAssetData->dataPointCount);
+		const ::jni::jint otherColumnCount = static_cast<::jni::jint>(pAssetData->dataPoints[0].otherColumnCount);
+		const ::jni::jint columnCount = static_cast<::jni::jint>(GenotickMinColumnCount) + otherColumnCount;
+		const ::jni::jboolean firstIsNewest = pAssetData->firstDataPointIsNewest;
+		const ::jni::String jniAssetName = ::jni::Make<::jni::String>(m_javaEnv, pAssetData->assetName);
 
-		m_remoteDataLines.setTime(jniDataLines, line, dataPoint.time);
-		m_remoteDataLines.setOpen(jniDataLines, line, dataPoint.open);
-		m_remoteDataLines.setHigh(jniDataLines, line, dataPoint.high);
-		m_remoteDataLines.setLow(jniDataLines, line, dataPoint.low);
-		m_remoteDataLines.setClose(jniDataLines, line, dataPoint.close);
-		m_remoteDataLines.setVolume(jniDataLines, line, dataPoint.volume);
+		remote::CDataLines::TObject jniDataLines = m_remoteDataLines.New(lineCount, columnCount, firstIsNewest);
+		if (jniDataLines.Get() == nullptr)
+			return EGenotickResult::ErrorInsufficientData;
 
-		for (::jni::jint column = 0; column < otherColumnCount; ++column)
+		for (::jni::jint line = 0; line < lineCount; ++line)
 		{
-			m_remoteDataLines.setOther(jniDataLines, line, column, dataPoint.otherColumns[column]);
+			const TGenotickDataPoint& dataPoint = pAssetData->dataPoints[line];
+
+			assert(static_cast<::jni::jint>(dataPoint.otherColumnCount) == otherColumnCount);
+
+			m_remoteDataLines.setTime(jniDataLines, line, dataPoint.time);
+			m_remoteDataLines.setOpen(jniDataLines, line, dataPoint.open);
+			m_remoteDataLines.setHigh(jniDataLines, line, dataPoint.high);
+			m_remoteDataLines.setLow(jniDataLines, line, dataPoint.low);
+			m_remoteDataLines.setClose(jniDataLines, line, dataPoint.close);
+			m_remoteDataLines.setVolume(jniDataLines, line, dataPoint.volume);
+
+			for (::jni::jint column = 0; column < otherColumnCount; ++column)
+			{
+				m_remoteDataLines.setOther(jniDataLines, line, column, dataPoint.otherColumns[column]);
+			}
 		}
+
+		m_remoteMainAppData.put(mainAppDataObject, jniAssetName, jniDataLines);
+		return EGenotickResult::Success;
 	}
-
-	m_remoteMainAppData.put(mainAppDataObject, jniAssetName, jniDataLines);
-
-	return EGenotickResult::Success;
+	catch (const ::jni::PendingJavaException& exception)
+	{
+		return HandleJavaException(m_javaEnv, exception);
+	}
 }
 
 EGenotickResult CGenotick::StartInternal(TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs) const
@@ -221,12 +251,19 @@ EGenotickResult CGenotick::GetTimePointsInternal(TGenotickSessionId sessionId, I
 	if (ppTimePoints == nullptr)
 		return EGenotickResult::InvalidArgument;
 
-	const remote::CTimePoints::TObject jniTimePoints = m_remoteMainInterface.getTimePoints(sessionId);
-	if (jniTimePoints.Get() == nullptr)
-		return EGenotickResult::ErrorInvalidSession;
+	try
+	{
+		const remote::CTimePoints::TObject jniTimePoints = m_remoteMainInterface.getTimePoints(sessionId);
+		if (jniTimePoints.Get() == nullptr)
+			return EGenotickResult::ErrorInvalidSession;
 
-	*ppTimePoints = new CGenotickTimePoints(jniTimePoints, m_remoteTimePoints, m_remoteTimePoint);
-	return EGenotickResult::Success;
+		*ppTimePoints = new CGenotickTimePoints(jniTimePoints, m_remoteTimePoints, m_remoteTimePoint);
+		return EGenotickResult::Success;
+	}
+	catch (const ::jni::PendingJavaException& exception)
+	{
+		return HandleJavaException(m_javaEnv, exception);
+	}
 }
 
 EGenotickResult CGenotick::GetPredictionsInternal(TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) const
@@ -234,13 +271,20 @@ EGenotickResult CGenotick::GetPredictionsInternal(TGenotickSessionId sessionId, 
 	if (ppPredictions == nullptr)
 		return EGenotickResult::InvalidArgument;
 
-	const ::jni::String jniAssetName = ::jni::Make<::jni::String>(m_javaEnv, assetName);
-	const remote::CPredictions::TObject jniPredictions = m_remoteMainInterface.getPredictions(sessionId, jniAssetName);
-	if (jniPredictions.Get() == nullptr)
-		return EGenotickResult::ErrorInvalidSession;
+	try
+	{
+		const ::jni::String jniAssetName = ::jni::Make<::jni::String>(m_javaEnv, assetName);
+		const remote::CPredictions::TObject jniPredictions = m_remoteMainInterface.getPredictions(sessionId, jniAssetName);
+		if (jniPredictions.Get() == nullptr)
+			return EGenotickResult::ErrorInvalidSession;
 
-	*ppPredictions = new CGenotickPredictions(jniPredictions, m_remotePredictions, m_remotePrediction);
-	return EGenotickResult::Success;
+		*ppPredictions = new CGenotickPredictions(jniPredictions, m_remotePredictions, m_remotePrediction);
+		return EGenotickResult::Success;
+	}
+	catch (const ::jni::PendingJavaException& exception)
+	{
+		return HandleJavaException(m_javaEnv, exception);
+	}
 }
 
 EGenotickResult CGenotick::GetNewestTimePointInternal(TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) const
@@ -248,12 +292,19 @@ EGenotickResult CGenotick::GetNewestTimePointInternal(TGenotickSessionId session
 	if (pTimePoint == nullptr)
 		return EGenotickResult::InvalidArgument;
 
-	const remote::CTimePoint::TObject jniTimePoint = m_remoteMainInterface.getNewestTimePoint(sessionId);
-	if (jniTimePoint.Get() == nullptr)
-		return EGenotickResult::ErrorInvalidSession;
+	try
+	{
+		const remote::CTimePoint::TObject jniTimePoint = m_remoteMainInterface.getNewestTimePoint(sessionId);
+		if (jniTimePoint.Get() == nullptr)
+			return EGenotickResult::ErrorInvalidSession;
 
-	*pTimePoint = m_remoteTimePoint.getValue(jniTimePoint);
-	return EGenotickResult::Success;
+		*pTimePoint = m_remoteTimePoint.getValue(jniTimePoint);
+		return EGenotickResult::Success;
+	}
+	catch (const ::jni::PendingJavaException& exception)
+	{
+		return HandleJavaException(m_javaEnv, exception);
+	}
 }
 
 EGenotickResult CGenotick::GetNewestPredictionInternal(TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) const
@@ -261,14 +312,21 @@ EGenotickResult CGenotick::GetNewestPredictionInternal(TGenotickSessionId sessio
 	if (pPrediction == nullptr)
 		return EGenotickResult::InvalidArgument;
 
-	const ::jni::String jniAssetName = ::jni::Make<::jni::String>(m_javaEnv, assetName);
-	const remote::CPrediction::TObject jniPrediction = m_remoteMainInterface.getNewestPrediction(sessionId, jniAssetName);
-	if (jniPrediction.Get() == nullptr)
-		return EGenotickResult::ErrorInvalidSession;
+	try
+	{
+		const ::jni::String jniAssetName = ::jni::Make<::jni::String>(m_javaEnv, assetName);
+		const remote::CPrediction::TObject jniPrediction = m_remoteMainInterface.getNewestPrediction(sessionId, jniAssetName);
+		if (jniPrediction.Get() == nullptr)
+			return EGenotickResult::ErrorInvalidSession;
 
-	const ::jni::jint predictionValue = m_remotePrediction.getValue(jniPrediction);
-	*pPrediction = EGenotickPrediction::get_by_value(predictionValue);
-	return EGenotickResult::Success;
+		const ::jni::jint predictionValue = m_remotePrediction.getValue(jniPrediction);
+		*pPrediction = EGenotickPrediction::get_by_value(predictionValue);
+		return EGenotickResult::Success;
+	}
+	catch (const ::jni::PendingJavaException& exception)
+	{
+		return HandleJavaException(m_javaEnv, exception);
+	}
 }
 
 
