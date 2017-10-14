@@ -29,90 +29,87 @@ int main(int argc, char** argv)
 	(void)argv;
 
 	EGenotickResult result;
-
 	IGenotick* pInstance = nullptr;
-	TGenotickCreationSettings creationSettings;
-	creationSettings.utf8_jvmDllPath = JVM_PATH;
-	creationSettings.utf8_javaClassPath = JAVA_CLASS_PATH;
 
-	result = GenotickCreate(&pInstance, &creationSettings);
-	assert(result == EGenotickResult::Success);
-
-	IGenotickList* pInstances = nullptr;
-
-	result = GenotickGetInstances(&pInstances, &creationSettings);
-	assert(result == EGenotickResult::Success);
-
-	GenotickSafeRelease(pInstances);
-
-	TGenotickInt32 version = pInstance->GetInterfaceVersion();
-	assert(version == GENOTICK_INTERFACE_VERSION);
-
-	TGenotickInt32 sessionId = 0;
-	result = pInstance->CreateSession(sessionId);
-	assert(result == EGenotickResult::Success);
-
-	TGenotickMainSettings mainSettings;
-	char buffer1[260] = { 0 };
-	char buffer2[260] = { 0 };
-	GenotickSetString(mainSettings.populationDAO, buffer1);
-	GenotickSetString(mainSettings.dataDirectory, buffer2);
-
-	result = pInstance->GetSettings(sessionId, &mainSettings);
-	assert(result == EGenotickResult::Success);
-
-	mainSettings.startTimePoint = 20130101;
-	mainSettings.endTimePoint = 20150101;
-	GenotickSetConstString(mainSettings.dataDirectory, GENOTICK_DATADIR);
-
-	result = pInstance->ChangeSettings(sessionId, &mainSettings);
-	assert(result == EGenotickResult::Success);
-
-	TGenotickDataPoint dataPoints[200];
-	TGenotickAssetData assetData;
-	assetData.assetName = "ASSET";
-	assetData.dataPoints = dataPoints;
-	assetData.dataPointCount = GenotickArraySize(dataPoints);
-	assetData.firstDataPointIsNewest = GenotickFalse;
-	GenerateDataPoints(dataPoints, assetData.dataPointCount);
-
-	result = pInstance->SetAssetData(sessionId, &assetData);
-	assert(result == EGenotickResult::Success);
-
-	const char* arguments[] =
+	for (int run = 0; run < 2; ++run)
 	{
-		"input=external",
-		"outdir=" GENOTICK_OUTDIR,
-	};
-	TGenotickStartArgs startArgs;
-	startArgs.elements = arguments;
-	startArgs.elementCount = GenotickArraySize(arguments);
+		TGenotickCreationSettings creationSettings;
+		creationSettings.utf8_jvmDllPath = JVM_PATH;
+		creationSettings.utf8_javaClassPath = JAVA_CLASS_PATH;
 
-	result = pInstance->Start(sessionId, &startArgs);
-	assert(result == EGenotickResult::Success);
+		result = GenotickGetOrCreate(&pInstance, &creationSettings);
+		assert(result == EGenotickResult::Success);
 
-	IGenotickTimePoints* pTimePoints = nullptr;
-	IGenotickPredictions* pPredictions = nullptr;
-	TGenotickTimePoint timePoint = 0;
-	EGenotickPrediction prediction = EGenotickPrediction::Out;
+		TGenotickInt32 version = pInstance->GetInterfaceVersion();
+		assert(version == GENOTICK_INTERFACE_VERSION);
 
-	result = pInstance->GetTimePoints(sessionId, &pTimePoints);
-	assert(result == EGenotickResult::Success);
+		TGenotickInt32 sessionId = 0;
+		result = pInstance->CreateSession(sessionId);
+		assert(result == EGenotickResult::Success);
 
-	result = pInstance->GetPredictions(sessionId, "ASSET", &pPredictions);
-	assert(result == EGenotickResult::Success);
+		TGenotickMainSettings mainSettings;
+		char buffer1[260] = { 0 };
+		char buffer2[260] = { 0 };
+		GenotickSetString(mainSettings.populationDAO, buffer1);
+		GenotickSetString(mainSettings.dataDirectory, buffer2);
 
-	result = pInstance->GetNewestTimePoint(sessionId, &timePoint);
-	assert(result == EGenotickResult::Success);
+		result = pInstance->GetSettings(sessionId, &mainSettings);
+		assert(result == EGenotickResult::Success);
 
-	result = pInstance->GetNewestPrediction(sessionId, "ASSET", &prediction);
-	assert(result == EGenotickResult::Success);
+		mainSettings.startTimePoint = 20130101;
+		mainSettings.endTimePoint = 20150101;
+		GenotickSetConstString(mainSettings.dataDirectory, GENOTICK_DATADIR);
 
-	result = pInstance->RemoveSession(sessionId);
-	assert(result == EGenotickResult::Success);
+		result = pInstance->ChangeSettings(sessionId, &mainSettings);
+		assert(result == EGenotickResult::Success);
 
-	GenotickSafeRelease(pTimePoints);
-	GenotickSafeRelease(pPredictions);
+		TGenotickDataPoint dataPoints[200];
+		TGenotickAssetData assetData;
+		assetData.assetName = "ASSET";
+		assetData.dataPoints = dataPoints;
+		assetData.dataPointCount = GenotickArraySize(dataPoints);
+		assetData.firstDataPointIsNewest = GenotickFalse;
+		GenerateDataPoints(dataPoints, assetData.dataPointCount);
+
+		result = pInstance->SetAssetData(sessionId, &assetData);
+		assert(result == EGenotickResult::Success);
+
+		const char* arguments[] =
+		{
+			"input=external",
+			"outdir=" GENOTICK_OUTDIR,
+		};
+		TGenotickStartArgs startArgs;
+		startArgs.elements = arguments;
+		startArgs.elementCount = GenotickArraySize(arguments);
+
+		result = pInstance->Start(sessionId, &startArgs);
+		assert(result == EGenotickResult::Success);
+
+		IGenotickTimePoints* pTimePoints = nullptr;
+		IGenotickPredictions* pPredictions = nullptr;
+		TGenotickTimePoint timePoint = 0;
+		EGenotickPrediction prediction = EGenotickPrediction::Out;
+
+		result = pInstance->GetTimePoints(sessionId, &pTimePoints);
+		assert(result == EGenotickResult::Success);
+
+		result = pInstance->GetPredictions(sessionId, "ASSET", &pPredictions);
+		assert(result == EGenotickResult::Success);
+
+		result = pInstance->GetNewestTimePoint(sessionId, &timePoint);
+		assert(result == EGenotickResult::Success);
+
+		result = pInstance->GetNewestPrediction(sessionId, "ASSET", &prediction);
+		assert(result == EGenotickResult::Success);
+
+		result = pInstance->RemoveSession(sessionId);
+		assert(result == EGenotickResult::Success);
+
+		GenotickSafeRelease(pTimePoints);
+		GenotickSafeRelease(pPredictions);
+	}
+
 	GenotickSafeRelease(pInstance);
 
 	return 0;
