@@ -243,17 +243,17 @@ struct SGenotickStartArgs
 	TGenotickSize      elementCount GENOTICK_ZERO_INIT;
 };
 
-struct SGenotickLoadSettings
+struct SGenotickCreationSettings
 {
 	const char* utf8_jvmDllPath    GENOTICK_ZERO_INIT;
 	const char* utf8_javaClassPath GENOTICK_ZERO_INIT;
 };
 
-typedef struct SGenotickMainSettings TGenotickMainSettings;
-typedef struct SGenotickDataPoint    TGenotickDataPoint;
-typedef struct SGenotickAssetData    TGenotickAssetData;
-typedef struct SGenotickStartArgs    TGenotickStartArgs;
-typedef struct SGenotickLoadSettings TGenotickLoadSettings;
+typedef struct SGenotickMainSettings     TGenotickMainSettings;
+typedef struct SGenotickDataPoint        TGenotickDataPoint;
+typedef struct SGenotickAssetData        TGenotickAssetData;
+typedef struct SGenotickStartArgs        TGenotickStartArgs;
+typedef struct SGenotickCreationSettings TGenotickCreationSettings;
 
 #ifdef ZORRO_LITE_C
 
@@ -484,12 +484,12 @@ extern "C" {
 // After releasing a JavaVM, you cannot even start a new one.
 // So keep the returned instance sacred and use it until the process dies.
 // Do not bother calling IGenotick::Release() at any time.
-GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GenotickCreate(IGenotick** ppInstance, const TGenotickLoadSettings* pSettings);
+GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GenotickCreate(IGenotick** ppInstance, const TGenotickCreationSettings* pSettings);
 
 // If you use a platform where you cannot keep hold of a IGenotick instance
 // from one test run to another while the process itself remains alive,
 // then use this function to retrieve previously created Genotick instance(s).
-GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GenotickGetInstances(IGenotickList** ppInstances, const TGenotickLoadSettings* pSettings);
+GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GenotickGetInstances(IGenotickList** ppInstances, const TGenotickCreationSettings* pSettings);
 
 #ifdef __cplusplus
 }

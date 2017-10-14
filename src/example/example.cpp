@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 	EGenotickResult result;
 
 	IGenotick* pInstance = nullptr;
-	TGenotickLoadSettings creationSettings;
+	TGenotickCreationSettings creationSettings;
 	creationSettings.utf8_jvmDllPath = JVM_PATH;
 	creationSettings.utf8_javaClassPath = JAVA_CLASS_PATH;
 

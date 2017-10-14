@@ -32,7 +32,7 @@ CLoader::~CLoader()
 	ReleaseAllInstances();
 }
 
-EGenotickResult CLoader::GenotickCreate(IGenotick** ppInstance, const TGenotickLoadSettings* pSettings)
+EGenotickResult CLoader::GenotickCreate(IGenotick** ppInstance, const TGenotickCreationSettings* pSettings)
 {
 	if (!ppInstance || !pSettings)
 		return EGenotickResult::InvalidArgument;
@@ -67,7 +67,7 @@ EGenotickResult CLoader::GenotickCreate(IGenotick** ppInstance, const TGenotickL
 	return EGenotickResult::Success;
 }
 
-EGenotickResult CLoader::GenotickGetInstances(IGenotickList** ppInstances, const TGenotickLoadSettings* pSettings)
+EGenotickResult CLoader::GenotickGetInstances(IGenotickList** ppInstances, const TGenotickCreationSettings* pSettings)
 {
 	if (!ppInstances || !pSettings)
 		return EGenotickResult::InvalidArgument;

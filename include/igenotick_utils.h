@@ -35,7 +35,7 @@ inline void GenotickSetConstString(TGenotickString& dst, const char* src)
 	dst.capacity = 0;
 }
 
-inline EGenotickResult GenotickGetOrCreate(IGenotick** ppInstance, const TGenotickLoadSettings* pSettings)
+inline EGenotickResult GenotickGetOrCreate(IGenotick** ppInstance, const TGenotickCreationSettings* pSettings)
 {
 	if (!ppInstance || !pSettings)
 	{
@@ -86,7 +86,7 @@ inline void GenotickSetConstString(TGenotickString* dst, const char* src)
 	dst->capacity = 0;
 }
 
-inline EGenotickResult GenotickGetOrCreate(IGenotick** ppInstance, const TGenotickLoadSettings* pSettings)
+inline EGenotickResult GenotickGetOrCreate(IGenotick** ppInstance, const TGenotickCreationSettings* pSettings)
 {
 	if (!ppInstance || !pSettings)
 	{
