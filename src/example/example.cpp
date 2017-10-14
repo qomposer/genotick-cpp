@@ -5,9 +5,9 @@
 
 #pragma comment(lib, "genotickcpp.lib")
 
-#define GENOTICK_OUTDIR "D:\\Trading\\Code\\genotick\\.jar\\OUTPUT"
-#define GENOTICK_DATADIR "D:\\Trading\\Code\\genotick\\.jar\\spx_data"
-#define JAVA_CLASS_PATH "D:\\Trading\\Code\\genotick\\.jar\\genotick.jar"
+#define GENOTICK_OUTDIR "..\\jar\\.outdir"
+#define GENOTICK_DATADIR "..\\jar\\.data"
+#define JAVA_CLASS_PATH "..\\jar\\genotick.jar"
 #define JVM_PATH "C:\\Program Files (x86)\\Java\\jre1.8.0_144\\bin\\client\\jvm.dll"
 
 void GenerateDataPoints(TGenotickDataPoint* dataPoints, TGenotickSize size)
