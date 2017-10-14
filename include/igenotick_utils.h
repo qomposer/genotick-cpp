@@ -6,6 +6,8 @@
 
 #ifdef __cplusplus
 
+#include <cassert>
+
 template <class T>
 inline void GenotickSafeRelease(T*& p) {
 	if (p) {
@@ -33,12 +35,44 @@ inline void GenotickSetConstString(TGenotickString& dst, const char* src)
 	dst.capacity = 0;
 }
 
-#else
+inline EGenotickResult GenotickGetOrCreate(IGenotick** ppInstance, const TGenotickLoadSettings* pSettings)
+{
+	if (!ppInstance || !pSettings)
+	{
+		return EGenotickResult::InvalidArgument;
+	}
+	
+	IGenotickList* pList = nullptr;
+	if (GenotickGetInstances(&pList, pSettings) == EGenotickResult::Success)
+	{
+		assert(pList != nullptr);
 
-#ifndef ZORRO_LITE_C
+		if (pList->GetElementCount() > 0)
+		{
+			*ppInstance = pList->GetElement(0);
+			pList->Release();
+			return EGenotickResult::Success;
+		}
+		pList->Release();
+	}
+
+	return GenotickCreate(ppInstance, pSettings);
+}
+
+#else // __cplusplus
+
+#ifdef ZORRO_LITE_C
+#define GENOTICK_ZERO_MEMORY(Struct) memset((void*)&Struct, 0, sizeof(Struct))
+void GenotickSetTimePoint(TGenotickTimePoint* timePoint, long lo, long hi)
+{
+	timePoint->lo = lo;
+	timePoint->hi = hi;
+}
+#else
+#include <assert.h>
 #define GENOTICK_SAFE_RELEASE(p) if(p) { p->Release(p); p = 0; }
-#endif
 #define GENOTICK_ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+#endif // ZORRO_LITE_C
 
 inline void GenotickSetString(TGenotickString* dst, char* src, unsigned int capacity)
 {
@@ -52,13 +86,30 @@ inline void GenotickSetConstString(TGenotickString* dst, const char* src)
 	dst->capacity = 0;
 }
 
-#ifdef ZORRO_LITE_C
-inline void GenotickSetTimePoint(TGenotickTimePoint* timePoint, long lo, long hi)
+inline EGenotickResult GenotickGetOrCreate(IGenotick** ppInstance, const TGenotickLoadSettings* pSettings)
 {
-	timePoint->lo = lo;
-	timePoint->hi = hi;
+	if (!ppInstance || !pSettings)
+	{
+		return GenotickResult_InvalidArgument;
+	}
+
+	IGenotickList* pList = 0;
+	if (GenotickGetInstances(&pList, pSettings) == GenotickResult_Success)
+	{
+#ifndef ZORRO_LITE_C
+		assert(pList != 0);
+#endif
+		if (pList->GetElementCount(pList) > 0)
+		{
+			*ppInstance = pList->GetElement(pList, 0);
+			pList->Release(pList);
+			return GenotickResult_Success;
+		}
+		pList->Release(pList);
+	}
+
+	return GenotickCreate(ppInstance, pSettings);
 }
-#endif // ZORRO_LITE_C
 
 #endif // __cplusplus
 

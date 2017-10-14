@@ -31,16 +31,16 @@ int main(int argc, char** argv)
 	EGenotickResult result;
 
 	IGenotick* pInstance = nullptr;
-	TGenotickLoadSettings jvmSettings;
-	jvmSettings.utf8_jvmDllPath = JVM_PATH;
-	jvmSettings.utf8_javaClassPath = JAVA_CLASS_PATH;
+	TGenotickLoadSettings creationSettings;
+	creationSettings.utf8_jvmDllPath = JVM_PATH;
+	creationSettings.utf8_javaClassPath = JAVA_CLASS_PATH;
 
-	result = GenotickCreate(&pInstance, &jvmSettings);
+	result = GenotickCreate(&pInstance, &creationSettings);
 	assert(result == EGenotickResult::Success);
 
 	IGenotickList* pInstances = nullptr;
 
-	result = GenotickGetInstances(&pInstances, &jvmSettings);
+	result = GenotickGetInstances(&pInstances, &creationSettings);
 	assert(result == EGenotickResult::Success);
 
 	GenotickSafeRelease(pInstances);

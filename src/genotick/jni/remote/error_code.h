@@ -23,7 +23,7 @@ struct SGenotickErrorCodeMeta
 	f(NoOutput         , = 2 , (SGenotickErrorCodeMeta("NO_OUTPUT"        , EGenotickResult::ErrorNoOutput        ))) \
 	f(UnknownArgument  , = 3 , (SGenotickErrorCodeMeta("UNKNOWN_ARGUMENT" , EGenotickResult::ErrorUnknownArgument ))) \
 	f(InvalidSession   , = 4 , (SGenotickErrorCodeMeta("INVALID_SESSION"  , EGenotickResult::ErrorInvalidSession  ))) \
-	f(DuplicateSession , = 5 , (SGenotickErrorCodeMeta("DUPLICATE_SESSION", EGenotickResult::ErrorInsufficientData))) \
+	f(DuplicateSession , = 5 , (SGenotickErrorCodeMeta("DUPLICATE_SESSION", EGenotickResult::ErrorDuplicateSession))) \
 	f(InsufficientData , = 6 , (SGenotickErrorCodeMeta("INSUFFICIENT_DATA", EGenotickResult::ErrorInsufficientData))) \
 
 DEFINE_CUSTOM_ENUM_CLASS(EErrorCode, ::jni::jint, GENOTICK_ENUM_ERROR_CODE, SGenotickErrorCodeMeta)

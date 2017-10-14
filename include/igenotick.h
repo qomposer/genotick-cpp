@@ -296,9 +296,9 @@ typedef const struct SGenotick IGenotick;
 
 struct SGenotickList
 {
-	IGenotick*    (GENOTICK_CALL* GetElement)(const struct SGenotickList* pThis, TGenotickSize index);
-	TGenotickSize (GENOTICK_CALL* GetElementCount)(const struct SGenotickList* pThis);
-	void          (GENOTICK_CALL* Release)(const struct SGenotickList* pThis);
+	IGenotick*    GENOTICK_CALL GetElement(const struct SGenotickList* pThis, TGenotickSize index);
+	TGenotickSize GENOTICK_CALL GetElementCount(const struct SGenotickList* pThis);
+	void          GENOTICK_CALL Release(const struct SGenotickList* pThis);
 };
 
 typedef const struct SGenotickList IGenotickList;
