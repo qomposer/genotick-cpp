@@ -27,7 +27,10 @@ void main()
 {	
 	GenotickCreate = DefineApi("include/genotick/genotickcpp.dll!GenotickCreate");
 	GenotickGetInstances = DefineApi("include/genotick/genotickcpp.dll!GenotickGetInstances");
-		
+	GenotickSpawnConsole = DefineApi("include/genotick/genotickcpp.dll!GenotickSpawnConsole");
+	
+	GenotickSpawnConsole();
+	
 	EGenotickResult result = 0;
 	
 	IGenotick* pInstance = 0;
@@ -35,7 +38,7 @@ void main()
 	GENOTICK_ZERO_STRUCT(creationSettings);
 	creationSettings.utf8_jvmDllPath = JVM_PATH;
 	creationSettings.utf8_javaClassPath = JAVA_CLASS_PATH;
-
+	
 	result = GenotickGetOrCreate(&pInstance, &creationSettings);
 	printf("\nGenotickGetOrCreate: %d", result);
 

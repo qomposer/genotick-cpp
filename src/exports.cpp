@@ -12,3 +12,8 @@ EGenotickResult GENOTICK_CALL GenotickGetInstances(IGenotickList** ppInstances, 
 {
 	return g_genotickLoader.GenotickGetInstances(ppInstances, pSettings);
 }
+
+EGenotickResult GENOTICK_CALL GenotickSpawnConsole()
+{
+	return g_genotickLoader.GenotickSpawnConsole();
+}

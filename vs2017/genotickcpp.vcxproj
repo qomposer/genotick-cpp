@@ -223,6 +223,7 @@
     <ClInclude Include="..\include\igenotick.h" />
     <ClInclude Include="..\include\enumdef.h" />
     <ClInclude Include="..\include\igenotick_utils.h" />
+    <ClInclude Include="..\src\console.h" />
     <ClInclude Include="..\src\genotick\interface.h" />
     <ClInclude Include="..\src\genotick\jni\error.h" />
     <ClInclude Include="..\src\genotick\jni\exceptions.h" />
@@ -286,6 +287,7 @@
     <ClInclude Include="..\src\utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\console.cpp" />
     <ClCompile Include="..\src\dllmain.cpp" />
     <ClCompile Include="..\src\exports.cpp" />
     <ClCompile Include="..\src\genotick\jni\genotick.cpp" />

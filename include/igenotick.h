@@ -491,6 +491,9 @@ GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GenotickCreate(IGenotick
 // then use this function to retrieve previously created Genotick instance(s).
 GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GenotickGetInstances(IGenotickList** ppInstances, const TGenotickCreationSettings* pSettings);
 
+// Spawns a console in native code
+GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GenotickSpawnConsole();
+
 #ifdef __cplusplus
 }
 #endif

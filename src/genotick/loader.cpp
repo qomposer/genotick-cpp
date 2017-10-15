@@ -7,6 +7,7 @@
 #include <utils.h>
 #include <utf8.h>
 #include <assert.h>
+#include <console.h>
 
 namespace genotick {
 
@@ -107,6 +108,12 @@ EGenotickResult CLoader::GenotickGetInstances(IGenotickList** ppInstances, const
 
 	*ppInstances = CreateGenotickList();
 
+	return EGenotickResult::Success;
+}
+
+EGenotickResult CLoader::GenotickSpawnConsole()
+{
+	CConsole::Create();
 	return EGenotickResult::Success;
 }
 
