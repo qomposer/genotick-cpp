@@ -33,7 +33,6 @@ public:
 	explicit CDataLines(::jni::JNIEnv& javaEnv)
 		: CClass<TagType>(javaEnv)
 		, m_constructor1(GetUniqueClass()->GetConstructor<::jni::jint, ::jni::jint, ::jni::jboolean>(GetJavaEnv()))
-		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
 	}
 
@@ -78,8 +77,8 @@ public:
 	}
 
 private:
-	TConstructor1 m_constructor1;
-	GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
+	const TConstructor1 m_constructor1;
+	GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_MEMBERS)
 };
 
 #undef GENOTICK_CLASS_METHODS

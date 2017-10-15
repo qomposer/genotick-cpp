@@ -3,7 +3,10 @@
 
 #if CUSTOM_ENUM_DEBUGGING == 1
 #include <stdexcept>
-#define CUSTOM_ENUM_ERROR(condition) if (condition) { throw std::exception("enum ordinal out of range"); }
+#define CUSTOM_ENUM_ERROR(condition) \
+	if (condition) { \
+		throw std::exception("enum ordinal out of range"); \
+	}
 #elif CUSTOM_ENUM_DEBUGGING == 2
 #include <cassert>
 #define CUSTOM_ENUM_ERROR(condition) assert(!(condition));

@@ -20,7 +20,6 @@ public:
 
 	explicit CChartMode(::jni::JNIEnv& javaEnv)
 		: CEnum<TagType, TEnumClass>(javaEnv)
-		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
 		VerifyEnumValues();
 	}
@@ -41,7 +40,7 @@ public:
 	}
 
 private:
-	GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
+	GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_MEMBERS)
 };
 
 #undef GENOTICK_CLASS_METHODS

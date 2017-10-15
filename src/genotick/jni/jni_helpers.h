@@ -7,28 +7,22 @@
 #pragma warning(default: 4018 4063 4624 4800)
 #include <vector>
 
-#define GENOTICK_UNROLL_MEMBER_DECLARATIONS(TYPE, NAME) \
-TYPE m_##NAME;
+#define GENOTICK_UNROLL_FIELD_MEMBERS(type, name) \
+const type m_##name = this->GetUniqueClass()->GetField<typename type::FieldType>(this->GetJavaEnv(), #name);
 
-#define GENOTICK_UNROLL_FIELD_INITIALIZERS(TYPE, NAME) \
-, m_##NAME(this->GetUniqueClass()->GetField<typename TYPE::FieldType>(this->GetJavaEnv(), #NAME))
+#define GENOTICK_UNROLL_METHOD_MEMBERS(type, name) \
+const type m_##name = this->GetUniqueClass()->GetMethod<typename type::MethodType>(this->GetJavaEnv(), #name);
 
-#define GENOTICK_UNROLL_STATIC_FIELD_INITIALIZERS(TYPE, NAME) \
-, m_##NAME(this->GetUniqueClass()->GetStaticField<typename TYPE::FieldType>(this->GetJavaEnv(), #NAME))
+#define GENOTICK_UNROLL_STATIC_METHOD_MEMBERS(type, name) \
+const type m_##name = this->GetUniqueClass()->GetStaticMethod<typename type::MethodType>(this->GetJavaEnv(), #name);
 
-#define GENOTICK_UNROLL_METHOD_INITIALIZERS(TYPE, NAME) \
-, m_##NAME(this->GetUniqueClass()->GetMethod<typename TYPE::MethodType>(this->GetJavaEnv(), #NAME))
+#define GENOTICK_UNROLL_SET_FIELD_INLINE_FUNCTIONS(type, name) \
+inline void Set_##name(const TObject& object, const typename type::FieldType& value) const { \
+	object.Set(this->GetJavaEnv(), this->m_##name, value); }
 
-#define GENOTICK_UNROLL_STATIC_METHOD_INITIALIZERS(TYPE, NAME) \
-, m_##NAME(this->GetUniqueClass()->GetStaticMethod<typename TYPE::MethodType>(this->GetJavaEnv(), #NAME))
-
-#define GENOTICK_UNROLL_SET_FIELD_INLINE_FUNCTIONS(TYPE, NAME) \
-void Set_##NAME(const TObject& object, const typename TYPE::FieldType& value) const { \
-	object.Set(this->GetJavaEnv(), this->m_##NAME, value); }
-
-#define GENOTICK_UNROLL_GET_FIELD_INLINE_FUNCTIONS(TYPE, NAME) \
-inline typename TYPE::FieldType Get_##NAME(const TObject& object) const { \
-	return object.Get(this->GetJavaEnv(), this->m_##NAME); }
+#define GENOTICK_UNROLL_GET_FIELD_INLINE_FUNCTIONS(type, name) \
+inline typename type::FieldType Get_##name(const TObject& object) const { \
+	return object.Get(this->GetJavaEnv(), this->m_##name); }
 
 namespace jni
 {

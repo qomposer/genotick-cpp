@@ -108,12 +108,13 @@ EGenotickResult CGenotick::RemoveAllSessionsInternal() const
 	}
 }
 
-#define GENOTICK_UNROLL_FIELDS_TO_NATIVE(TYPE, NAME) { \
-ToNative(pSettings->NAME, this->m_remoteMainSettings.Get_##NAME(jniSettings)); }
 
-#define GENOTICK_UNROLL_FIELDS_TO_JAVA(TYPE, NAME) { \
-auto value = ToJava<typename remote::CMainSettings::TYPE::FieldType>(pSettings->NAME); \
-this->m_remoteMainSettings.Set_##NAME(jniSettings, value); }
+#define GENOTICK_UNROLL_FIELDS_TO_NATIVE(type, name) { \
+this->ToNative(pSettings->name, this->m_remoteMainSettings.Get_##name(jniSettings)); }
+
+#define GENOTICK_UNROLL_FIELDS_TO_JAVA(type, name) { \
+auto value = ToJava<typename remote::CMainSettings::type::FieldType>(pSettings->name); \
+this->m_remoteMainSettings.Set_##name(jniSettings, value); }
 
 EGenotickResult CGenotick::GetSettingsInternal(TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) const
 {

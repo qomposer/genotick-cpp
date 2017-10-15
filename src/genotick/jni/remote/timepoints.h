@@ -23,7 +23,6 @@ public:
 
 	explicit CTimePoints(::jni::JNIEnv& javaEnv)
 		: CClass<TagType>(javaEnv)
-		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{}
 
 	TElementObject get(const TObject& object, const ::jni::jint index) const
@@ -37,7 +36,7 @@ public:
 	}
 
 private:
-	GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
+	GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_MEMBERS)
 };
 
 #undef GENOTICK_CLASS_METHODS

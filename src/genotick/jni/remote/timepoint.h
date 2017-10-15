@@ -21,7 +21,6 @@ public:
 	explicit CTimePoint(::jni::JNIEnv& javaEnv)
 		: CClass<TagType>(javaEnv)
 		, m_constructor(GetUniqueClass()->GetConstructor<::jni::jlong>(GetJavaEnv()))
-		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
 	}
 
@@ -36,8 +35,8 @@ public:
 	}
 
 private:
-	TConstructor m_constructor;
-	GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
+	const TConstructor m_constructor;
+	GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_MEMBERS)
 };
 
 #undef GENOTICK_CLASS_METHODS

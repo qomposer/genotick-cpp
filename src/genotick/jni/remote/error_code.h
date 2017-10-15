@@ -40,7 +40,6 @@ public:
 
 	explicit CErrorCode(::jni::JNIEnv& javaEnv)
 		: CEnum<TagType, TEnumClass>(javaEnv)
-		GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_INITIALIZERS)
 	{
 	}
 
@@ -60,7 +59,7 @@ public:
 	}
 
 private:
-	GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_MEMBER_DECLARATIONS)
+	GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_MEMBERS)
 };
 
 inline EGenotickResult ErrorCodeToGenotickResult(const CErrorCode& errorCode, const CErrorCode::TObject& errorCodeObject)
