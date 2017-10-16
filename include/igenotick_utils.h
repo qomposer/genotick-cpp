@@ -64,10 +64,10 @@ inline EGenotickResult GenotickGetOrCreate(IGenotick** ppInstance, const TGenoti
 #ifdef ZORRO_LITE_C
 #define GENOTICK_ZERO_STRUCT(Struct) memset(&Struct, 0, sizeof(Struct))
 #define GENOTICK_ZERO_ARRAY(Array, Size, Type) memset(Array, 0, sizeof(Type)*Size)
-void GenotickSetTimePoint(TGenotickTimePoint* timePoint, long hi, long lo)
+void GenotickSetInt64(TGenotickInt64* pValue, long hi, long lo)
 {
-	timePoint->hi = hi;
-	timePoint->lo = lo;
+	pValue->hi = hi;
+	pValue->lo = lo;
 }
 #else
 #include <assert.h>

@@ -33,8 +33,8 @@
 #ifdef ZORRO_LITE_C
 struct longlong
 {
-	signed long hi;
 	signed long lo;
+	signed long hi;
 };
 typedef struct longlong  TGenotickInt64;
 #else
