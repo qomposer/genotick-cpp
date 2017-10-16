@@ -239,12 +239,6 @@
     <ClCompile Include="..\src\genotick\loader.cpp">
       <Filter>src\genotick</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\genotick\jni\genotick_predictions.cpp">
-      <Filter>src\genotick\jni</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\genotick\jni\genotick_timepoints.cpp">
-      <Filter>src\genotick\jni</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\console.cpp">
       <Filter>src</Filter>
     </ClCompile>

@@ -3,6 +3,7 @@
 
 #include <genotick/jni/simple_remote_container.h>
 #include <genotick/jni/remote/timepoints.h>
+#include <utils.h>
 
 namespace genotick {
 namespace jni {
@@ -18,7 +19,22 @@ public:
 	CGenotickTimePoints(
 		const TRemoteContainerObject& remoteContainerObject,
 		const TRemoteContainer& remoteContainer,
-		const TRemoteElement& remoteElement);
+		const TRemoteElement& remoteElement)
+		: CSimpleRemoteContainer<TNativeElement, TRemoteContainer>(
+			remoteContainerObject,
+			remoteContainer,
+			[&remoteElement](TNativeElement& nativeElement, const TRemoteElementObject& remoteElementObject)
+				{ nativeElement = remoteElement.getValue(remoteElementObject); })
+	{
+		SGenotickTimePointsFunctions& mutableFunctions = const_cast<SGenotickTimePointsFunctions&>(functions);
+		mutableFunctions.FindIndex = FindIndex;
+		mutableFunctions.GetElement = GetElement;
+		mutableFunctions.GetElementCount = GetElementCount;
+		mutableFunctions.Release = Release;
+
+		::utils::VerifyFunctionsStruct(functions);
+		::utils::VerifyEqualPointers(&functions, static_cast<IGenotickTimePoints*>(this));
+	}
 
 private:
 	static TGenotickBoolean GENOTICK_CALL FindIndex(IGenotickTimePoints* pThis, TGenotickTimePoint timePoint, TGenotickSize* pIndex) {
