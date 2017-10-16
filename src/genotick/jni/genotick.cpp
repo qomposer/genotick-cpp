@@ -58,6 +58,7 @@ CGenotick::CGenotick(CLoader& loader, ::jni::JavaVM& javaVM, ::jni::JNIEnv& java
 	mutableFunctions.Release = Release;
 
 	::utils::VerifyFunctionsStruct(functions);
+	::utils::VerifyEqualPointers(&functions, static_cast<IGenotick*>(this));
 }
 
 CGenotick::~CGenotick()

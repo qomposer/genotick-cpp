@@ -28,6 +28,12 @@ inline void VerifyFunctionsStruct(const T& instance)
 	}
 #endif
 }
+
+template <class TypeA, class TypeB>
+inline void VerifyEqualPointers(TypeA* pA, TypeB* pB)
+{
+	assert(reinterpret_cast<const void*>(pA) == reinterpret_cast<const void*>(pB));
+}
 } // namespace utils
 
 namespace stl

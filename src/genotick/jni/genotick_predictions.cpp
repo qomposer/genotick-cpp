@@ -21,6 +21,7 @@ CGenotickPredictions::CGenotickPredictions(
 	mutableFunctions.Release = Release;
 
 	::utils::VerifyFunctionsStruct(functions);
+	::utils::VerifyEqualPointers(&functions, static_cast<IGenotickPredictions*>(this));
 }
 
 } // namespace jni

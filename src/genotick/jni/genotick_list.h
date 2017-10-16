@@ -26,6 +26,7 @@ public:
 		mutableFunctions.Release = Release;
 
 		::utils::VerifyFunctionsStruct(functions);
+		::utils::VerifyEqualPointers(&functions, static_cast<IGenotickList*>(this));
 	}
 
 	inline void Set(TGenotickSize index, const TElement& element)

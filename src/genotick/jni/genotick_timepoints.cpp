@@ -24,6 +24,7 @@ CGenotickTimePoints::CGenotickTimePoints(
 	mutableFunctions.Release = Release;
 
 	::utils::VerifyFunctionsStruct(functions);
+	::utils::VerifyEqualPointers(&functions, static_cast<IGenotickTimePoints*>(this));
 }
 
 } // namespace jni
