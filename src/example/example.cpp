@@ -94,13 +94,13 @@ int main(int argc, char** argv)
 		result = pInstance->GetTimePoints(sessionId, &pTimePoints);
 		assert(result == EGenotickResult::Success);
 
-		result = pInstance->GetPredictions(sessionId, "ASSET", &pPredictions);
+		result = pInstance->GetPredictions(sessionId, assetData.assetName, &pPredictions);
 		assert(result == EGenotickResult::Success);
 
 		result = pInstance->GetNewestTimePoint(sessionId, &timePoint);
 		assert(result == EGenotickResult::Success);
 
-		result = pInstance->GetNewestPrediction(sessionId, "ASSET", &prediction);
+		result = pInstance->GetNewestPrediction(sessionId, assetData.assetName, &prediction);
 		assert(result == EGenotickResult::Success);
 
 		result = pInstance->RemoveSession(sessionId);

@@ -94,13 +94,13 @@ int main(int argc, char** argv)
 		result = pInstance->GetTimePoints(pInstance, sessionId, &pTimePoints);
 		assert(result == GenotickResult_Success);
 
-		result = pInstance->GetPredictions(pInstance, sessionId, "ASSET", &pPredictions);
+		result = pInstance->GetPredictions(pInstance, sessionId, assetData.assetName, &pPredictions);
 		assert(result == GenotickResult_Success);
 
 		result = pInstance->GetNewestTimePoint(pInstance, sessionId, &timePoint);
 		assert(result == GenotickResult_Success);
 
-		result = pInstance->GetNewestPrediction(pInstance, sessionId, "ASSET", &prediction);
+		result = pInstance->GetNewestPrediction(pInstance, sessionId, assetData.assetName, &prediction);
 		assert(result == GenotickResult_Success);
 
 		result = pInstance->RemoveSession(pInstance, sessionId);

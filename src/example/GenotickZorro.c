@@ -1,5 +1,6 @@
 
 #include <default.c>
+#include <contract.c>
 #define ZORRO_LITE_C
 #include <genotick/igenotick.h>
 #include <genotick/igenotick_utils.h>
@@ -9,79 +10,150 @@
 #define JAVA_CLASS_PATH "include\\genotick\\genotick.jar"
 #define JVM_PATH "C:\\Program Files (x86)\\Java\\jre1.8.0_144\\bin\\client\\jvm.dll"
 
-void GenerateDataPoints(TGenotickDataPoint* dataPoints, TGenotickSize size)
+EGenotickResult       g_result;
+IGenotick*            g_pInstance;
+IGenotickTimePoints*  g_pTimePoints;
+IGenotickPredictions* g_pPredictions;
+TGenotickTimePoint    g_timePoint;
+EGenotickPrediction   g_prediction;
+EGenotickPrediction   g_prevPrediction;
+TGenotickAssetData    g_assetData;
+
+void BuildTimePoint(TGenotickTimePoint* timePoint, int ibar)
 {
-	TGenotickSize i;
-	for (i = 0; i < size; ++i)
-	{		
-		GenotickSetTimePoint(&dataPoints[i].time, 0, 20130101 + i);
-		dataPoints[i].open   = size*3 + i * 1.0;
-		dataPoints[i].high   = size*3 + i * 1.0 + 0.5;
-		dataPoints[i].low    = size*3 + i * 1.0 - 0.5;
-		dataPoints[i].close  = size*3 + i * 1.0 + 0.2;
-		dataPoints[i].volume = 10000.0;
+	DATE date = wdateBar(ibar);
+	long yyyymmdd = ymd(date);
+	// date -= floor(date);
+	// long h = (long)round(date * 24) % 24;
+	// long m = (long)round(date * 24 * 60) % 60;
+	// long s = (long)round(date * 24 * 60 * 60) % 60;
+	// long dd = yyyymmdd % 100;
+	// long mm = (yyyymmdd / 100) % 100;
+	// long yyyy = (yyyymmdd / 10000);
+	GenotickSetInt64(timePoint, 0, yyyymmdd);
+}
+
+void FillDataPoints(TGenotickDataPoint* dataPoints, int barCount)
+{
+	set(PEEK);
+	
+	int ibar;
+	for (ibar = 0; ibar < barCount; ++ibar)
+	{
+		BuildTimePoint(&dataPoints[ibar].time, ibar);
+		dataPoints[ibar].open = priceOpen(-ibar);
+		dataPoints[ibar].high = priceHigh(-ibar);
+		dataPoints[ibar].low = priceLow(-ibar);
+		dataPoints[ibar].close = priceClose(-ibar);
+		dataPoints[ibar].volume = marketVol(-ibar);
+	}
+	
+	reset(PEEK);
+}
+
+
+void CleanUpDataPoints(TGenotickDataPoint** p)
+{
+	if ((*p) != NULL)
+	{
+		free(*p);
+		(*p) = NULL;
 	}
 }
 
-void main()
-{	
+void CleanUpTimePoints(IGenotickTimePoints** p)
+{
+	if ((*p) != NULL)
+	{
+		(*p)->Release(*p);
+		(*p) = NULL;
+	}
+}
+
+void CleanUpPredictions(IGenotickPredictions** p)
+{
+	if ((*p) != NULL)
+	{
+		(*p)->Release(*p);
+		(*p) = NULL;
+	}
+}
+
+void CleanUp()
+{
+	printf("\nCleanUp");
+	CleanUpDataPoints(&g_assetData.dataPoints);
+	CleanUpTimePoints(&g_pTimePoints);
+	CleanUpPredictions(&g_pPredictions);
+}
+
+void InitGenotick()
+{
 	GenotickCreate = DefineApi("include/genotick/genotickcpp.dll!GenotickCreate");
 	GenotickGetInstances = DefineApi("include/genotick/genotickcpp.dll!GenotickGetInstances");
 	GenotickSpawnConsole = DefineApi("include/genotick/genotickcpp.dll!GenotickSpawnConsole");
 	
 	GenotickSpawnConsole();
 	
-	EGenotickResult result = 0;
-	
-	IGenotick* pInstance = 0;
 	TGenotickCreationSettings creationSettings;
 	GENOTICK_ZERO_STRUCT(creationSettings);
 	creationSettings.utf8_jvmDllPath = JVM_PATH;
 	creationSettings.utf8_javaClassPath = JAVA_CLASS_PATH;
 	
-	result = GenotickGetOrCreate(&pInstance, &creationSettings);
-	printf("\nGenotickGetOrCreate: %d", result);
+	g_result = GenotickGetOrCreate(&g_pInstance, &creationSettings);
+	printf("\nGenotickGetOrCreate Error: %d", g_result);
 
-	TGenotickInt32 version = pInstance->GetInterfaceVersion(pInstance);
-	printf("\nGetInterfaceVersion: %d", version);
-	
-	result = pInstance->RemoveAllSessions(pInstance);
-	printf("\nRemoveAllSessions: %d", result);
-	
-	TGenotickInt32 sessionId = 0;
-	result = pInstance->CreateSession(pInstance, sessionId);
-	printf("\nCreateSession: %d", result);
+	TGenotickInt32 version = g_pInstance->GetInterfaceVersion(g_pInstance);
+	printf("\nGetInterfaceVersion Error: %d", version);
+}
 
+TGenotickDataPoint* AllocateDataPoints(int size)
+{
+	TGenotickDataPoint* dataPoints = malloc(sizeof(TGenotickDataPoint) * size);
+	GENOTICK_ZERO_ARRAY(dataPoints, size, TGenotickDataPoint);
+	return dataPoints;
+}
+
+void RunGenotick(TGenotickInt32 sessionId)
+{
+	g_result = g_pInstance->RemoveSession(g_pInstance, sessionId);
+	printf("\nRemoveSession Error: %d", g_result);
+	
+	g_result = g_pInstance->CreateSession(g_pInstance, sessionId);
+	printf("\nCreateSession Error: %d", g_result);
+	
 	TGenotickMainSettings mainSettings;
 	GENOTICK_ZERO_STRUCT(mainSettings);
 	char buffer1[260];
 	char buffer2[260];
-	GenotickSetString(&mainSettings.populationDAO, buffer1, sizeof(buffer1));
-	GenotickSetString(&mainSettings.dataDirectory, buffer2, sizeof(buffer2));
+	GenotickSetString(&mainSettings.populationDAO, buffer1, 260);
+	GenotickSetString(&mainSettings.dataDirectory, buffer2, 260);
 
-	result = pInstance->GetSettings(pInstance, sessionId, &mainSettings);
-	printf("\nGetSettings: %d", result);
+	g_result = g_pInstance->GetSettings(g_pInstance, sessionId, &mainSettings);
+	printf("\nGetSettings Error: %d", g_result);
 	
-	GenotickSetTimePoint(&mainSettings.startTimePoint, 0, 20130101);
-	GenotickSetTimePoint(&mainSettings.endTimePoint, 0, 20150101);
+	GenotickSetInt64(&mainSettings.startTimePoint, 0, 0);
+	GenotickSetInt64(&mainSettings.endTimePoint, 0x7fffffff, 0xffffffff);
 	GenotickSetConstString(&mainSettings.dataDirectory, GENOTICK_DATADIR);
+	GenotickSetInt64(&mainSettings.randomSeed, 0, 1234567); // Adds reproducability
 
-	result = pInstance->ChangeSettings(pInstance, sessionId, &mainSettings);
-	printf("\nChangeSettings: %d", result);
+	g_result = g_pInstance->ChangeSettings(g_pInstance, sessionId, &mainSettings);
+	printf("\nChangeSettings Error: %d", g_result);
 	
-	TGenotickDataPoint dataPoints[200];
-	GENOTICK_ZERO_ARRAY(dataPoints, 200, TGenotickDataPoint);
-	TGenotickAssetData assetData;
-	GENOTICK_ZERO_STRUCT(assetData);
-	assetData.assetName = "ASSET";
-	assetData.dataPoints = dataPoints;
-	assetData.dataPointCount = 200;
-	assetData.firstDataPointIsNewest = GenotickFalse;
-	GenerateDataPoints(dataPoints, assetData.dataPointCount);
-
-	result = pInstance->SetAssetData(pInstance, sessionId, &assetData);
-	printf("\nSetAssetData: %d", result);
-
+	CleanUpDataPoints(&g_assetData.dataPoints);
+	
+	printf("\nNumBars: %d", NumBars);
+	GENOTICK_ZERO_STRUCT(g_assetData);
+	g_assetData.assetName = Asset;
+	g_assetData.dataPoints = AllocateDataPoints(NumBars);
+	g_assetData.dataPointCount = NumBars;
+	g_assetData.firstDataPointIsNewest = GenotickFalse;
+	
+	FillDataPoints(g_assetData.dataPoints, g_assetData.dataPointCount);
+	
+	g_result = g_pInstance->SetAssetData(g_pInstance, sessionId, &g_assetData);
+	printf("\nSetAssetData Error: %d", g_result);
+	
 	const char* arguments[2];
 	arguments[0] = "input=external";
 	arguments[1] = strf("outdir=%s", GENOTICK_OUTDIR);
@@ -90,35 +162,77 @@ void main()
 	startArgs.elements = arguments;
 	startArgs.elementCount = 2;
 
-	result = pInstance->Start(pInstance, sessionId, &startArgs);
-	printf("\nStart: %d", result);
+	g_result = g_pInstance->Start(g_pInstance, sessionId, &startArgs);
+	printf("\nStart Error: %d", g_result);
 
-	IGenotickTimePoints* pTimePoints;
-	IGenotickPredictions* pPredictions;
-	TGenotickTimePoint timePoint;
-	EGenotickPrediction prediction;
+	g_result = g_pInstance->GetTimePoints(g_pInstance, sessionId, &g_pTimePoints);
+	printf("\nGetTimePoints Error: %d", g_result);
+		
+	g_result = g_pInstance->GetPredictions(g_pInstance, sessionId, g_assetData.assetName, &g_pPredictions);
+	printf("\nGetPredictions Error: %d", g_result);
+	if (g_pPredictions != NULL)
+		printf("\nPredictions Count: %d", g_pPredictions->GetElementCount(g_pPredictions));
 	
-	result = pInstance->GetTimePoints(pInstance, sessionId, &pTimePoints);
-	printf("\nGetTimePoints: %d", result);
+	g_result = g_pInstance->GetNewestTimePoint(g_pInstance, sessionId, &g_timePoint);
+	printf("\nGetNewestTimePoint Error: %d", g_result);
 	
-	result = pInstance->GetPredictions(pInstance, sessionId, "ASSET", &pPredictions);
-	printf("\nGetPredictions: %d", result);
+	g_result = g_pInstance->GetNewestPrediction(g_pInstance, sessionId, g_assetData.assetName, &g_prediction);
+	printf("\nGetNewestPrediction Error: %d", g_result);
 	
-	result = pInstance->GetNewestTimePoint(pInstance, sessionId, &timePoint);
-	printf("\nGetNewestTimePoint: %d", result);
+	g_result = g_pInstance->RemoveSession(g_pInstance, sessionId);
+	printf("\nRemoveSession Error: %d", g_result);
+}
+
+void TradePrediction()
+{
+	if (g_pPredictions != NULL)
+	{
+		const EGenotickPrediction* pPrediction = g_pPredictions->GetElement(g_pPredictions, Bar-1);
+		const EGenotickPrediction prediction = *pPrediction;
+		printf("\nBar %d of %d: Prediction: %d", Bar, NumBars, prediction);
+		if (prediction != g_prevPrediction)
+		{
+			switch (prediction)
+			{
+				case GenotickPrediction_Out: exitLong(); exitShort(); break;
+				case GenotickPrediction_Up: enterLong(); break;
+				case GenotickPrediction_Down: enterShort(); break;
+			}
+			g_prevPrediction = prediction;
+		}
+	}
+}
+
+void main()
+{
+	set(OPENEND);
+	set(TICKS);
+	BarPeriod = 1440;
+	NumYears = 1;
 	
-	result = pInstance->GetNewestPrediction(pInstance, sessionId, "ASSET", &prediction);
-	printf("\nGetNewestPrediction: %d", result);
-	
-	result = pInstance->RemoveSession(pInstance, sessionId);
-	printf("\nRemoveSession: %d", result);
-	
-	pTimePoints->Release(pTimePoints);
-	pPredictions->Release(pPredictions);
+	g_result = 0;
+	g_pInstance = 0;
+	g_pTimePoints = NULL;
+	g_pPredictions = NULL;
+	GENOTICK_ZERO_STRUCT(g_timePoint);
+	g_prediction = GenotickPrediction_Out;
+	g_prevPrediction = GenotickPrediction_Out;
+	GENOTICK_ZERO_STRUCT(g_assetData);
+
+	InitGenotick();
 }
 
 void run()
-{
-
+{	
+	if (is(FIRSTRUN))
+	{
+		RunGenotick(0);
+	}
+	
+	TradePrediction();
+	
+	if (is(EXITRUN))
+	{
+		CleanUp();
+	}
 }
-
