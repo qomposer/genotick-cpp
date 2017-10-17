@@ -14,25 +14,5 @@
       <AdditionalIncludeDirectories>..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
-  <!--<ItemDefinitionGroup Condition="'$(Configuration)'=='DebugDLL'">
-    <ClCompile>
-      <PreprocessorDefinitions>GENOTICK_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)'=='ReleaseDLL'">
-    <ClCompile>
-      <PreprocessorDefinitions>GENOTICK_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-  </ItemDefinitionGroup>-->
-  <!--<ItemDefinitionGroup Condition="'$(Configuration)'=='DebugLIB'">
-    <ClCompile>
-      <ProgramDataBaseFileName>$(OutDir)\$(TargetName).pdb</ProgramDataBaseFileName>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)'=='ReleaseLIB'">
-    <ClCompile>
-      <ProgramDataBaseFileName>$(OutDir)\$(TargetName).pdb</ProgramDataBaseFileName>
-    </ClCompile>
-  </ItemDefinitionGroup>-->
   <ItemGroup />
 </Project>
