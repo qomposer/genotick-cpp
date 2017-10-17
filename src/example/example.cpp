@@ -6,7 +6,7 @@
 #pragma comment(lib, "genotickcpp.lib")
 
 #define GENOTICK_OUTDIR "..\\jar\\.outdir"
-#define GENOTICK_DATADIR "..\\jar\\.data"
+#define GENOTICK_DATADIR ""
 #define JAVA_CLASS_PATH "..\\jar\\genotick.jar"
 #define JVM_PATH "C:\\Program Files (x86)\\Java\\jre1.8.0_144\\bin\\client\\jvm.dll"
 

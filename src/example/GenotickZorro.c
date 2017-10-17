@@ -5,7 +5,7 @@
 #include <genotick/igenotick_utils.h>
 
 #define GENOTICK_OUTDIR "include\\genotick\\.outdir"
-#define GENOTICK_DATADIR "include\\genotick\\.data"
+#define GENOTICK_DATADIR ""
 #define JAVA_CLASS_PATH "include\\genotick\\genotick.jar"
 #define JVM_PATH "C:\\Program Files (x86)\\Java\\jre1.8.0_144\\bin\\client\\jvm.dll"
 
