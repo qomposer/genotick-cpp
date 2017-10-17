@@ -19,6 +19,12 @@
 #define CUSTOM_ENUM_UNROLL_NAMES(enumName, enumValue, ...) #enumName,
 #define CUSTOM_ENUM_UNROLL_VALUE(enumName, enumValue, ...) enumName enumValue,
 #define CUSTOM_ENUM_UNROLL_META(enumName, enumValue, meta, ...) meta,
+
+#define DEFINE_NORMAL_ENUM_CLASS(clazz, underlying_t, list) \
+enum class clazz : underlying_t { \
+	list(CUSTOM_ENUM_UNROLL_VALUE) \
+};
+
 #define DEFINE_CUSTOM_ENUM_CLASS(clazz, underlying_t, list, meta_t) \
 class clazz { \
 public: \

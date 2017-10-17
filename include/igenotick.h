@@ -83,25 +83,25 @@ const TGenotickBoolean GenotickTrue = 1;
 #define GenotickPrediction_Down -1
 #define GenotickPrediction_Out   0
 
-#define GenotickResult_Success                0
-#define GenotickResult_InvalidArgument        1
-#define GenotickResult_JvmDllNotFound         2
-#define GenotickResult_JvmExportsNotFound     3
-#define GenotickResult_JniError               4
-#define GenotickResult_JniDetached            5
-#define GenotickResult_JniVersionMismatch     6
-#define GenotickResult_JniNoMemory            7
-#define GenotickResult_JniExists              8
-#define GenotickResult_JniInvalidArgument     9
-#define GenotickResult_JavaClassMismatch     10
-#define GenotickResult_JavaEnumMismatch      11
-#define GenotickResult_JavaException         12
-#define GenotickResult_ErrorNoInput          13
-#define GenotickResult_ErrorNoOutput         14
-#define GenotickResult_ErrorUnknownArgument  15
-#define GenotickResult_ErrorInvalidSession   16
-#define GenotickResult_ErrorDuplicateSession 17
-#define GenotickResult_ErrorInsufficientData 18
+#define GenotickResult_Success                 0
+#define GenotickResult_InvalidArgument         1
+#define GenotickResult_JvmDllNotFound        100
+#define GenotickResult_JvmExportsNotFound    101
+#define GenotickResult_JniError              200
+#define GenotickResult_JniDetached           201
+#define GenotickResult_JniVersionMismatch    202
+#define GenotickResult_JniNoMemory           203
+#define GenotickResult_JniExists             204
+#define GenotickResult_JniInvalidArgument    205
+#define GenotickResult_JavaClassMismatch     300
+#define GenotickResult_JavaEnumMismatch      301
+#define GenotickResult_JavaException         302
+#define GenotickResult_ErrorNoInput          400
+#define GenotickResult_ErrorNoOutput         401
+#define GenotickResult_ErrorUnknownArgument  402
+#define GenotickResult_ErrorInvalidSession   403
+#define GenotickResult_ErrorDuplicateSession 404
+#define GenotickResult_ErrorInsufficientData 405
 
 #ifdef __cplusplus
 
@@ -139,10 +139,16 @@ struct SGenotickEnumMeta
 	e(Down , = GenotickPrediction_Down , (SGenotickEnumMeta("DOWN"))) \
 	e(Out  , = GenotickPrediction_Out  , (SGenotickEnumMeta("OUT" ))) \
 
-DEFINE_CUSTOM_ENUM_CLASS(EGenotickWeightMode, TGenotickInt32, GENOTICK_ENUM_WEIGHT_MODE, SGenotickEnumMeta)
-DEFINE_CUSTOM_ENUM_CLASS(EGenotickInheritedWeightMode, TGenotickInt32, GENOTICK_ENUM_INHERITED_WEIGHT_MODE, SGenotickEnumMeta)
-DEFINE_CUSTOM_ENUM_CLASS(EGenotickChartMode, TGenotickInt32, GENOTICK_ENUM_CHART_MODE, SGenotickEnumMeta)
-DEFINE_CUSTOM_ENUM_CLASS(EGenotickPrediction, TGenotickInt32, GENOTICK_PREDICTION, SGenotickEnumMeta)
+#ifdef GENOTICK_IMPL
+#define GENOTICK_DEFINE_ENUM_CLASS(clazz, underlying_t, list, meta_t) DEFINE_CUSTOM_ENUM_CLASS(clazz, underlying_t, list, meta_t)
+#else
+#define GENOTICK_DEFINE_ENUM_CLASS(clazz, underlying_t, list, meta_t) DEFINE_NORMAL_ENUM_CLASS(clazz, underlying_t, list)
+#endif
+
+GENOTICK_DEFINE_ENUM_CLASS(EGenotickWeightMode, TGenotickInt32, GENOTICK_ENUM_WEIGHT_MODE, SGenotickEnumMeta)
+GENOTICK_DEFINE_ENUM_CLASS(EGenotickInheritedWeightMode, TGenotickInt32, GENOTICK_ENUM_INHERITED_WEIGHT_MODE, SGenotickEnumMeta)
+GENOTICK_DEFINE_ENUM_CLASS(EGenotickChartMode, TGenotickInt32, GENOTICK_ENUM_CHART_MODE, SGenotickEnumMeta)
+GENOTICK_DEFINE_ENUM_CLASS(EGenotickPrediction, TGenotickInt32, GENOTICK_PREDICTION, SGenotickEnumMeta)
 
 enum class EGenotickResult : TGenotickInt32
 {
