@@ -13,6 +13,7 @@ class CSimpleContainer
 {
 protected:
 	using TElement = Element;
+	using TElementPtr = const TElement*;
 	using TContainer = ::std::vector<Element>;
 
 private:
@@ -35,18 +36,19 @@ protected:
 		m_container[index] = element;
 	}
 
-	template <class TForeignElement, class TAssignPred>
-	inline void Set(TGenotickSize index, const TForeignElement& element, const TAssignPred& AssignPred)
+	template <class TForeignElement, class TAssignFunc>
+	inline void Set(TGenotickSize index, const TForeignElement& element, const TAssignFunc& AssignFunc)
 	{
-		AssignPred(m_container[index], element);
+		AssignFunc(m_container[index], element);
 	}
 
-	inline TGenotickBoolean FindIndexInternal(TElement element, TGenotickSize* pIndex) const
+	inline TGenotickBoolean FindIndexInternal(TElementPtr pElement, TGenotickSize* pIndex) const
 	{
 		assert(pIndex != nullptr);
+		assert(pElement != nullptr);
 		const TConstIterator first = m_container.cbegin();
 		const TConstIterator last = m_container.cend();
-		const TConstIterator it = ::stl::binary_find(first, last, element);
+		const TConstIterator it = ::stl::binary_find(first, last, *pElement);
 		if (it != last)
 		{
 			const TDifferenceType index = ::std::distance(first, it);
@@ -54,6 +56,11 @@ protected:
 			return GenotickTrue;
 		}
 		return GenotickFalse;
+	}
+
+	inline TElementPtr GetElementPtrInternal(TGenotickSize index) const
+	{
+		return &m_container[index];
 	}
 
 	inline TElement GetElementInternal(TGenotickSize index) const

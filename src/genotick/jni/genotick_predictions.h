@@ -36,8 +36,8 @@ public:
 	}
 
 private:
-	static EGenotickPrediction GENOTICK_CALL GetElement(IGenotickPredictions* pThis, TGenotickSize index) {
-		return static_cast<const CGenotickPredictions*>(pThis)->GetElementInternal(index);
+	static const EGenotickPrediction* GENOTICK_CALL GetElement(IGenotickPredictions* pThis, TGenotickSize index) {
+		return static_cast<const CGenotickPredictions*>(pThis)->GetElementPtrInternal(index);
 	}
 	static TGenotickSize GENOTICK_CALL GetElementCount(IGenotickPredictions* pThis) {
 		return static_cast<const CGenotickPredictions*>(pThis)->GetElementCountInternal();

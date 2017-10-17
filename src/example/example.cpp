@@ -106,6 +106,18 @@ int main(int argc, char** argv)
 		result = pInstance->RemoveSession(sessionId);
 		assert(result == EGenotickResult::Success);
 
+		for (TGenotickSize i = 0, c = pTimePoints->GetElementCount(); i < c; ++i)
+		{
+			const TGenotickTimePoint* pTimePoint = pTimePoints->GetElement(i);
+			(void)pTimePoint;
+		}
+
+		for (TGenotickSize i = 0, c = pPredictions->GetElementCount(); i < c; ++i)
+		{
+			const EGenotickPrediction* pPrediction = pPredictions->GetElement(i);
+			(void)pPrediction;
+		}
+
 		GenotickSafeRelease(pTimePoints);
 		GenotickSafeRelease(pPredictions);
 	}

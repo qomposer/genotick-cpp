@@ -37,11 +37,11 @@ public:
 	}
 
 private:
-	static TGenotickBoolean GENOTICK_CALL FindIndex(IGenotickTimePoints* pThis, TGenotickTimePoint timePoint, TGenotickSize* pIndex) {
+	static TGenotickBoolean GENOTICK_CALL FindIndex(IGenotickTimePoints* pThis, const TGenotickTimePoint* timePoint, TGenotickSize* pIndex) {
 		return static_cast<const CGenotickTimePoints*>(pThis)->FindIndexInternal(timePoint, pIndex);
 	}
-	static TGenotickTimePoint GENOTICK_CALL GetElement(IGenotickTimePoints* pThis, TGenotickSize index) {
-		return static_cast<const CGenotickTimePoints*>(pThis)->GetElementInternal(index);
+	static const TGenotickTimePoint* GENOTICK_CALL GetElement(IGenotickTimePoints* pThis, TGenotickSize index) {
+		return static_cast<const CGenotickTimePoints*>(pThis)->GetElementPtrInternal(index);
 	}
 	static TGenotickSize GENOTICK_CALL GetElementCount(IGenotickTimePoints* pThis) {
 		return static_cast<const CGenotickTimePoints*>(pThis)->GetElementCountInternal();

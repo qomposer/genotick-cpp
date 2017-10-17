@@ -18,11 +18,11 @@ protected:
 	using TRemoteElementObject = typename RemoteContainer::TElementObject;
 
 protected:
-	template <typename TAssignPred>
+	template <typename TAssignFunc>
 	CSimpleRemoteContainer(
 		const TRemoteContainerObject& remoteContainerObject,
 		const TRemoteContainer& remoteContainer,
-		const TAssignPred& AssignPred)
+		const TAssignFunc& AssignFunc)
 	{
 		const TGenotickSize size = static_cast<TGenotickSize>(remoteContainer.size(remoteContainerObject));
 		Resize(size);
@@ -30,7 +30,7 @@ protected:
 		for (TGenotickSize index = 0; index < size; ++index)
 		{
 			const TRemoteElementObject remoteElementObject = remoteContainer.get(remoteContainerObject, index);
-			Set(index, remoteElementObject, AssignPred);
+			Set(index, remoteElementObject, AssignFunc);
 		}
 	}
 
