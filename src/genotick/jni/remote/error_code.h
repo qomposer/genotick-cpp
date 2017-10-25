@@ -26,7 +26,7 @@ struct SGenotickErrorCodeMeta
 	f(DuplicateSession , = 5 , (SGenotickErrorCodeMeta("DUPLICATE_SESSION", EGenotickResult::ErrorDuplicateSession))) \
 	f(InsufficientData , = 6 , (SGenotickErrorCodeMeta("INSUFFICIENT_DATA", EGenotickResult::ErrorInsufficientData))) \
 
-DEFINE_CUSTOM_ENUM_CLASS(EErrorCode, ::jni::jint, GENOTICK_ENUM_ERROR_CODE, SGenotickErrorCodeMeta)
+DEFINE_DATA_ENUM_CLASS(EErrorCode, ::jni::jint, GENOTICK_ENUM_ERROR_CODE, SGenotickErrorCodeMeta)
 
 struct SErrorCodeTag { static constexpr auto Name() { return "com/alphatica/genotick/genotick/ErrorCode"; } };
 

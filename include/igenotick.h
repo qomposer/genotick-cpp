@@ -105,7 +105,7 @@ const TGenotickBoolean GenotickTrue = 1;
 
 #ifdef __cplusplus
 
-#define CUSTOM_ENUM_DEBUGGING 2
+#define DATA_ENUM_DEBUGGING 2
 #include "enumdef.h"
 
 struct SGenotickEnumMeta
@@ -140,7 +140,7 @@ struct SGenotickEnumMeta
 	e(Out  , = GenotickPrediction_Out  , (SGenotickEnumMeta("OUT" ))) \
 
 #ifdef GENOTICK_IMPL
-#define GENOTICK_DEFINE_ENUM_CLASS(clazz, underlying_t, list, meta_t) DEFINE_CUSTOM_ENUM_CLASS(clazz, underlying_t, list, meta_t)
+#define GENOTICK_DEFINE_ENUM_CLASS(clazz, underlying_t, list, meta_t) DEFINE_DATA_ENUM_CLASS(clazz, underlying_t, list, meta_t)
 #else
 #define GENOTICK_DEFINE_ENUM_CLASS(clazz, underlying_t, list, meta_t) DEFINE_NORMAL_ENUM_CLASS(clazz, underlying_t, list)
 #endif

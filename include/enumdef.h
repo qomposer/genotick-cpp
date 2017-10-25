@@ -1,21 +1,21 @@
 
 #pragma once
 
-#if CUSTOM_ENUM_DEBUGGING == 1
+#if DATA_ENUM_DEBUGGING == 1
 #include <stdexcept>
-#define CUSTOM_ENUM_ERROR(condition) \
+#define DATA_ENUM_ERROR(condition) \
 	if (condition) { \
 		throw std::exception("enum ordinal out of range"); \
 	}
-#elif CUSTOM_ENUM_DEBUGGING == 2
+#elif DATA_ENUM_DEBUGGING == 2
 #include <cassert>
-#define CUSTOM_ENUM_ERROR(condition) assert(!(condition));
+#define DATA_ENUM_ERROR(condition) assert(!(condition));
 #else
-#define CUSTOM_ENUM_ERROR(condition)
+#define DATA_ENUM_ERROR(condition)
 #endif
 
 template <class EnumDefinition>
-class CSmartEnum : public EnumDefinition {
+class CDataEnum : public EnumDefinition {
 public:
 	using enum_type       = typename EnumDefinition::enum_type;
 	using ordinal_type    = typename EnumDefinition::ordinal_type;
@@ -27,38 +27,38 @@ private:
 	enum_type m_value;
 
 public:
-	constexpr CSmartEnum() : m_value(m_values[0]) {}
-	constexpr CSmartEnum(enum_type value) : m_value(value) {}
-	constexpr CSmartEnum(const CSmartEnum& other) : CSmartEnum(other.m_value) {}
+	constexpr CDataEnum() : m_value(m_values[0]) {}
+	constexpr CDataEnum(enum_type value) : m_value(value) {}
+	constexpr CDataEnum(const CDataEnum& other) : CDataEnum(other.m_value) {}
 	constexpr static ordinal_type count() noexcept {
 		return sizeof(m_values) / sizeof(enum_type);
 	}
-	constexpr static CSmartEnum get_by_ordinal(const ordinal_type ordinal) {
-		CUSTOM_ENUM_ERROR(ordinal >= count())
-		return CSmartEnum(m_values[ordinal]);
+	constexpr static CDataEnum get_by_ordinal(const ordinal_type ordinal) {
+		DATA_ENUM_ERROR(ordinal >= count())
+		return CDataEnum(m_values[ordinal]);
 	}
-	constexpr static CSmartEnum get_by_value(const underlying_type value) {
-		CSmartEnum instance(static_cast<enum_type>(value));
-		CUSTOM_ENUM_ERROR(instance.ordinal() >= instance.count())
+	constexpr static CDataEnum get_by_value(const underlying_type value) {
+		CDataEnum instance(static_cast<enum_type>(value));
+		DATA_ENUM_ERROR(instance.ordinal() >= instance.count())
 		return instance;
 	}
-	static ordinal_type ordinal_of(const CSmartEnum& instance) noexcept {
+	static ordinal_type ordinal_of(const CDataEnum& instance) noexcept {
 		return instance.ordinal();
 	}
-	static underlying_type value_of(const CSmartEnum& instance) noexcept {
+	static underlying_type value_of(const CDataEnum& instance) noexcept {
 		return instance.value();
 	}
-	static string_type name_of(const CSmartEnum& instance) noexcept {
+	static string_type name_of(const CDataEnum& instance) noexcept {
 		return instance.name();
 	}
-	static meta_type meta_of(const CSmartEnum& instance) noexcept {
+	static meta_type meta_of(const CDataEnum& instance) noexcept {
 		return instance.meta();
 	}
 	constexpr ordinal_type ordinal() const {
 		for (ordinal_type i = 0, c = count(); i < c; ++i)
 			if (m_value == m_values[i])
 				return i;
-		CUSTOM_ENUM_ERROR(true)
+		DATA_ENUM_ERROR(true)
 		return ~0u;
 	}
 	constexpr underlying_type value() const noexcept {
@@ -70,38 +70,38 @@ public:
 	constexpr meta_type meta() const {
 		return m_metas[ordinal()];
 	}
-	constexpr bool operator==(const CSmartEnum& other) const noexcept {
+	constexpr bool operator==(const CDataEnum& other) const noexcept {
 		return m_value == other.m_value;
 	}
-	constexpr bool operator!=(const CSmartEnum& other) const noexcept {
+	constexpr bool operator!=(const CDataEnum& other) const noexcept {
 		return m_value != other.m_value;
 	}
-	constexpr bool operator<(const CSmartEnum& other) const noexcept {
+	constexpr bool operator<(const CDataEnum& other) const noexcept {
 		return m_value < other.m_value;
 	}
-	constexpr bool operator>(const CSmartEnum& other) const noexcept {
+	constexpr bool operator>(const CDataEnum& other) const noexcept {
 		return m_value > other.m_value;
 	}
-	constexpr bool operator<=(const CSmartEnum& other) const noexcept {
+	constexpr bool operator<=(const CDataEnum& other) const noexcept {
 		return m_value <= other.m_value;
 	}
-	constexpr bool operator>=(const CSmartEnum& other) const noexcept {
+	constexpr bool operator>=(const CDataEnum& other) const noexcept {
 		return m_value >= other.m_value;
 	}
 };
 
-#define CUSTOM_ENUM_UNROLL_MEMBERS(enumName, enumValue, ...) constexpr static enum_type enumName{enum_type::enumName};
-#define CUSTOM_ENUM_UNROLL_VALUES(enumName, enumValue, ...) enum_type::enumName,
-#define CUSTOM_ENUM_UNROLL_NAMES(enumName, enumValue, ...) #enumName,
-#define CUSTOM_ENUM_UNROLL_VALUE(enumName, enumValue, ...) enumName enumValue,
-#define CUSTOM_ENUM_UNROLL_META(enumName, enumValue, meta, ...) meta,
+#define DATA_ENUM_UNROLL_MEMBERS(enumName, enumValue, ...) constexpr static enum_type enumName{enum_type::enumName};
+#define DATA_ENUM_UNROLL_VALUES(enumName, enumValue, ...) enum_type::enumName,
+#define DATA_ENUM_UNROLL_NAMES(enumName, enumValue, ...) #enumName,
+#define DATA_ENUM_UNROLL_VALUE(enumName, enumValue, ...) enumName enumValue,
+#define DATA_ENUM_UNROLL_META(enumName, enumValue, meta, ...) meta,
 
 #define DEFINE_NORMAL_ENUM_CLASS(clazz, underlying_t, list) \
 enum class clazz : underlying_t { \
-	list(CUSTOM_ENUM_UNROLL_VALUE) \
+	list(DATA_ENUM_UNROLL_VALUE) \
 };
 
-#define DEFINE_CUSTOM_ENUM_CLASS(clazz, underlying_t, list, meta_t) \
+#define DEFINE_DATA_ENUM_CLASS(clazz, underlying_t, list, meta_t) \
 class clazz##Definition { \
 public: \
 	using ordinal_type    = size_t;       \
@@ -109,17 +109,17 @@ public: \
 	using string_type     = const char*;  \
 	using meta_type       = meta_t;       \
 protected: \
-	enum class enum_type : underlying_type    { list(CUSTOM_ENUM_UNROLL_VALUE)  }; \
-	constexpr static enum_type   m_values[] = { list(CUSTOM_ENUM_UNROLL_VALUES) }; \
-	constexpr static string_type m_names[]  = { list(CUSTOM_ENUM_UNROLL_NAMES)  }; \
-	constexpr static meta_type   m_metas[]  = { list(CUSTOM_ENUM_UNROLL_META)   }; \
+	enum class enum_type : underlying_type    { list(DATA_ENUM_UNROLL_VALUE)  }; \
+	constexpr static enum_type   m_values[] = { list(DATA_ENUM_UNROLL_VALUES) }; \
+	constexpr static string_type m_names[]  = { list(DATA_ENUM_UNROLL_NAMES)  }; \
+	constexpr static meta_type   m_metas[]  = { list(DATA_ENUM_UNROLL_META)   }; \
 public: \
-	list(CUSTOM_ENUM_UNROLL_MEMBERS); \
+	list(DATA_ENUM_UNROLL_MEMBERS); \
 }; \
-typedef CSmartEnum<clazz##Definition> clazz;
+typedef CDataEnum<clazz##Definition> clazz;
 
 
-#ifdef CUSTOM_ENUM_SAMPLE
+#ifdef DATA_ENUM_SAMPLE
 #pragma warning(push)
 #pragma warning(disable:4189)
 
@@ -144,7 +144,7 @@ struct FruitMeta
 	e( Banana    , = 66 , (FruitMeta("Bananas are long"        , FruitColor::Yellow)) ) \
 	e( Pineapple ,      , (FruitMeta("Pineapples are the tasty", FruitColor::Brown )) ) \
 
-DEFINE_CUSTOM_ENUM_CLASS(Fruit, int, FRUIT_ENUM_LIST, FruitMeta)
+DEFINE_DATA_ENUM_CLASS(Fruit, int, FRUIT_ENUM_LIST, FruitMeta)
 
 void CustomEnumExample()
 {
@@ -185,7 +185,7 @@ void CustomEnumExample()
 	e(Enum3 , , false) \
 	e(Enum4 , , false) \
 
-DEFINE_CUSTOM_ENUM_CLASS(DummyEnum, int, DUMMY_ENUM_LIST, bool)
+DEFINE_DATA_ENUM_CLASS(DummyEnum, int, DUMMY_ENUM_LIST, bool)
 
 #pragma warning(pop)
 #endif
