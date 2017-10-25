@@ -118,9 +118,13 @@ public: \
 }; \
 typedef CSmartEnum<clazz##Definition> clazz;
 
-/*
-This is an enum class macro for enums with ordinal and count awareness.
-Additionally it can store meta data as defined in the macro.
+
+#ifdef CUSTOM_ENUM_SAMPLE
+#pragma warning(push)
+#pragma warning(disable:4189)
+
+// This is an enum class macro for enums with ordinal and count awareness.
+// Additionally it can store meta data as defined in the macro.
 
 enum class FruitColor { Red, Orange, Yellow, Brown };
 
@@ -142,7 +146,7 @@ struct FruitMeta
 
 DEFINE_CUSTOM_ENUM_CLASS(Fruit, int, FRUIT_ENUM_LIST, FruitMeta)
 
-void sample()
+void CustomEnumExample()
 {
 	auto orangeOrdinal = Fruit::ordinal_of(Fruit::Orange); // 1
 	auto orangeValue = Fruit::value_of(Fruit::Orange);     // 55
@@ -172,8 +176,8 @@ void sample()
 	}
 }
 
-The Meta data cannot be omitted.
-If there is no meta data necessary, just specify a meaningless literal type like so:
+// The Meta data cannot be omitted.
+// If there is no meta data required, just specify a meaningless literal type like so:
 
 #define DUMMY_ENUM_LIST(e) \
 	e(Enum1 , , false) \
@@ -183,4 +187,5 @@ If there is no meta data necessary, just specify a meaningless literal type like
 
 DEFINE_CUSTOM_ENUM_CLASS(DummyEnum, int, DUMMY_ENUM_LIST, bool)
 
-*/
+#pragma warning(pop)
+#endif
