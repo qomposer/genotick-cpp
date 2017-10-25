@@ -14,6 +14,82 @@
 #define CUSTOM_ENUM_ERROR(condition)
 #endif
 
+template <class EnumDefinition>
+class CSmartEnum : public EnumDefinition {
+public:
+	using enum_type       = typename EnumDefinition::enum_type;
+	using ordinal_type    = typename EnumDefinition::ordinal_type;
+	using underlying_type = typename EnumDefinition::underlying_type;
+	using string_type     = typename EnumDefinition::string_type;
+	using meta_type       = typename EnumDefinition::meta_type;
+
+private:
+	enum_type m_value;
+
+public:
+	constexpr CSmartEnum() : m_value(m_values[0]) {}
+	constexpr CSmartEnum(enum_type value) : m_value(value) {}
+	constexpr CSmartEnum(const CSmartEnum& other) : CSmartEnum(other.m_value) {}
+	constexpr static ordinal_type count() noexcept {
+		return sizeof(m_values) / sizeof(enum_type);
+	}
+	constexpr static CSmartEnum get_by_ordinal(const ordinal_type ordinal) {
+		CUSTOM_ENUM_ERROR(ordinal >= count())
+		return CSmartEnum(m_values[ordinal]);
+	}
+	constexpr static CSmartEnum get_by_value(const underlying_type value) {
+		CSmartEnum instance(static_cast<enum_type>(value));
+		CUSTOM_ENUM_ERROR(instance.ordinal() >= instance.count())
+		return instance;
+	}
+	static ordinal_type ordinal_of(const CSmartEnum& instance) noexcept {
+		return instance.ordinal();
+	}
+	static underlying_type value_of(const CSmartEnum& instance) noexcept {
+		return instance.value();
+	}
+	static string_type name_of(const CSmartEnum& instance) noexcept {
+		return instance.name();
+	}
+	static meta_type meta_of(const CSmartEnum& instance) noexcept {
+		return instance.meta();
+	}
+	constexpr ordinal_type ordinal() const {
+		for (ordinal_type i = 0, c = count(); i < c; ++i)
+			if (m_value == m_values[i])
+				return i;
+		CUSTOM_ENUM_ERROR(true)
+		return ~0u;
+	}
+	constexpr underlying_type value() const noexcept {
+		return static_cast<underlying_type>(m_value);
+	}
+	constexpr string_type name() const {
+		return m_names[ordinal()];
+	}
+	constexpr meta_type meta() const {
+		return m_metas[ordinal()];
+	}
+	constexpr bool operator==(const CSmartEnum& other) const noexcept {
+		return m_value == other.m_value;
+	}
+	constexpr bool operator!=(const CSmartEnum& other) const noexcept {
+		return m_value != other.m_value;
+	}
+	constexpr bool operator<(const CSmartEnum& other) const noexcept {
+		return m_value < other.m_value;
+	}
+	constexpr bool operator>(const CSmartEnum& other) const noexcept {
+		return m_value > other.m_value;
+	}
+	constexpr bool operator<=(const CSmartEnum& other) const noexcept {
+		return m_value <= other.m_value;
+	}
+	constexpr bool operator>=(const CSmartEnum& other) const noexcept {
+		return m_value >= other.m_value;
+	}
+};
+
 #define CUSTOM_ENUM_UNROLL_MEMBERS(enumName, enumValue, ...) constexpr static enum_type enumName{enum_type::enumName};
 #define CUSTOM_ENUM_UNROLL_VALUES(enumName, enumValue, ...) enum_type::enumName,
 #define CUSTOM_ENUM_UNROLL_NAMES(enumName, enumValue, ...) #enumName,
@@ -26,82 +102,21 @@ enum class clazz : underlying_t { \
 };
 
 #define DEFINE_CUSTOM_ENUM_CLASS(clazz, underlying_t, list, meta_t) \
-class clazz { \
+class clazz##Definition { \
 public: \
-	using ordinal_type = size_t; \
+	using ordinal_type    = size_t;       \
 	using underlying_type = underlying_t; \
-	using string_type = const char*; \
-	using meta_type = meta_t; \
-private: \
-	enum class enum_type : underlying_type { list(CUSTOM_ENUM_UNROLL_VALUE) }; \
-	constexpr static enum_type m_values[] = { list(CUSTOM_ENUM_UNROLL_VALUES) }; \
-	constexpr static string_type m_names[] = { list(CUSTOM_ENUM_UNROLL_NAMES) }; \
-	constexpr static meta_type m_metas[] = { list(CUSTOM_ENUM_UNROLL_META) }; \
-	enum_type m_value; \
+	using string_type     = const char*;  \
+	using meta_type       = meta_t;       \
+protected: \
+	enum class enum_type : underlying_type    { list(CUSTOM_ENUM_UNROLL_VALUE)  }; \
+	constexpr static enum_type   m_values[] = { list(CUSTOM_ENUM_UNROLL_VALUES) }; \
+	constexpr static string_type m_names[]  = { list(CUSTOM_ENUM_UNROLL_NAMES)  }; \
+	constexpr static meta_type   m_metas[]  = { list(CUSTOM_ENUM_UNROLL_META)   }; \
 public: \
 	list(CUSTOM_ENUM_UNROLL_MEMBERS); \
-	constexpr clazz() : m_value(m_values[0]) {} \
-	constexpr clazz(enum_type value) : m_value(value) {} \
-	constexpr clazz(const class clazz& other) : clazz(other.m_value) {} \
-	constexpr static ordinal_type count() noexcept { \
-		return sizeof(m_values) / sizeof(enum_type); \
-	} \
-	constexpr static class clazz get_by_ordinal(const ordinal_type ordinal) { \
-		CUSTOM_ENUM_ERROR(ordinal >= count()) \
-		return clazz(m_values[ordinal]); \
-	} \
-	constexpr static class clazz get_by_value(const underlying_type value) { \
-		class clazz instance(static_cast<enum_type>(value)); \
-		CUSTOM_ENUM_ERROR(instance.ordinal() >= instance.count()) \
-		return instance; \
-	} \
-	static ordinal_type ordinal_of(const class clazz& instance) noexcept { \
-		return instance.ordinal(); \
-	} \
-	static underlying_type value_of(const class clazz& instance) noexcept { \
-		return instance.value(); \
-	} \
-	static string_type name_of(const class clazz& instance) noexcept { \
-		return instance.name(); \
-	} \
-	static meta_type meta_of(const class clazz& instance) noexcept { \
-		return instance.meta(); \
-	} \
-	constexpr ordinal_type ordinal() const { \
-		for (ordinal_type i = 0, c = count(); i < c; ++i) \
-			if (m_value == m_values[i]) \
-				return i; \
-		CUSTOM_ENUM_ERROR(true) \
-		return ~0u; \
-	} \
-	constexpr underlying_type value() const noexcept { \
-		return static_cast<underlying_type>(m_value); \
-	} \
-	constexpr string_type name() const { \
-		return m_names[ordinal()]; \
-	} \
-	constexpr meta_type meta() const { \
-		return m_metas[ordinal()]; \
-	} \
-	constexpr bool operator==(const class clazz& other) const noexcept { \
-		return m_value == other.m_value; \
-	} \
-	constexpr bool operator!=(const class clazz& other) const noexcept { \
-		return m_value != other.m_value; \
-	} \
-	constexpr bool operator<(const class clazz& other) const noexcept { \
-		return m_value < other.m_value; \
-	} \
-	constexpr bool operator>(const class clazz& other) const noexcept { \
-		return m_value > other.m_value; \
-	} \
-	constexpr bool operator<=(const class clazz& other) const noexcept { \
-		return m_value <= other.m_value; \
-	} \
-	constexpr bool operator>=(const class clazz& other) const noexcept { \
-		return m_value >= other.m_value; \
-	} \
-};
+}; \
+typedef CSmartEnum<clazz##Definition> clazz;
 
 /*
 This is an enum class macro for enums with ordinal and count awareness.
