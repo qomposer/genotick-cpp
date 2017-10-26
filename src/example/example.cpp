@@ -86,15 +86,15 @@ int main(int argc, char** argv)
 		result = pInstance->Start(sessionId, &startArgs);
 		assert(result == EGenotickResult::Success);
 
-		IGenotickTimePoints* pTimePoints = nullptr;
-		IGenotickPredictions* pPredictions = nullptr;
+		IGenotickTimePointsPtr pTimePoints;
+		IGenotickPredictionsPtr pPredictions;
 		TGenotickTimePoint timePoint = 0;
 		EGenotickPrediction prediction = EGenotickPrediction::Out;
 
-		result = pInstance->GetTimePoints(sessionId, &pTimePoints);
+		result = GenotickGetTimePoints(*pInstance, sessionId, pTimePoints);
 		assert(result == EGenotickResult::Success);
 
-		result = pInstance->GetPredictions(sessionId, assetData.assetName, &pPredictions);
+		result = GenotickGetPredictions(*pInstance, sessionId, assetData.assetName, pPredictions);
 		assert(result == EGenotickResult::Success);
 
 		result = pInstance->GetNewestTimePoint(sessionId, &timePoint);
@@ -117,9 +117,6 @@ int main(int argc, char** argv)
 			const EGenotickPrediction* pPrediction = pPredictions->GetElement(i);
 			(void)pPrediction;
 		}
-
-		GenotickSafeRelease(pTimePoints);
-		GenotickSafeRelease(pPredictions);
 	}
 
 	GenotickSafeRelease(pInstance);

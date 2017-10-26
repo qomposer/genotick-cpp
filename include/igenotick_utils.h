@@ -5,6 +5,9 @@
 #define I_GENOTICK_UTILS_H
 
 #ifdef __cplusplus
+#if __cplusplus >= 201103L || _MSVC_LANG >= 201103L
+#define GENOTICK_CPP_11
+#endif
 
 #include <cassert>
 
@@ -12,7 +15,7 @@ template <class T>
 inline void GenotickSafeRelease(T*& p) {
 	if (p) {
 		p->Release();
-		p = nullptr;
+		p = 0;
 	}
 }
 
@@ -42,10 +45,10 @@ inline EGenotickResult GenotickGetOrCreate(IGenotick** ppInstance, const TGenoti
 		return EGenotickResult::InvalidArgument;
 	}
 	
-	IGenotickList* pList = nullptr;
+	IGenotickList* pList = 0;
 	if (GenotickGetInstances(&pList, pSettings) == EGenotickResult::Success)
 	{
-		assert(pList != nullptr);
+		assert(pList != 0);
 
 		if (pList->GetElementCount() > 0)
 		{
@@ -59,6 +62,74 @@ inline EGenotickResult GenotickGetOrCreate(IGenotick** ppInstance, const TGenoti
 	return GenotickCreate(ppInstance, pSettings);
 }
 
+#ifdef GENOTICK_CPP_11
+
+#include <memory>
+
+template <class T>
+class CGenotickObjectDeleter
+{
+public:
+	void operator()(T* p) const
+	{
+		if (p)
+		{
+			p->Release();
+		}
+	}
+};
+
+template <class T>
+using TGenotickUniquePtr = std::unique_ptr<const T, CGenotickObjectDeleter<T>>;
+
+using IGenotickPtr = TGenotickUniquePtr<IGenotick>;
+using IGenotickListPtr = TGenotickUniquePtr<IGenotickList>;
+using IGenotickPredictionsPtr = TGenotickUniquePtr<IGenotickPredictions>;
+using IGenotickTimePointsPtr = TGenotickUniquePtr<IGenotickTimePoints>;
+
+inline EGenotickResult GenotickCreate(IGenotickPtr& out, const TGenotickCreationSettings& settings)
+{
+	IGenotick* pRaw = nullptr;
+	EGenotickResult result = GenotickCreate(&pRaw, &settings);
+	out.reset(pRaw);
+	return result;
+}
+
+inline EGenotickResult GenotickGetOrCreate(IGenotickPtr& out, const TGenotickCreationSettings& settings)
+{
+	IGenotick* pRaw = nullptr;
+	EGenotickResult result = GenotickGetOrCreate(&pRaw, &settings);
+	out.reset(pRaw);
+	return result;
+}
+
+inline EGenotickResult GenotickGetInstances(IGenotickListPtr& out, const TGenotickCreationSettings* pSettings)
+{
+	IGenotickList* pRaw = nullptr;
+	EGenotickResult result = GenotickGetInstances(&pRaw, pSettings);
+	out.reset(pRaw);
+	return result;
+}
+
+inline EGenotickResult GenotickGetTimePoints(IGenotick& genotick, TGenotickSessionId sessionId, IGenotickTimePointsPtr& out)
+{
+	IGenotickTimePoints* pRaw = nullptr;
+	EGenotickResult result = genotick.GetTimePoints(sessionId, &pRaw);
+	out.reset(pRaw);
+	return result;
+}
+
+inline EGenotickResult GenotickGetPredictions(IGenotick& genotick, TGenotickSessionId sessionId, const char* assetName, IGenotickPredictionsPtr& out)
+{
+	IGenotickPredictions* pRaw = nullptr;
+	EGenotickResult result = genotick.GetPredictions(sessionId, assetName, &pRaw);
+	out.reset(pRaw);
+	return result;
+}
+
+#endif // GENOTICK_CPP_11
+
+#undef GENOTICK_CPP_11
 #else // __cplusplus
 
 #ifdef ZORRO_LITE_C
