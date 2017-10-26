@@ -27,6 +27,7 @@ public:
 				{ nativeElement = TNativeElement::get_by_value(remoteElement.GetEnumValue(remoteElementObject)); })
 	{
 		SGenotickPredictionsFunctions& mutableFunctions = const_cast<SGenotickPredictionsFunctions&>(functions);
+		memset(&mutableFunctions, 0, sizeof(mutableFunctions));
 		mutableFunctions.GetElement = GetElement;
 		mutableFunctions.GetElementCount = GetElementCount;
 		mutableFunctions.Release = Release;

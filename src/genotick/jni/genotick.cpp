@@ -43,6 +43,7 @@ CGenotick::CGenotick(CLoader& loader, ::jni::JavaVM& javaVM, ::jni::JNIEnv& java
 	, m_remotePredictions(javaEnv)
 {
 	SGenotickFunctions& mutableFunctions = const_cast<SGenotickFunctions&>(functions);
+	memset(&mutableFunctions, 0, sizeof(mutableFunctions));
 	mutableFunctions.GetInterfaceVersion = GetInterfaceVersion;
 	mutableFunctions.CreateSession = CreateSession;
 	mutableFunctions.RemoveSession = RemoveSession;

@@ -389,7 +389,7 @@ struct SGenotickTimePoints
 		return functions.Release(this);
 	}
 protected:
-	SGenotickTimePoints() : functions{ 0 } {}
+	SGenotickTimePoints() {}
 	~SGenotickTimePoints() {}
 };
 
@@ -407,7 +407,7 @@ struct SGenotickPredictions
 		return functions.Release(this);
 	}
 protected:
-	SGenotickPredictions() : functions{ 0 } {}
+	SGenotickPredictions() {}
 	~SGenotickPredictions() {}
 };
 
@@ -455,7 +455,7 @@ struct SGenotick
 		return functions.Release(this);
 	}
 protected:
-	SGenotick() : functions{ 0 } {}
+	SGenotick() {}
 	~SGenotick() {}
 };
 
@@ -473,7 +473,7 @@ struct SGenotickList
 		return functions.Release(this);
 	}
 protected:
-	SGenotickList() : functions{ 0 } {}
+	SGenotickList() {}
 	~SGenotickList() {}
 };
 

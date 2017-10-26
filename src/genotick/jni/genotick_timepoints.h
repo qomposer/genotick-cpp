@@ -27,6 +27,7 @@ public:
 				{ nativeElement = remoteElement.getValue(remoteElementObject); })
 	{
 		SGenotickTimePointsFunctions& mutableFunctions = const_cast<SGenotickTimePointsFunctions&>(functions);
+		memset(&mutableFunctions, 0, sizeof(mutableFunctions));
 		mutableFunctions.FindIndex = FindIndex;
 		mutableFunctions.GetElement = GetElement;
 		mutableFunctions.GetElementCount = GetElementCount;

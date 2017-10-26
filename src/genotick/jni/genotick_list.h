@@ -21,6 +21,7 @@ public:
 		: TSimpleContainer(size)
 	{
 		SGenotickListFunctions& mutableFunctions = const_cast<SGenotickListFunctions&>(functions);
+		memset(&mutableFunctions, 0, sizeof(mutableFunctions));
 		mutableFunctions.GetElement = GetElement;
 		mutableFunctions.GetElementCount = GetElementCount;
 		mutableFunctions.Release = Release;
