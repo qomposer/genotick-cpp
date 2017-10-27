@@ -328,7 +328,7 @@ struct SGenotickList;
 #ifdef __cplusplus
 typedef const struct SGenotickTimePoints IGenotickTimePoints;
 typedef const struct SGenotickPredictions IGenotickPredictions;
-typedef const struct SGenotick IGenotick;
+typedef       struct SGenotick IGenotick;
 typedef const struct SGenotickList IGenotickList;
 #else
 typedef const struct SGenotickTimePointsFunctions IGenotickTimePoints;
@@ -423,49 +423,49 @@ struct SGenotick
 {
 	const struct SGenotickFunctions functions;
 
-	TGenotickInt32 GetInterfaceVersion() const {
+	TGenotickInt32 GetInterfaceVersion() {
 		return functions.GetInterfaceVersion(this);
 	}
-	EGenotickResult CreateSession(TGenotickSessionId sessionId) const {
+	EGenotickResult CreateSession(TGenotickSessionId sessionId) {
 		return functions.CreateSession(this, sessionId);
 	}
-	EGenotickResult RemoveSession(TGenotickSessionId sessionId) const {
+	EGenotickResult RemoveSession(TGenotickSessionId sessionId) {
 		return functions.RemoveSession(this, sessionId);
 	}
-	EGenotickResult RemoveAllSessions() const {
+	EGenotickResult RemoveAllSessions() {
 		return functions.RemoveAllSessions(this);
 	}
-	EGenotickResult GetSettings(TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) const {
+	EGenotickResult GetSettings(TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) {
 		return functions.GetSettings(this, sessionId, pSettings);
 	}
-	EGenotickResult ChangeSettings(TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings) const {
+	EGenotickResult ChangeSettings(TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings) {
 		return functions.ChangeSettings(this, sessionId, pSettings);
 	}
-	EGenotickResult SetAssetData(TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData) const {
+	EGenotickResult SetAssetData(TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData) {
 		return functions.SetAssetData(this, sessionId, pAssetData);
 	}
-	EGenotickResult Start(TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs) const {
+	EGenotickResult Start(TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs) {
 		return functions.Start(this, sessionId, pArgs);
 	}
-	EGenotickResult GetTimePoints(TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) const {
+	EGenotickResult GetTimePoints(TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) {
 		return functions.GetTimePoints(this, sessionId, ppTimePoints);
 	}
-	EGenotickResult GetPredictions(TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) const {
+	EGenotickResult GetPredictions(TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) {
 		return functions.GetPredictions(this, sessionId, assetName, ppPredictions);
 	}
-	EGenotickResult GetNewestTimePoint(TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) const {
+	EGenotickResult GetNewestTimePoint(TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) {
 		return functions.GetNewestTimePoint(this, sessionId, pTimePoint);
 	}
-	EGenotickResult GetNewestPrediction(TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) const {
+	EGenotickResult GetNewestPrediction(TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) {
 		return functions.GetNewestPrediction(this, sessionId, assetName, pPrediction);
 	}
-	EGenotickResult AttachCurrentThread(bool asDaemon) const {
+	EGenotickResult AttachCurrentThread(bool asDaemon) {
 		return functions.AttachCurrentThread(this, asDaemon ? GenotickTrue : GenotickFalse);
 	}
-	EGenotickResult DetachCurrentThread() const {
+	EGenotickResult DetachCurrentThread() {
 		return functions.DetachCurrentThread(this);
 	}
-	EGenotickResult Release() const {
+	EGenotickResult Release() {
 		return functions.Release(this);
 	}
 protected:

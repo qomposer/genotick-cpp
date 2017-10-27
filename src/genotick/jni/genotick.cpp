@@ -384,7 +384,7 @@ EGenotickResult CGenotick::GetNewestPredictionInternal(TGenotickSessionId sessio
 	}
 }
 
-EGenotickResult CGenotick::AttachCurrentThreadInternal(TGenotickBoolean asDaemon) const
+EGenotickResult CGenotick::AttachCurrentThreadInternal(TGenotickBoolean asDaemon)
 {
 	if (HasThreadData())
 	{
@@ -406,7 +406,7 @@ EGenotickResult CGenotick::AttachCurrentThreadInternal(TGenotickBoolean asDaemon
 	return result;
 }
 
-EGenotickResult CGenotick::DetachCurrentThreadInternal() const
+EGenotickResult CGenotick::DetachCurrentThreadInternal()
 {
 	if (!HasThreadData())
 	{
@@ -424,12 +424,12 @@ EGenotickResult CGenotick::ReleaseInternal() const
 	return m_loader.ReleaseInstanceFor(m_javaVM);
 }
 
-void CGenotick::AddThreadData(JNIEnv& javaEnv) const
+void CGenotick::AddThreadData(JNIEnv& javaEnv)
 {
 	m_threadDataMap.insert({std::this_thread::get_id(), SThreadData(javaEnv)});
 }
 
-void CGenotick::RemoveThreadData() const
+void CGenotick::RemoveThreadData()
 {
 	m_threadDataMap.erase(std::this_thread::get_id());
 }

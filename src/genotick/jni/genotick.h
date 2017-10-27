@@ -109,10 +109,10 @@ private:
 		return static_cast<const CGenotick*>(pThis)->GetNewestPredictionInternal(sessionId, assetName, pPrediction);
 	}
 	static EGenotickResult GENOTICK_CALL AttachCurrentThread(IGenotick* pThis, TGenotickBoolean asDaemon) {
-		return static_cast<const CGenotick*>(pThis)->AttachCurrentThreadInternal(asDaemon);
+		return static_cast<      CGenotick*>(pThis)->AttachCurrentThreadInternal(asDaemon);
 	}
 	static EGenotickResult GENOTICK_CALL DetachCurrentThread(IGenotick* pThis) {
-		return static_cast<const CGenotick*>(pThis)->DetachCurrentThreadInternal();
+		return static_cast<      CGenotick*>(pThis)->DetachCurrentThreadInternal();
 	}
 	static EGenotickResult GENOTICK_CALL Release(IGenotick* pThis) {
 		return static_cast<const CGenotick*>(pThis)->ReleaseInternal();
@@ -130,12 +130,12 @@ private:
 	EGenotickResult GetPredictionsInternal(TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) const;
 	EGenotickResult GetNewestTimePointInternal(TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) const;
 	EGenotickResult GetNewestPredictionInternal(TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) const;
-	EGenotickResult AttachCurrentThreadInternal(TGenotickBoolean asDaemon) const;
-	EGenotickResult DetachCurrentThreadInternal() const;
+	EGenotickResult AttachCurrentThreadInternal(TGenotickBoolean asDaemon);
+	EGenotickResult DetachCurrentThreadInternal();
 	EGenotickResult ReleaseInternal() const;
 
-	void AddThreadData(JNIEnv& javaEnv) const;
-	void RemoveThreadData() const;
+	void AddThreadData(JNIEnv& javaEnv);
+	void RemoveThreadData();
 	bool HasThreadData() const;
 	const SThreadData& GetThreadData() const;
 
@@ -198,7 +198,7 @@ private:
 
 	CLoaderFriend& m_loader;
 	JavaVM& m_javaVM;
-	mutable TThreadDataMap m_threadDataMap;
+	TThreadDataMap m_threadDataMap;
 
 	// TODO remove mutable
 };

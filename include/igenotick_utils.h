@@ -111,7 +111,7 @@ public:
 };
 
 template <class T>
-using TGenotickUniquePtr = std::unique_ptr<const T, CGenotickObjectDeleter<T>>;
+using TGenotickUniquePtr = std::unique_ptr<T, CGenotickObjectDeleter<T>>;
 
 using IGenotickPtr = TGenotickUniquePtr<IGenotick>;
 using IGenotickListPtr = TGenotickUniquePtr<IGenotickList>;
