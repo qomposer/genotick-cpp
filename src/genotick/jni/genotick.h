@@ -17,15 +17,59 @@
 #include <genotick/jni/remote/predictions.h>
 #include <genotick/jni/exceptions.h>
 #include <strlcpy.h>
+#include <thread>
+#include <unordered_map>
 
 namespace genotick {
 namespace jni {
 
 class CGenotick : public IGenotickDestructable
 {
+private:
+	struct SThreadData
+	{
+		SThreadData(JNIEnv& javaEnv)
+			: javaEnv(javaEnv)
+			, remoteString(::jni::StringClass::Find(javaEnv).NewGlobalRef(javaEnv))
+			, remoteMainInterface(javaEnv)
+			, remoteMainSettings(javaEnv)
+			, remoteDataLines(javaEnv)
+			, remoteMainAppData(javaEnv)
+			, remoteTimePoint(javaEnv)
+			, remoteTimePoints(javaEnv)
+			, remoteWeightMode(javaEnv)
+			, remoteInheritedWeightMode(javaEnv)
+			, remoteChartMode(javaEnv)
+			, remoteErrorCode(javaEnv)
+			, remotePrediction(javaEnv)
+			, remotePredictions(javaEnv)
+		{}
+
+		JNIEnv& javaEnv;
+		::jni::UniqueStringClass remoteString;
+		remote::CMainInterface remoteMainInterface;
+		remote::CMainSettings remoteMainSettings;
+		remote::CDataLines remoteDataLines;
+		remote::CMainAppData remoteMainAppData;
+		remote::CTimePoint remoteTimePoint;
+		remote::CTimePoints remoteTimePoints;
+		remote::CWeightMode remoteWeightMode;
+		remote::CInheritedWeightMode remoteInheritedWeightMode;
+		remote::CChartMode remoteChartMode;
+		remote::CErrorCode remoteErrorCode;
+		remote::CPrediction remotePrediction;
+		remote::CPredictions remotePredictions;
+	};
+
+	using TThreadId = std::thread::id;
+	using TThreadDataMap = std::unordered_map<TThreadId, SThreadData>;
+	
 public:
-	CGenotick(CLoader& loader, ::jni::JavaVM& javaVM, ::jni::JNIEnv& javaEnv);
+	CGenotick(CLoader& loader, JavaVM& javaVM, JNIEnv& javaEnv);
 	virtual ~CGenotick();
+
+	CGenotick(const CGenotick&) = delete;
+	CGenotick& operator=(const CGenotick&) = delete;
 
 private:
 	static TGenotickInt32 GENOTICK_CALL GetInterfaceVersion(IGenotick* pThis) {
@@ -64,6 +108,12 @@ private:
 	static EGenotickResult GENOTICK_CALL GetNewestPrediction(IGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) {
 		return static_cast<const CGenotick*>(pThis)->GetNewestPredictionInternal(sessionId, assetName, pPrediction);
 	}
+	static EGenotickResult GENOTICK_CALL AttachCurrentThread(IGenotick* pThis, TGenotickBoolean asDaemon) {
+		return static_cast<const CGenotick*>(pThis)->AttachCurrentThreadInternal(asDaemon);
+	}
+	static EGenotickResult GENOTICK_CALL DetachCurrentThread(IGenotick* pThis) {
+		return static_cast<const CGenotick*>(pThis)->DetachCurrentThreadInternal();
+	}
 	static EGenotickResult GENOTICK_CALL Release(IGenotick* pThis) {
 		return static_cast<const CGenotick*>(pThis)->ReleaseInternal();
 	}
@@ -80,7 +130,14 @@ private:
 	EGenotickResult GetPredictionsInternal(TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) const;
 	EGenotickResult GetNewestTimePointInternal(TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) const;
 	EGenotickResult GetNewestPredictionInternal(TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) const;
+	EGenotickResult AttachCurrentThreadInternal(TGenotickBoolean asDaemon) const;
+	EGenotickResult DetachCurrentThreadInternal() const;
 	EGenotickResult ReleaseInternal() const;
+
+	void AddThreadData(JNIEnv& javaEnv) const;
+	void RemoveThreadData() const;
+	bool HasThreadData() const;
+	const SThreadData& GetThreadData() const;
 
 	template <class D, class S> void ToNative(D& dst, const S src) const {
 		dst = static_cast<D>(src);
@@ -88,25 +145,25 @@ private:
 
 	template <> void ToNative(TGenotickString& dst, const ::jni::String src) const {
 		if (dst.capacity > 0u) {
-			std::string buf = ::jni::Make<std::string>(m_javaEnv, src);
+			std::string buf = ::jni::Make<std::string>(GetThreadData().javaEnv, src);
 			strlcpy(dst.utf8_buffer, buf.c_str(), dst.capacity);
 		}
 	}
 
 	template <> void ToNative(TGenotickTimePoint& dst, const remote::CTimePoint::TObject src) const {
-		dst = static_cast<TGenotickTimePoint>(m_remoteTimePoint.getValue(src));
+		dst = static_cast<TGenotickTimePoint>(GetThreadData().remoteTimePoint.getValue(src));
 	}
 
 	template <> void ToNative(EGenotickWeightMode& dst, const remote::CWeightMode::TObject src) const {
-		dst = EGenotickWeightMode::get_by_value(m_remoteWeightMode.GetEnumValue(src));
+		dst = EGenotickWeightMode::get_by_value(GetThreadData().remoteWeightMode.GetEnumValue(src));
 	}
 
 	template <> void ToNative(EGenotickInheritedWeightMode& dst, const remote::CInheritedWeightMode::TObject src) const {
-		dst = EGenotickInheritedWeightMode::get_by_value(m_remoteInheritedWeightMode.GetEnumValue(src));
+		dst = EGenotickInheritedWeightMode::get_by_value(GetThreadData().remoteInheritedWeightMode.GetEnumValue(src));
 	}
 
 	template <> void ToNative(EGenotickChartMode& dst, const remote::CChartMode::TObject src) const {
-		dst = EGenotickChartMode::get_by_value(m_remoteChartMode.GetEnumValue(src));
+		dst = EGenotickChartMode::get_by_value(GetThreadData().remoteChartMode.GetEnumValue(src));
 	}
 
 	template <class D, class S> D ToJava(const S src) const {
@@ -115,23 +172,23 @@ private:
 
 	template <> ::jni::String ToJava(const TGenotickString src) const {
 		const std::string buf = (src.utf8_buffer != nullptr) ? src.utf8_buffer : "";
-		return ::jni::Make<::jni::String>(m_javaEnv, buf);
+		return ::jni::Make<::jni::String>(GetThreadData().javaEnv, buf);
 	}
 
 	template <> remote::CTimePoint::TObject ToJava(const TGenotickTimePoint src) const {
-		return m_remoteTimePoint.New(static_cast<::jni::jlong>(src));
+		return GetThreadData().remoteTimePoint.New(static_cast<::jni::jlong>(src));
 	}
 
 	template <> remote::CWeightMode::TObject ToJava(const EGenotickWeightMode src) const {
-		return m_remoteWeightMode.GetEnumObject(src.value());
+		return GetThreadData().remoteWeightMode.GetEnumObject(src.value());
 	}
 
 	template <> remote::CInheritedWeightMode::TObject ToJava(const EGenotickInheritedWeightMode src) const {
-		return m_remoteInheritedWeightMode.GetEnumObject(src.value());
+		return GetThreadData().remoteInheritedWeightMode.GetEnumObject(src.value());
 	}
 
 	template <> remote::CChartMode::TObject ToJava(const EGenotickChartMode src) const {
-		return m_remoteChartMode.GetEnumObject(src.value());
+		return GetThreadData().remoteChartMode.GetEnumObject(src.value());
 	}
 
 	virtual bool Contains(JavaVM& javaVM) const override final
@@ -141,21 +198,9 @@ private:
 
 	CLoaderFriend& m_loader;
 	JavaVM& m_javaVM;
-	JNIEnv& m_javaEnv;
-	
-	::jni::UniqueStringClass m_remoteString;
-	remote::CMainInterface m_remoteMainInterface;
-	remote::CMainSettings m_remoteMainSettings;
-	remote::CDataLines m_remoteDataLines;
-	remote::CMainAppData m_remoteMainAppData;
-	remote::CTimePoint m_remoteTimePoint;
-	remote::CTimePoints m_remoteTimePoints;
-	remote::CWeightMode m_remoteWeightMode;
-	remote::CInheritedWeightMode m_remoteInheritedWeightMode;
-	remote::CChartMode m_remoteChartMode;
-	remote::CErrorCode m_remoteErrorCode;
-	remote::CPrediction m_remotePrediction;
-	remote::CPredictions m_remotePredictions;
+	mutable TThreadDataMap m_threadDataMap;
+
+	// TODO remove mutable
 };
 
 } // namespace jni

@@ -21,6 +21,18 @@ public:
 	{}
 };
 
+class UnrecognizedThreadException : public std::exception
+{
+public:
+	explicit UnrecognizedThreadException(char const* const message)
+		: std::exception(message)
+	{}
+
+	explicit UnrecognizedThreadException(const std::string& message)
+		: UnrecognizedThreadException(message.c_str())
+	{}
+};
+
 inline EGenotickResult HandleJavaException(::jni::JNIEnv& env, const ::jni::PendingJavaException& exception)
 {
 	(void)exception;
@@ -37,6 +49,14 @@ inline EGenotickResult HandleEnumMismatchException(const EnumMismatchException& 
 	// TODO store and print exception
 	std::cout << exception.what() << std::endl;
 	return EGenotickResult::JavaEnumMismatch;
+}
+
+inline EGenotickResult HandleUnrecognizedThreadException(const UnrecognizedThreadException& exception)
+{
+	(void)exception;
+	// TODO store and print exception
+	std::cout << exception.what() << std::endl;
+	return EGenotickResult::ThreadNotAttached;
 }
 
 } // namespace jni

@@ -24,23 +24,9 @@ static_assert(sizeof(EGenotickPrediction) == sizeof(TGenotickInt32), MISMATCH_ME
 namespace genotick {
 namespace jni {
 
-CGenotick::CGenotick(CLoader& loader, ::jni::JavaVM& javaVM, ::jni::JNIEnv& javaEnv)
+CGenotick::CGenotick(CLoader& loader, JavaVM& javaVM, JNIEnv& javaEnv)
 	: m_loader(static_cast<CLoaderFriend&>(loader))
 	, m_javaVM(javaVM)
-	, m_javaEnv(javaEnv)
-	, m_remoteString(::jni::StringClass::Find(javaEnv).NewGlobalRef(javaEnv))
-	, m_remoteMainInterface(javaEnv)
-	, m_remoteMainSettings(javaEnv)
-	, m_remoteDataLines(javaEnv)
-	, m_remoteMainAppData(javaEnv)
-	, m_remoteTimePoint(javaEnv)
-	, m_remoteTimePoints(javaEnv)
-	, m_remoteWeightMode(javaEnv)
-	, m_remoteInheritedWeightMode(javaEnv)
-	, m_remoteChartMode(javaEnv)
-	, m_remoteErrorCode(javaEnv)
-	, m_remotePrediction(javaEnv)
-	, m_remotePredictions(javaEnv)
 {
 	SGenotickFunctions& mutableFunctions = const_cast<SGenotickFunctions&>(functions);
 	memset(&mutableFunctions, 0, sizeof(mutableFunctions));
@@ -56,10 +42,14 @@ CGenotick::CGenotick(CLoader& loader, ::jni::JavaVM& javaVM, ::jni::JNIEnv& java
 	mutableFunctions.GetPredictions = GetPredictions;
 	mutableFunctions.GetNewestTimePoint = GetNewestTimePoint;
 	mutableFunctions.GetNewestPrediction = GetNewestPrediction;
+	mutableFunctions.AttachCurrentThread = AttachCurrentThread;
+	mutableFunctions.DetachCurrentThread = DetachCurrentThread;
 	mutableFunctions.Release = Release;
 
 	::utils::VerifyFunctionsStruct(functions);
 	::utils::VerifyEqualPointers(&functions, static_cast<IGenotick*>(this));
+
+	AddThreadData(javaEnv);
 }
 
 CGenotick::~CGenotick()
@@ -68,19 +58,32 @@ CGenotick::~CGenotick()
 
 TGenotickInt32 CGenotick::GetInterfaceVersionInternal() const
 {
-	return m_remoteMainInterface.getInterfaceVersion();
+	try
+	{
+		return GetThreadData().remoteMainInterface.getInterfaceVersion();
+	}
+	catch (const UnrecognizedThreadException& exception)
+	{
+		HandleUnrecognizedThreadException(exception);
+		return 0;
+	}
 }
 
 EGenotickResult CGenotick::CreateSessionInternal(TGenotickSessionId sessionId) const
 {
 	try
 	{
-		const remote::CErrorCode::TObject errorObject = m_remoteMainInterface.createSession(sessionId);
-		return remote::ErrorCodeToGenotickResult(m_remoteErrorCode, errorObject);
+		const SThreadData& threadData = GetThreadData();
+		const remote::CErrorCode::TObject errorObject = threadData.remoteMainInterface.createSession(sessionId);
+		return remote::ErrorCodeToGenotickResult(threadData.remoteErrorCode, errorObject);
 	}
 	catch (const ::jni::PendingJavaException& exception)
 	{
-		return HandleJavaException(m_javaEnv, exception);
+		return HandleJavaException(GetThreadData().javaEnv, exception);
+	}
+	catch (const UnrecognizedThreadException& exception)
+	{
+		return HandleUnrecognizedThreadException(exception);
 	}
 }
 
@@ -88,12 +91,17 @@ EGenotickResult CGenotick::RemoveSessionInternal(TGenotickSessionId sessionId) c
 {
 	try
 	{
-		const remote::CErrorCode::TObject errorObject = m_remoteMainInterface.clearSession(sessionId);
-		return remote::ErrorCodeToGenotickResult(m_remoteErrorCode, errorObject);
+		const SThreadData& threadData = GetThreadData();
+		const remote::CErrorCode::TObject errorObject = threadData.remoteMainInterface.clearSession(sessionId);
+		return remote::ErrorCodeToGenotickResult(threadData.remoteErrorCode, errorObject);
 	}
 	catch (const ::jni::PendingJavaException& exception)
 	{
-		return HandleJavaException(m_javaEnv, exception);
+		return HandleJavaException(GetThreadData().javaEnv, exception);
+	}
+	catch (const UnrecognizedThreadException& exception)
+	{
+		return HandleUnrecognizedThreadException(exception);
 	}
 }
 
@@ -101,22 +109,26 @@ EGenotickResult CGenotick::RemoveAllSessionsInternal() const
 {
 	try
 	{
-		m_remoteMainInterface.clearSessions();
+		GetThreadData().remoteMainInterface.clearSessions();
 		return EGenotickResult::Success;
 	}
 	catch (const ::jni::PendingJavaException& exception)
 	{
-		return HandleJavaException(m_javaEnv, exception);
+		return HandleJavaException(GetThreadData().javaEnv, exception);
+	}
+	catch (const UnrecognizedThreadException& exception)
+	{
+		return HandleUnrecognizedThreadException(exception);
 	}
 }
 
 
 #define GENOTICK_UNROLL_FIELDS_TO_NATIVE(type, name) { \
-this->ToNative(pSettings->name, this->m_remoteMainSettings.Get_##name(jniSettings)); }
+this->ToNative(pSettings->name, threadData.remoteMainSettings.Get_##name(jniSettings)); }
 
 #define GENOTICK_UNROLL_FIELDS_TO_JAVA(type, name) { \
 auto value = ToJava<typename remote::CMainSettings::type::FieldType>(pSettings->name); \
-this->m_remoteMainSettings.Set_##name(jniSettings, value); }
+threadData.remoteMainSettings.Set_##name(jniSettings, value); }
 
 EGenotickResult CGenotick::GetSettingsInternal(TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) const
 {
@@ -125,7 +137,8 @@ EGenotickResult CGenotick::GetSettingsInternal(TGenotickSessionId sessionId, TGe
 
 	try
 	{
-		const remote::CMainSettings::TObject jniSettings = m_remoteMainInterface.getSettings(sessionId);
+		const SThreadData& threadData = GetThreadData();
+		const remote::CMainSettings::TObject jniSettings = threadData.remoteMainInterface.getSettings(sessionId);
 		if (jniSettings.Get() == nullptr)
 			return EGenotickResult::ErrorInvalidSession;
 
@@ -134,11 +147,15 @@ EGenotickResult CGenotick::GetSettingsInternal(TGenotickSessionId sessionId, TGe
 	}
 	catch (const ::jni::PendingJavaException& exception)
 	{
-		return HandleJavaException(m_javaEnv, exception);
+		return HandleJavaException(GetThreadData().javaEnv, exception);
 	}
 	catch (const EnumMismatchException& exception)
 	{
 		return HandleEnumMismatchException(exception);
+	}
+	catch (const UnrecognizedThreadException& exception)
+	{
+		return HandleUnrecognizedThreadException(exception);
 	}
 }
 
@@ -149,7 +166,8 @@ EGenotickResult CGenotick::ChangeSettingsInternal(TGenotickSessionId sessionId, 
 
 	try
 	{
-		const remote::CMainSettings::TObject jniSettings = m_remoteMainInterface.getSettings(sessionId);
+		const SThreadData& threadData = GetThreadData();
+		const remote::CMainSettings::TObject jniSettings = threadData.remoteMainInterface.getSettings(sessionId);
 		if (jniSettings.Get() == nullptr)
 			return EGenotickResult::ErrorInvalidSession;
 
@@ -158,11 +176,15 @@ EGenotickResult CGenotick::ChangeSettingsInternal(TGenotickSessionId sessionId, 
 	}
 	catch (const ::jni::PendingJavaException& exception)
 	{
-		return HandleJavaException(m_javaEnv, exception);
+		return HandleJavaException(GetThreadData().javaEnv, exception);
 	}
 	catch (const EnumMismatchException& exception)
 	{
 		return HandleEnumMismatchException(exception);
+	}
+	catch (const UnrecognizedThreadException& exception)
+	{
+		return HandleUnrecognizedThreadException(exception);
 	}
 }
 
@@ -183,7 +205,8 @@ EGenotickResult CGenotick::SetAssetDataInternal(TGenotickSessionId sessionId, co
 
 	try
 	{
-		const remote::CMainAppData::TObject mainAppDataObject = m_remoteMainInterface.getData(sessionId);
+		const SThreadData& threadData = GetThreadData();
+		const remote::CMainAppData::TObject mainAppDataObject = threadData.remoteMainInterface.getData(sessionId);
 		if (mainAppDataObject.Get() == nullptr)
 			return EGenotickResult::ErrorInvalidSession;
 
@@ -191,9 +214,9 @@ EGenotickResult CGenotick::SetAssetDataInternal(TGenotickSessionId sessionId, co
 		const ::jni::jint otherColumnCount = static_cast<::jni::jint>(pAssetData->dataPoints[0].otherColumnCount);
 		const ::jni::jint columnCount = static_cast<::jni::jint>(GenotickMinColumnCount) + otherColumnCount;
 		const ::jni::jboolean firstIsNewest = pAssetData->firstDataPointIsNewest;
-		const ::jni::String jniAssetName = ::jni::Make<::jni::String>(m_javaEnv, pAssetData->assetName);
+		const ::jni::String jniAssetName = ::jni::Make<::jni::String>(threadData.javaEnv, pAssetData->assetName);
 
-		remote::CDataLines::TObject jniDataLines = m_remoteDataLines.New(lineCount, columnCount, firstIsNewest);
+		remote::CDataLines::TObject jniDataLines = threadData.remoteDataLines.New(lineCount, columnCount, firstIsNewest);
 		if (jniDataLines.Get() == nullptr)
 			return EGenotickResult::ErrorInsufficientData;
 
@@ -203,25 +226,29 @@ EGenotickResult CGenotick::SetAssetDataInternal(TGenotickSessionId sessionId, co
 
 			assert(static_cast<::jni::jint>(dataPoint.otherColumnCount) == otherColumnCount);
 
-			m_remoteDataLines.setTime(jniDataLines, line, dataPoint.time);
-			m_remoteDataLines.setOpen(jniDataLines, line, dataPoint.open);
-			m_remoteDataLines.setHigh(jniDataLines, line, dataPoint.high);
-			m_remoteDataLines.setLow(jniDataLines, line, dataPoint.low);
-			m_remoteDataLines.setClose(jniDataLines, line, dataPoint.close);
-			m_remoteDataLines.setVolume(jniDataLines, line, dataPoint.volume);
+			threadData.remoteDataLines.setTime(jniDataLines, line, dataPoint.time);
+			threadData.remoteDataLines.setOpen(jniDataLines, line, dataPoint.open);
+			threadData.remoteDataLines.setHigh(jniDataLines, line, dataPoint.high);
+			threadData.remoteDataLines.setLow(jniDataLines, line, dataPoint.low);
+			threadData.remoteDataLines.setClose(jniDataLines, line, dataPoint.close);
+			threadData.remoteDataLines.setVolume(jniDataLines, line, dataPoint.volume);
 
 			for (::jni::jint column = 0; column < otherColumnCount; ++column)
 			{
-				m_remoteDataLines.setOther(jniDataLines, line, column, dataPoint.otherColumns[column]);
+				threadData.remoteDataLines.setOther(jniDataLines, line, column, dataPoint.otherColumns[column]);
 			}
 		}
 
-		m_remoteMainAppData.put(mainAppDataObject, jniAssetName, jniDataLines);
+		threadData.remoteMainAppData.put(mainAppDataObject, jniAssetName, jniDataLines);
 		return EGenotickResult::Success;
 	}
 	catch (const ::jni::PendingJavaException& exception)
 	{
-		return HandleJavaException(m_javaEnv, exception);
+		return HandleJavaException(GetThreadData().javaEnv, exception);
+	}
+	catch (const UnrecognizedThreadException& exception)
+	{
+		return HandleUnrecognizedThreadException(exception);
 	}
 }
 
@@ -232,20 +259,25 @@ EGenotickResult CGenotick::StartInternal(TGenotickSessionId sessionId, const TGe
 
 	try
 	{
+		const SThreadData& threadData = GetThreadData();
 		const ::jni::jsize count = pArgs->elementCount;
-		::jni::StringArray args = ::jni::StringArray::New(m_javaEnv, count, *m_remoteString.get());
+		::jni::StringArray args = ::jni::StringArray::New(threadData.javaEnv, count, *threadData.remoteString.get());
 		for (::jni::jsize index = 0; index < count; ++index)
 		{
 			const char* parameter = pArgs->elements[index];
-			::jni::String jniParameter = ::jni::Make<::jni::String>(m_javaEnv, parameter);
-			args.Set(m_javaEnv, index, jniParameter);
+			::jni::String jniParameter = ::jni::Make<::jni::String>(threadData.javaEnv, parameter);
+			args.Set(threadData.javaEnv, index, jniParameter);
 		}
-		const remote::CErrorCode::TObject jniErrorCode = m_remoteMainInterface.start(sessionId, args);
-		return remote::ErrorCodeToGenotickResult(m_remoteErrorCode, jniErrorCode);
+		const remote::CErrorCode::TObject jniErrorCode = threadData.remoteMainInterface.start(sessionId, args);
+		return remote::ErrorCodeToGenotickResult(threadData.remoteErrorCode, jniErrorCode);
 	}
 	catch (const ::jni::PendingJavaException& exception)
 	{
-		return HandleJavaException(m_javaEnv, exception);
+		return HandleJavaException(GetThreadData().javaEnv, exception);
+	}
+	catch (const UnrecognizedThreadException& exception)
+	{
+		return HandleUnrecognizedThreadException(exception);
 	}
 }
 
@@ -256,16 +288,21 @@ EGenotickResult CGenotick::GetTimePointsInternal(TGenotickSessionId sessionId, I
 
 	try
 	{
-		const remote::CTimePoints::TObject jniTimePoints = m_remoteMainInterface.getTimePoints(sessionId);
+		const SThreadData& threadData = GetThreadData();
+		const remote::CTimePoints::TObject jniTimePoints = threadData.remoteMainInterface.getTimePoints(sessionId);
 		if (jniTimePoints.Get() == nullptr)
 			return EGenotickResult::ErrorInvalidSession;
 
-		*ppTimePoints = new CGenotickTimePoints(jniTimePoints, m_remoteTimePoints, m_remoteTimePoint);
+		*ppTimePoints = new CGenotickTimePoints(jniTimePoints, threadData.remoteTimePoints, threadData.remoteTimePoint);
 		return EGenotickResult::Success;
 	}
 	catch (const ::jni::PendingJavaException& exception)
 	{
-		return HandleJavaException(m_javaEnv, exception);
+		return HandleJavaException(GetThreadData().javaEnv, exception);
+	}
+	catch (const UnrecognizedThreadException& exception)
+	{
+		return HandleUnrecognizedThreadException(exception);
 	}
 }
 
@@ -276,17 +313,22 @@ EGenotickResult CGenotick::GetPredictionsInternal(TGenotickSessionId sessionId, 
 
 	try
 	{
-		const ::jni::String jniAssetName = ::jni::Make<::jni::String>(m_javaEnv, assetName);
-		const remote::CPredictions::TObject jniPredictions = m_remoteMainInterface.getPredictions(sessionId, jniAssetName);
+		const SThreadData& threadData = GetThreadData();
+		const ::jni::String jniAssetName = ::jni::Make<::jni::String>(threadData.javaEnv, assetName);
+		const remote::CPredictions::TObject jniPredictions = threadData.remoteMainInterface.getPredictions(sessionId, jniAssetName);
 		if (jniPredictions.Get() == nullptr)
 			return EGenotickResult::ErrorInvalidSession;
 
-		*ppPredictions = new CGenotickPredictions(jniPredictions, m_remotePredictions, m_remotePrediction);
+		*ppPredictions = new CGenotickPredictions(jniPredictions, threadData.remotePredictions, threadData.remotePrediction);
 		return EGenotickResult::Success;
 	}
 	catch (const ::jni::PendingJavaException& exception)
 	{
-		return HandleJavaException(m_javaEnv, exception);
+		return HandleJavaException(GetThreadData().javaEnv, exception);
+	}
+	catch (const UnrecognizedThreadException& exception)
+	{
+		return HandleUnrecognizedThreadException(exception);
 	}
 }
 
@@ -297,16 +339,21 @@ EGenotickResult CGenotick::GetNewestTimePointInternal(TGenotickSessionId session
 
 	try
 	{
-		const remote::CTimePoint::TObject jniTimePoint = m_remoteMainInterface.getNewestTimePoint(sessionId);
+		const SThreadData& threadData = GetThreadData();
+		const remote::CTimePoint::TObject jniTimePoint = threadData.remoteMainInterface.getNewestTimePoint(sessionId);
 		if (jniTimePoint.Get() == nullptr)
 			return EGenotickResult::ErrorInvalidSession;
 
-		*pTimePoint = m_remoteTimePoint.getValue(jniTimePoint);
+		*pTimePoint = threadData.remoteTimePoint.getValue(jniTimePoint);
 		return EGenotickResult::Success;
 	}
 	catch (const ::jni::PendingJavaException& exception)
 	{
-		return HandleJavaException(m_javaEnv, exception);
+		return HandleJavaException(GetThreadData().javaEnv, exception);
+	}
+	catch (const UnrecognizedThreadException& exception)
+	{
+		return HandleUnrecognizedThreadException(exception);
 	}
 }
 
@@ -317,25 +364,92 @@ EGenotickResult CGenotick::GetNewestPredictionInternal(TGenotickSessionId sessio
 
 	try
 	{
-		const ::jni::String jniAssetName = ::jni::Make<::jni::String>(m_javaEnv, assetName);
-		const remote::CPrediction::TObject jniPrediction = m_remoteMainInterface.getNewestPrediction(sessionId, jniAssetName);
+		const SThreadData& threadData = GetThreadData();
+		const ::jni::String jniAssetName = ::jni::Make<::jni::String>(threadData.javaEnv, assetName);
+		const remote::CPrediction::TObject jniPrediction = threadData.remoteMainInterface.getNewestPrediction(sessionId, jniAssetName);
 		if (jniPrediction.Get() == nullptr)
 			return EGenotickResult::ErrorInvalidSession;
 
-		const ::jni::jint predictionValue = m_remotePrediction.getValue(jniPrediction);
+		const ::jni::jint predictionValue = threadData.remotePrediction.getValue(jniPrediction);
 		*pPrediction = EGenotickPrediction::get_by_value(predictionValue);
 		return EGenotickResult::Success;
 	}
 	catch (const ::jni::PendingJavaException& exception)
 	{
-		return HandleJavaException(m_javaEnv, exception);
+		return HandleJavaException(GetThreadData().javaEnv, exception);
+	}
+	catch (const UnrecognizedThreadException& exception)
+	{
+		return HandleUnrecognizedThreadException(exception);
 	}
 }
 
+EGenotickResult CGenotick::AttachCurrentThreadInternal(TGenotickBoolean asDaemon) const
+{
+	if (HasThreadData())
+	{
+		return EGenotickResult::ThreadAlreadyAttached;
+	}
+
+	JNIEnv* pJavaEnv = nullptr;
+	const jint jniResult = asDaemon
+		? m_javaVM.AttachCurrentThreadAsDaemon(reinterpret_cast<void**>(&pJavaEnv), nullptr)
+		: m_javaVM.AttachCurrentThread(reinterpret_cast<void**>(&pJavaEnv), nullptr);
+	
+	const EGenotickResult result = JniErrorToGenotickResult(jniResult);
+
+	if (result == EGenotickResult::Success)
+	{
+		assert(pJavaEnv != nullptr);
+		AddThreadData(*pJavaEnv);
+	}
+	return result;
+}
+
+EGenotickResult CGenotick::DetachCurrentThreadInternal() const
+{
+	if (!HasThreadData())
+	{
+		return EGenotickResult::ThreadNotAttached;
+	}
+
+	RemoveThreadData();
+
+	const jint jniResult = m_javaVM.DetachCurrentThread();
+	return JniErrorToGenotickResult(jniResult);
+}
 
 EGenotickResult CGenotick::ReleaseInternal() const
 {
 	return m_loader.ReleaseInstanceFor(m_javaVM);
+}
+
+void CGenotick::AddThreadData(JNIEnv& javaEnv) const
+{
+	m_threadDataMap.insert({std::this_thread::get_id(), SThreadData(javaEnv)});
+}
+
+void CGenotick::RemoveThreadData() const
+{
+	m_threadDataMap.erase(std::this_thread::get_id());
+}
+
+bool CGenotick::HasThreadData() const
+{
+	TThreadDataMap::const_iterator it = m_threadDataMap.find(std::this_thread::get_id());
+	return it != m_threadDataMap.end();
+}
+
+const CGenotick::SThreadData& CGenotick::GetThreadData() const
+{
+	try
+	{
+		return m_threadDataMap.at(std::this_thread::get_id());
+	}
+	catch (std::out_of_range&)
+	{
+		throw UnrecognizedThreadException("This thread is not attached to the Java VM");
+	}
 }
 
 } // namespace jni

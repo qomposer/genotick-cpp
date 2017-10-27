@@ -62,8 +62,39 @@ inline EGenotickResult GenotickGetOrCreate(IGenotick** ppInstance, const TGenoti
 	return GenotickCreate(ppInstance, pSettings);
 }
 
-#ifdef GENOTICK_CPP_11
+class CGenotickAttachCurrentThreadRAII
+{
+public:
+	CGenotickAttachCurrentThreadRAII()
+		: m_pGenotick(nullptr) {};
 
+	EGenotickResult AttachCurrentThread(IGenotick* pGenotick, bool asDaemon)
+	{
+		if (!pGenotick)
+			return EGenotickResult::InvalidArgument;
+
+		EGenotickResult result = pGenotick->AttachCurrentThread(asDaemon);
+		if (result == EGenotickResult::Success)
+			m_pGenotick = pGenotick;
+
+		return result;
+	}
+
+	~CGenotickAttachCurrentThreadRAII()
+	{
+		if (m_pGenotick)
+		{
+			m_pGenotick->DetachCurrentThread();
+		}
+	}
+private:
+	CGenotickAttachCurrentThreadRAII(const CGenotickAttachCurrentThreadRAII&) {};
+	CGenotickAttachCurrentThreadRAII& operator=(const CGenotickAttachCurrentThreadRAII&) {};
+
+	IGenotick* m_pGenotick;
+};
+
+#ifdef GENOTICK_CPP_11
 #include <memory>
 
 template <class T>

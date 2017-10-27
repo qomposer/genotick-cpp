@@ -85,6 +85,8 @@ const TGenotickBoolean GenotickTrue = 1;
 
 #define GenotickResult_Success                 0
 #define GenotickResult_InvalidArgument         1
+#define GenotickResult_ThreadNotAttached       2
+#define GenotickResult_ThreadAlreadyAttached   3
 #define GenotickResult_JvmDllNotFound        100
 #define GenotickResult_JvmExportsNotFound    101
 #define GenotickResult_JniError              200
@@ -154,6 +156,8 @@ enum class EGenotickResult : TGenotickInt32
 {
 	Success               = GenotickResult_Success,
 	InvalidArgument       = GenotickResult_InvalidArgument,
+	ThreadNotAttached     = GenotickResult_ThreadNotAttached,
+	ThreadAlreadyAttached = GenotickResult_ThreadAlreadyAttached,
 	JvmDllNotFound        = GenotickResult_JvmDllNotFound,
 	JvmExportsNotFound    = GenotickResult_JvmExportsNotFound,
 	JniError              = GenotickResult_JniError,
@@ -295,6 +299,8 @@ struct SGenotick
 	EGenotickResult GENOTICK_CALL GetPredictions(const struct SGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions);
 	EGenotickResult GENOTICK_CALL GetNewestTimePoint(const struct SGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint);
 	EGenotickResult GENOTICK_CALL GetNewestPrediction(const struct SGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction);
+	EGenotickResult GENOTICK_CALL AttachCurrentThread(const struct SGenotick* pThis, TGenotickBoolean asDaemon);
+	EGenotickResult GENOTICK_CALL DetachCurrentThread(const struct SGenotick* pThis);
 	EGenotickResult GENOTICK_CALL Release(const struct SGenotick* pThis);
 };
 
@@ -360,6 +366,8 @@ struct SGenotickFunctions
 	EGenotickResult (GENOTICK_CALL* GetPredictions)(IGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions);
 	EGenotickResult (GENOTICK_CALL* GetNewestTimePoint)(IGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint);
 	EGenotickResult (GENOTICK_CALL* GetNewestPrediction)(IGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction);
+	EGenotickResult (GENOTICK_CALL* AttachCurrentThread)(IGenotick* pThis, TGenotickBoolean asDaemon);
+	EGenotickResult (GENOTICK_CALL* DetachCurrentThread)(IGenotick* pThis);
 	EGenotickResult (GENOTICK_CALL* Release)(IGenotick* pThis);
 };
 
@@ -376,8 +384,8 @@ struct SGenotickTimePoints
 {
 	const struct SGenotickTimePointsFunctions functions;
 
-	TGenotickBoolean FindIndex(const TGenotickTimePoint* timePoint, TGenotickSize* index) const {
-		return functions.FindIndex(this, timePoint, index);
+	bool FindIndex(const TGenotickTimePoint* timePoint, TGenotickSize* index) const {
+		return functions.FindIndex(this, timePoint, index) == GenotickTrue ? true : false;
 	}
 	const TGenotickTimePoint* GetElement(TGenotickSize index) const {
 		return functions.GetElement(this, index);
@@ -450,6 +458,12 @@ struct SGenotick
 	}
 	EGenotickResult GetNewestPrediction(TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) const {
 		return functions.GetNewestPrediction(this, sessionId, assetName, pPrediction);
+	}
+	EGenotickResult AttachCurrentThread(bool asDaemon) const {
+		return functions.AttachCurrentThread(this, asDaemon ? GenotickTrue : GenotickFalse);
+	}
+	EGenotickResult DetachCurrentThread() const {
+		return functions.DetachCurrentThread(this);
 	}
 	EGenotickResult Release() const {
 		return functions.Release(this);
