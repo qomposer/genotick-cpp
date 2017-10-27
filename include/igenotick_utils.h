@@ -38,6 +38,7 @@ inline void GenotickSetConstString(TGenotickString& dst, const char* src)
 	dst.capacity = 0;
 }
 
+
 inline EGenotickResult GenotickGetOrCreate(IGenotick** ppInstance, const TGenotickCreationSettings* pSettings)
 {
 	if (!ppInstance || !pSettings)
@@ -62,6 +63,7 @@ inline EGenotickResult GenotickGetOrCreate(IGenotick** ppInstance, const TGenoti
 	return GenotickCreate(ppInstance, pSettings);
 }
 
+
 class CGenotickAttachCurrentThreadRAII
 {
 public:
@@ -71,12 +73,14 @@ public:
 	EGenotickResult AttachCurrentThread(IGenotick* pGenotick, bool asDaemon)
 	{
 		if (!pGenotick)
+		{
 			return EGenotickResult::InvalidArgument;
-
+		}
 		EGenotickResult result = pGenotick->AttachCurrentThread(asDaemon);
 		if (result == EGenotickResult::Success)
+		{
 			m_pGenotick = pGenotick;
-
+		}
 		return result;
 	}
 
@@ -93,6 +97,45 @@ private:
 
 	IGenotick* m_pGenotick;
 };
+
+
+class CGenotickCreateSessionRAII
+{
+public:
+	CGenotickCreateSessionRAII()
+		: m_pGenotick(nullptr)
+		, m_sessionId(0) {};
+
+	EGenotickResult CreateSession(IGenotick* pGenotick, TGenotickSessionId sessionId)
+	{
+		if (!pGenotick)
+		{
+			return EGenotickResult::InvalidArgument;
+		}
+		EGenotickResult result = pGenotick->CreateSession(sessionId);
+		if (result == EGenotickResult::Success)
+		{
+			m_pGenotick = pGenotick;
+			m_sessionId = sessionId;
+		}
+		return result;
+	}
+
+	~CGenotickCreateSessionRAII()
+	{
+		if (m_pGenotick)
+		{
+			m_pGenotick->RemoveSession(m_sessionId);
+		}
+	}
+private:
+	CGenotickCreateSessionRAII(const CGenotickCreateSessionRAII&) {};
+	CGenotickCreateSessionRAII& operator=(const CGenotickCreateSessionRAII&) {};
+
+	IGenotick* m_pGenotick;
+	TGenotickSessionId m_sessionId;
+};
+
 
 #ifdef GENOTICK_CPP_11
 #include <memory>
