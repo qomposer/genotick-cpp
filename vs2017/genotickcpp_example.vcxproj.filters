@@ -13,4 +13,9 @@
       <Filter>src\example</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\example\time_counter.h">
+      <Filter>src\example</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

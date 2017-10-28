@@ -37,6 +37,9 @@
   <ItemGroup>
     <ClCompile Include="..\src\example\example.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\example\time_counter.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{904538D6-C660-4AEC-A40E-1A08799277DE}</ProjectGuid>
     <RootNamespace>genotickcpp_example</RootNamespace>
