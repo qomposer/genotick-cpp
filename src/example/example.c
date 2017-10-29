@@ -15,10 +15,10 @@ void GenerateDataPoints(TGenotickDataPoint* dataPoints, TGenotickSize size)
 	for (TGenotickSize i = 0; i < size; ++i)
 	{
 		dataPoints[i].time   = 20130101 + i;
-		dataPoints[i].open   = size*3 + i * 1.0;
-		dataPoints[i].high   = size*3 + i * 1.0 + 0.5;
-		dataPoints[i].low    = size*3 + i * 1.0 - 0.5;
-		dataPoints[i].close  = size*3 + i * 1.0 + 0.2;
+		dataPoints[i].open   = i;
+		dataPoints[i].high   = i + 0.5;
+		dataPoints[i].low    = i - 0.5;
+		dataPoints[i].close  = i + 0.2;
 		dataPoints[i].volume = 10000.0;
 	}
 }
