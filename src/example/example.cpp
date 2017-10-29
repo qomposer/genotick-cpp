@@ -4,6 +4,7 @@
 #include <cassert>
 #include <thread>
 #include <vector>
+#include "time_counter.h"
 
 #pragma comment(lib, "genotickcpp.lib")
 
@@ -11,6 +12,13 @@
 #define GENOTICK_DATADIR ""
 #define JAVA_CLASS_PATH "..\\jar\\genotick.jar"
 #define JVM_PATH "C:\\Program Files (x86)\\Java\\jre1.8.0_144\\bin\\client\\jvm.dll"
+
+enum ETestRunFlag
+{
+	eTestRunFlag_None        = 0,
+	eTestRunFlag_IsNewThread = 1<<0,
+	eTestRunFlag_UseOutput   = 1<<1,
+};
 
 void GenerateDataPoints(TGenotickDataPoint* dataPoints, TGenotickSize size)
 {
@@ -25,17 +33,16 @@ void GenerateDataPoints(TGenotickDataPoint* dataPoints, TGenotickSize size)
 	}
 }
 
-void GenotickTestRun(IGenotick* pInstance, bool isNewThread)
+void GenotickTestRun(IGenotick* pInstance, ETestRunFlag flags)
 {
 	EGenotickResult result;
-	CGenotickAttachCurrentThreadRAII attach;
 
-	if (isNewThread)
+	if (flags & eTestRunFlag_IsNewThread)
 	{
-		result = attach.AttachCurrentThread(pInstance, false);
+		result = pInstance->AttachCurrentThread(false);
 		assert(result == EGenotickResult::Success);
 	}
-	
+
 	TGenotickInt32 version = pInstance->GetInterfaceVersion();
 	assert(version == GENOTICK_INTERFACE_VERSION);
 
@@ -74,6 +81,7 @@ void GenotickTestRun(IGenotick* pInstance, bool isNewThread)
 	{
 		"input=external",
 		"outdir=" GENOTICK_OUTDIR,
+		(flags & eTestRunFlag_UseOutput) ? "output=console" : "output=none"
 	};
 	TGenotickStartArgs startArgs;
 	startArgs.elements = arguments;
@@ -113,6 +121,12 @@ void GenotickTestRun(IGenotick* pInstance, bool isNewThread)
 		const EGenotickPrediction* pPrediction = pPredictions->GetElement(i);
 		(void)pPrediction;
 	}
+	
+	if (flags & eTestRunFlag_IsNewThread)
+	{
+		result = pInstance->DetachCurrentThread();
+		assert(result == EGenotickResult::Success);
+	}
 }
 
 int main(int argc, char** argv)
@@ -129,24 +143,29 @@ int main(int argc, char** argv)
 	EGenotickResult result = GenotickCreate(&pInstance, &creationSettings);
 	assert(result == EGenotickResult::Success);
 
-	std::vector<std::thread> threads;
-	for (int run = 0; run < 1; ++run)
-	{
-		threads.push_back(std::thread(GenotickTestRun, pInstance, true));
-	}
+	CTimeCounter<std::chrono::nanoseconds, CTimeCounterStdOutPrinter> counter;
 
+	std::vector<std::thread> threads;
+	for (int thread = 0; thread < 8; ++thread)
+	{
+		threads.push_back(std::thread(GenotickTestRun, pInstance, eTestRunFlag_IsNewThread));
+	}
 	for (std::thread& thread : threads)
 	{
 		thread.join();
 	}
+
+	counter.restart();
 
 	for (int run = 0; run < 2; ++run)
 	{
 		result = GenotickGetOrCreate(&pInstance, &creationSettings);
 		assert(result == EGenotickResult::Success);
 
-		GenotickTestRun(pInstance, false);
+		GenotickTestRun(pInstance, eTestRunFlag_UseOutput);
 	}
+
+	counter.stop();
 
 	GenotickSafeRelease(pInstance);
 
