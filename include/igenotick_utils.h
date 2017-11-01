@@ -8,6 +8,9 @@
 #if __cplusplus >= 201103L || _MSVC_LANG >= 201103L
 #define GENOTICK_CPP_11
 #endif
+#endif
+
+#ifdef __cplusplus
 
 #include <cassert>
 
