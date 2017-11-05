@@ -51,7 +51,7 @@ public:
 	static string_type name_of(const CDataEnum& instance) noexcept {
 		return instance.name();
 	}
-	static meta_type meta_of(const CDataEnum& instance) noexcept {
+	static const meta_type& meta_of(const CDataEnum& instance) noexcept {
 		return instance.meta();
 	}
 	constexpr ordinal_type ordinal() const {
@@ -67,7 +67,7 @@ public:
 	constexpr string_type name() const {
 		return m_names[ordinal()];
 	}
-	constexpr meta_type meta() const {
+	constexpr const meta_type& meta() const {
 		return m_metas[ordinal()];
 	}
 	constexpr bool operator==(const CDataEnum& other) const noexcept {

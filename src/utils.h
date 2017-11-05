@@ -6,6 +6,7 @@
 #include <cassert>
 #include <string>
 #include <algorithm>
+#include "Windows.h"
 
 namespace utils
 {
@@ -13,6 +14,12 @@ template<typename T, unsigned int size>
 inline unsigned int GetArraySize(T(&)[size])
 {
 	return size;
+}
+
+template<typename F>
+inline F GetProcAddressT(HMODULE hmod, const char* name)
+{
+	return reinterpret_cast<F>(::GetProcAddress(hmod, name));
 }
 
 template <class T>
@@ -38,12 +45,12 @@ inline void VerifyEqualPointers(TypeA* pA, TypeB* pB)
 
 namespace stl
 {
-template<typename ... Args>
-inline ::std::string string_format(const char* format, Args ... args)
+template<typename... Args>
+inline ::std::string string_format(const char* format, Args... args)
 {
-	size_t size = ::std::snprintf(nullptr, 0, format, args ...) + 1;
+	size_t size = ::std::snprintf(nullptr, 0, format, args...) + 1;
 	::std::unique_ptr<char[]> buf(new char[size]);
-	::std::snprintf(buf.get(), size, format, args ...);
+	::std::snprintf(buf.get(), size, format, args...);
 	return ::std::string(buf.get(), buf.get() + size - 1);
 }
 

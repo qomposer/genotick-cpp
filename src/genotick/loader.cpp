@@ -11,15 +11,6 @@
 
 namespace genotick {
 
-namespace
-{
-	template<typename F>
-	F GetProcAddressT(HMODULE hmod, const char* name)
-	{
-		return reinterpret_cast<F>(::GetProcAddress(hmod, name));
-	}
-}
-
 CLoader::CLoader()
 	: JNI_GetDefaultJavaVMInitArgs_FuncPtr(nullptr)
 	, JNI_CreateJavaVM_FuncPtr(nullptr)
@@ -189,9 +180,9 @@ EGenotickResult CLoader::LoadJvmModule(const char* path)
 	if (!JvmModuleLoaded())
 		return EGenotickResult::JvmDllNotFound;
 
-	JNI_GetDefaultJavaVMInitArgs_FuncPtr = GetProcAddressT<pJNI_GetDefaultJavaVMInitArgs>(m_jvmModule, "JNI_GetDefaultJavaVMInitArgs");
-	JNI_CreateJavaVM_FuncPtr = GetProcAddressT<pJNI_CreateJavaVM>(m_jvmModule, "JNI_CreateJavaVM");
-	JNI_CreatedJavaVMs_FuncPtr = GetProcAddressT<pJNI_GetCreatedJavaVMs>(m_jvmModule, "JNI_GetCreatedJavaVMs");
+	JNI_GetDefaultJavaVMInitArgs_FuncPtr = ::utils::GetProcAddressT<pJNI_GetDefaultJavaVMInitArgs>(m_jvmModule, "JNI_GetDefaultJavaVMInitArgs");
+	JNI_CreateJavaVM_FuncPtr = ::utils::GetProcAddressT<pJNI_CreateJavaVM>(m_jvmModule, "JNI_CreateJavaVM");
+	JNI_CreatedJavaVMs_FuncPtr = ::utils::GetProcAddressT<pJNI_GetCreatedJavaVMs>(m_jvmModule, "JNI_GetCreatedJavaVMs");
 
 	const bool bValid = (JNI_GetDefaultJavaVMInitArgs_FuncPtr && JNI_CreateJavaVM_FuncPtr && JNI_CreatedJavaVMs_FuncPtr);
 	if (!bValid)
