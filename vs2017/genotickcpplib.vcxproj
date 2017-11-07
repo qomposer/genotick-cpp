@@ -18,36 +18,33 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\example\example.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{904538D6-C660-4AEC-A40E-1A08799277DE}</ProjectGuid>
-    <RootNamespace>genotickcpp_example</RootNamespace>
+    <ProjectGuid>{61478866-C43A-4748-96AB-050B68798FDF}</ProjectGuid>
+    <RootNamespace>genotickcpplib</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -60,19 +57,19 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="genotickcpp_example.props" />
+    <Import Project="genotickcpp.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="genotickcpp_example.props" />
+    <Import Project="genotickcpp.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="genotickcpp_example.props" />
+    <Import Project="genotickcpp.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="genotickcpp_example.props" />
+    <Import Project="genotickcpp.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
@@ -120,6 +117,87 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <ProgramDataBaseFileName>$(OutDir)\$(TargetName).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <ProgramDataBaseFileName>$(OutDir)\$(TargetName).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\igenotick.h" />
+    <ClInclude Include="..\include\igenotick_utils.h" />
+    <ClInclude Include="..\src\console.h" />
+    <ClInclude Include="..\src\genotick\interface.h" />
+    <ClInclude Include="..\src\genotick\jni\checks.h" />
+    <ClInclude Include="..\src\genotick\jni\error.h" />
+    <ClInclude Include="..\src\genotick\jni\exceptions.h" />
+    <ClInclude Include="..\src\genotick\jni\genotick.h" />
+    <ClInclude Include="..\src\genotick\jni\genotick_list.h" />
+    <ClInclude Include="..\src\genotick\jni\genotick_predictions.h" />
+    <ClInclude Include="..\src\genotick\jni\genotick_timepoints.h" />
+    <ClInclude Include="..\src\genotick\jni\jni_helpers.h" />
+    <ClInclude Include="..\src\genotick\jni\simple_container.h" />
+    <ClInclude Include="..\src\genotick\jni\simple_remote_container.h" />
+    <ClInclude Include="..\src\genotick\jni\remote\chart_mode.h" />
+    <ClInclude Include="..\src\genotick\jni\remote\class.h" />
+    <ClInclude Include="..\src\genotick\jni\remote\data_lines.h" />
+    <ClInclude Include="..\src\genotick\jni\remote\enum.h" />
+    <ClInclude Include="..\src\genotick\jni\remote\enum_impl.h" />
+    <ClInclude Include="..\src\genotick\jni\remote\error_code.h" />
+    <ClInclude Include="..\src\genotick\jni\remote\inherited_weight_mode.h" />
+    <ClInclude Include="..\src\genotick\jni\remote\main_app_data.h" />
+    <ClInclude Include="..\src\genotick\jni\remote\main_interface.h" />
+    <ClInclude Include="..\src\genotick\jni\remote\main_settings.h" />
+    <ClInclude Include="..\src\genotick\jni\remote\prediction.h" />
+    <ClInclude Include="..\src\genotick\jni\remote\predictions.h" />
+    <ClInclude Include="..\src\genotick\jni\remote\timepoint.h" />
+    <ClInclude Include="..\src\genotick\jni\remote\timepoints.h" />
+    <ClInclude Include="..\src\genotick\jni\remote\weight_mode.h" />
+    <ClInclude Include="..\src\genotick\loader.h" />
+    <ClInclude Include="..\src\jdk\classfile_constants.h" />
+    <ClInclude Include="..\src\jdk\jawt.h" />
+    <ClInclude Include="..\src\jdk\jdwpTransport.h" />
+    <ClInclude Include="..\src\jdk\jni.h" />
+    <ClInclude Include="..\src\jdk\jvmti.h" />
+    <ClInclude Include="..\src\jdk\jvmticmlr.h" />
+    <ClInclude Include="..\src\jdk\win32\jawt_md.h" />
+    <ClInclude Include="..\src\jdk\win32\jni_md.h" />
+    <ClInclude Include="..\src\jni\array.hpp" />
+    <ClInclude Include="..\src\jni\arraylike.hpp" />
+    <ClInclude Include="..\src\jni\class.hpp" />
+    <ClInclude Include="..\src\jni\constructor.hpp" />
+    <ClInclude Include="..\src\jni\errors.hpp" />
+    <ClInclude Include="..\src\jni\field.hpp" />
+    <ClInclude Include="..\src\jni\functions.hpp" />
+    <ClInclude Include="..\src\jni\jni.hpp" />
+    <ClInclude Include="..\src\jni\make.hpp" />
+    <ClInclude Include="..\src\jni\method.hpp" />
+    <ClInclude Include="..\src\jni\native_method.hpp" />
+    <ClInclude Include="..\src\jni\npe.hpp" />
+    <ClInclude Include="..\src\jni\object.hpp" />
+    <ClInclude Include="..\src\jni\ownership.hpp" />
+    <ClInclude Include="..\src\jni\pointer_to_value.hpp" />
+    <ClInclude Include="..\src\jni\static_field.hpp" />
+    <ClInclude Include="..\src\jni\static_method.hpp" />
+    <ClInclude Include="..\src\jni\string.hpp" />
+    <ClInclude Include="..\src\jni\tagging.hpp" />
+    <ClInclude Include="..\src\jni\traits.hpp" />
+    <ClInclude Include="..\src\jni\typed_methods.hpp" />
+    <ClInclude Include="..\src\jni\types.hpp" />
+    <ClInclude Include="..\src\jni\type_signature.hpp" />
+    <ClInclude Include="..\src\jni\wrapping.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\console.cpp" />
+    <ClCompile Include="..\src\dllmain.cpp" />
+    <ClCompile Include="..\src\exports.cpp" />
+    <ClCompile Include="..\src\genotick\jni\genotick.cpp" />
+    <ClCompile Include="..\src\genotick\loader.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

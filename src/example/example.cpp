@@ -6,7 +6,7 @@
 #include <vector>
 #include <time_counter.h>
 
-#pragma comment(lib, "genotickcpp.lib")
+#pragma comment(lib, "genotickcpplib.lib")
 
 #define GENOTICK_OUTDIR "..\\jar\\.outdir"
 #define GENOTICK_DATADIR ""

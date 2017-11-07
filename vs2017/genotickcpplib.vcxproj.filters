@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{a9fbc668-0b82-4444-81c8-05b481a1c53b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{06a90049-dc8b-4faa-a94b-570fc9484c84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\jdk">
+      <UniqueIdentifier>{459a19cb-cc5f-406f-99d7-064f0df8a092}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\jni">
+      <UniqueIdentifier>{d3e6f514-0940-4612-a593-c65546019d2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\jdk\win32">
+      <UniqueIdentifier>{d7ab8711-7e79-47dd-bbb7-43aa9273ab28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\genotick">
+      <UniqueIdentifier>{cad9c2b7-a9e6-4e00-bcf2-da663de53332}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\genotick\jni">
+      <UniqueIdentifier>{6cbda31c-d6aa-4636-8aaf-96be2525d63a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\genotick\jni\remote">
+      <UniqueIdentifier>{6e4ec4b1-a030-4b48-966e-a04a75918969}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\jdk\classfile_constants.h">
+      <Filter>src\jdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jdk\jawt.h">
+      <Filter>src\jdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jdk\jdwpTransport.h">
+      <Filter>src\jdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jdk\jni.h">
+      <Filter>src\jdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jdk\jvmti.h">
+      <Filter>src\jdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jdk\jvmticmlr.h">
+      <Filter>src\jdk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jdk\win32\jawt_md.h">
+      <Filter>src\jdk\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jdk\win32\jni_md.h">
+      <Filter>src\jdk\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\array.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\arraylike.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\class.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\constructor.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\errors.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\field.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\functions.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\jni.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\make.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\method.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\native_method.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\npe.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\object.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\ownership.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\pointer_to_value.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\static_field.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\static_method.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\string.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\tagging.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\traits.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\type_signature.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\typed_methods.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\types.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\jni\wrapping.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\igenotick.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\igenotick_utils.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\error.h">
+      <Filter>src\genotick\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\exceptions.h">
+      <Filter>src\genotick\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\genotick.h">
+      <Filter>src\genotick\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\jni_helpers.h">
+      <Filter>src\genotick\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\loader.h">
+      <Filter>src\genotick</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\interface.h">
+      <Filter>src\genotick</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\chart_mode.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\class.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\data_lines.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\enum.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\enum_impl.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\error_code.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\inherited_weight_mode.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\main_app_data.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\main_interface.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\main_settings.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\prediction.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\predictions.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\timepoint.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\timepoints.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\remote\weight_mode.h">
+      <Filter>src\genotick\jni\remote</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\genotick_predictions.h">
+      <Filter>src\genotick\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\genotick_timepoints.h">
+      <Filter>src\genotick\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\simple_container.h">
+      <Filter>src\genotick\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\simple_remote_container.h">
+      <Filter>src\genotick\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\genotick_list.h">
+      <Filter>src\genotick\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\console.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\checks.h">
+      <Filter>src\genotick\jni</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\dllmain.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\exports.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\genotick\jni\genotick.cpp">
+      <Filter>src\genotick\jni</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\genotick\loader.cpp">
+      <Filter>src\genotick</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
