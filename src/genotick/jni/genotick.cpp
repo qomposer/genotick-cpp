@@ -4,6 +4,7 @@
 #include <genotick/jni/genotick_predictions.h>
 #include <genotick/jni/genotick_timepoints.h>
 #include <utils.h>
+#include "checks.h"
 #include <cassert>
 
 #define MISMATCH_MESSAGE "Mismatching Data Type Found"

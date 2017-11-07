@@ -123,17 +123,8 @@
     <ClInclude Include="..\src\jni\wrapping.hpp">
       <Filter>src\jni</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\utils.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\igenotick.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\utf8.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\strlcpy.h">
-      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\include\igenotick_utils.h">
       <Filter>include</Filter>
@@ -219,8 +210,8 @@
     <ClInclude Include="..\src\console.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\data_enum.h">
-      <Filter>include</Filter>
+    <ClInclude Include="..\src\genotick\jni\checks.h">
+      <Filter>src\genotick\jni</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -228,9 +219,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\exports.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\msvc_codecvt_fix.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\genotick\jni\genotick.cpp">

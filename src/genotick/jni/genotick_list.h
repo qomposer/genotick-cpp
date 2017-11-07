@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <utils.h>
+#include "checks.h"
 
 namespace genotick {
 namespace jni {

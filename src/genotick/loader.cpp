@@ -4,7 +4,7 @@
 #include <genotick/jni/error.h>
 #include <genotick/jni/exceptions.h>
 #include <genotick/jni/genotick_list.h>
-#include <utils.h>
+#include <utils_win.h>
 #include <utf8.h>
 #include <assert.h>
 #include <console.h>

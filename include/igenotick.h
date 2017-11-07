@@ -108,7 +108,7 @@ const TGenotickBoolean GenotickTrue = 1;
 #ifdef __cplusplus
 
 #define DATA_ENUM_DEBUGGING 2
-#include "data_enum.h"
+#include <data_enum.h>
 
 struct SGenotickEnumMeta
 {

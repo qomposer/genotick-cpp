@@ -4,7 +4,7 @@
 #include <cassert>
 #include <thread>
 #include <vector>
-#include "time_counter.h"
+#include <time_counter.h>
 
 #pragma comment(lib, "genotickcpp.lib")
 

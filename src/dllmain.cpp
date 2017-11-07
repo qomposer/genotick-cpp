@@ -12,3 +12,5 @@ BOOL WINAPI DllMain(_In_ HINSTANCE hinstDLL, _In_ DWORD fdwReason, _In_ LPVOID l
 }
 
 #endif
+
+#include "msvc_codecvt_fix_impl.h"

@@ -11,7 +11,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir).$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
 	<ClCompile>
-      <AdditionalIncludeDirectories>..\include;..\src;..\src\jdk;..\src\jdk\win32;..\src\jdk\win32\bridge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\commonlib\include;..\src;..\src\jdk;..\src\jdk\win32;..\src\jdk\win32\bridge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='DebugDLL'">
