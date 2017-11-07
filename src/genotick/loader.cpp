@@ -8,6 +8,7 @@
 #include <utf8.h>
 #include <assert.h>
 #include <console.h>
+#include <vector>
 
 namespace genotick {
 
@@ -31,19 +32,39 @@ EGenotickResult CLoader::GenotickCreate(IGenotick** ppInstance, const TGenotickC
 	if (!ppInstance || !pSettings)
 		return EGenotickResult::InvalidArgument;
 
+	if (pSettings->javaOptionCount > 0 && !pSettings->javaOptions)
+		return EGenotickResult::InvalidArgument;
+
 	EGenotickResult result = LoadJvmModule(pSettings->utf8_jvmDllPath);
 	if (result != EGenotickResult::Success)
 		return result;
-
-	const std::string javaClassPathOption = MakeJavaOptionString("-Djava.class.path", pSettings->utf8_javaClassPath);
+	
+	::std::string buffer1;
+	::std::string buffer2;
+	::std::vector<JavaVMOption> options;
+	if (::utils::IsValidString(pSettings->javaClassPath))
+	{
+		buffer1 = ::stl::string_format("-Djava.class.path=%s", pSettings->javaClassPath);
+		options.push_back({ const_cast<char*>(buffer1.c_str()), nullptr });
+	}
+	if (::utils::IsValidString(pSettings->javaDebugAddress))
+	{
+		buffer2 = ::stl::string_format("-agentlib:jdwp=transport=dt_socket,address=%s,server=y,suspend=y", pSettings->javaDebugAddress);
+		options.push_back({ const_cast<char*>(buffer2.c_str()), nullptr });
+	}
+	const TGenotickSize additionalOptionCount = pSettings->javaOptionCount;
+	for (TGenotickSize i = 0; i < additionalOptionCount; ++i)
+	{
+		const TJavaVMOption& option = pSettings->javaOptions[i];
+		options.push_back({ const_cast<char*>(option.optionString), const_cast<void*>(option.extraInfo) });
+	}
 
 	JavaVM* pJavaVM = nullptr;
 	JNIEnv* pJavaEnv = nullptr;
 	JavaVMInitArgs vm_args = { 0 };
-	JavaVMOption options[] = { const_cast<char*>(javaClassPathOption.c_str()) };
 	vm_args.version = JNI_VERSION_1_8;
-	vm_args.nOptions = ::utils::GetArraySize(options);
-	vm_args.options = options;
+	vm_args.nOptions = static_cast<jint>(options.size());
+	vm_args.options = options.data();
 	vm_args.ignoreUnrecognized = false;
 
 	jint jniResult = JNI_CreateJavaVM_FuncPtr(&pJavaVM, reinterpret_cast<void**>(&pJavaEnv), &vm_args);
@@ -203,11 +224,6 @@ void CLoader::FreeJvmModule()
 		JNI_CreateJavaVM_FuncPtr = nullptr;
 		JNI_CreatedJavaVMs_FuncPtr = nullptr;
 	}
-}
-
-std::string CLoader::MakeJavaOptionString(const char* option, const char* value)
-{
-	return ::stl::string_format("%s=%s", option, value);
 }
 
 } // namespace genotick

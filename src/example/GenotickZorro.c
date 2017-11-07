@@ -97,7 +97,7 @@ void InitGenotick()
 	TGenotickCreationSettings creationSettings;
 	GENOTICK_ZERO_STRUCT(creationSettings);
 	creationSettings.utf8_jvmDllPath = JVM_PATH;
-	creationSettings.utf8_javaClassPath = JAVA_CLASS_PATH;
+	creationSettings.javaClassPath = JAVA_CLASS_PATH;
 	
 	g_result = GenotickGetOrCreate(&g_pInstance, &creationSettings);
 	printf("\nGenotickGetOrCreate Error: %d", g_result);

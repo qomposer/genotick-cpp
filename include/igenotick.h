@@ -252,10 +252,19 @@ struct SGenotickStartArgs
 	TGenotickSize      elementCount GENOTICK_ZERO_INIT;
 };
 
+struct SJavaVMOption
+{
+	const char* optionString GENOTICK_ZERO_INIT;
+	const void* extraInfo    GENOTICK_ZERO_INIT;
+};
+
 struct SGenotickCreationSettings
 {
-	const char* utf8_jvmDllPath    GENOTICK_ZERO_INIT;
-	const char* utf8_javaClassPath GENOTICK_ZERO_INIT;
+	const char*                 utf8_jvmDllPath  GENOTICK_ZERO_INIT; // mandatory path to jvm.dll
+	const char*                 javaClassPath    GENOTICK_ZERO_INIT; // optional [ex: "genotick.jar"]
+	const char*                 javaDebugAddress GENOTICK_ZERO_INIT; // optional [ex: "127.0.0.1:8888"]
+	const struct SJavaVMOption* javaOptions      GENOTICK_ZERO_INIT; // optional regular Java VM options
+	TGenotickSize               javaOptionCount  GENOTICK_ZERO_INIT;
 };
 
 typedef struct SGenotickMainSettings     TGenotickMainSettings;
@@ -263,6 +272,7 @@ typedef struct SGenotickDataPoint        TGenotickDataPoint;
 typedef struct SGenotickAssetData        TGenotickAssetData;
 typedef struct SGenotickStartArgs        TGenotickStartArgs;
 typedef struct SGenotickCreationSettings TGenotickCreationSettings;
+typedef struct SJavaVMOption             TJavaVMOption;
 
 #ifdef ZORRO_LITE_C
 

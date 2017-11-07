@@ -39,7 +39,6 @@ private:
 	TGenotickPtrsIterator FindInstanceFor(JavaVM& javaVM);
 	bool                  HasInstanceFor(JavaVM& javaVM);
 	
-	static ::std::string MakeJavaOptionString(const char* option, const char* value);
 	inline bool JvmModuleLoaded() { return m_jvmModule != 0; }
 
 	pJNI_GetDefaultJavaVMInitArgs JNI_GetDefaultJavaVMInitArgs_FuncPtr;

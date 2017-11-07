@@ -137,12 +137,23 @@ int main(int argc, char** argv)
 
 	TGenotickCreationSettings creationSettings;
 	creationSettings.utf8_jvmDllPath = JVM_PATH;
-	creationSettings.utf8_javaClassPath = JAVA_CLASS_PATH;
+	creationSettings.javaClassPath = JAVA_CLASS_PATH;
+	//creationSettings.javaDebugAddress = "127.0.0.1:8888";
 
 	EGenotickResult result = GenotickCreate(&pInstance, &creationSettings);
 	assert(result == EGenotickResult::Success);
 
 	CTimeCounter<std::chrono::nanoseconds, CTimeCounterStdOutPrinter> counter;
+
+	for (int run = 0; run < 2; ++run)
+	{
+		result = GenotickGetOrCreate(&pInstance, &creationSettings);
+		assert(result == EGenotickResult::Success);
+
+		GenotickTestRun(pInstance, eTestRunFlag_UseOutput);
+	}
+
+	counter.restart();
 
 	std::vector<std::thread> threads;
 	for (int thread = 0; thread < 8; ++thread)
@@ -152,16 +163,6 @@ int main(int argc, char** argv)
 	for (std::thread& thread : threads)
 	{
 		thread.join();
-	}
-
-	counter.restart();
-
-	for (int run = 0; run < 2; ++run)
-	{
-		result = GenotickGetOrCreate(&pInstance, &creationSettings);
-		assert(result == EGenotickResult::Success);
-
-		GenotickTestRun(pInstance, eTestRunFlag_UseOutput);
 	}
 
 	counter.stop();
