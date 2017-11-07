@@ -18,7 +18,6 @@ public:
 	using TSetHighMethod = ::jni::Method<TagType, void(::jni::jint /* line */, ::jni::jdouble /* value */)>;
 	using TSetLowMethod = ::jni::Method<TagType, void(::jni::jint /* line */, ::jni::jdouble /* value */)>;
 	using TSetCloseMethod = ::jni::Method<TagType, void(::jni::jint /* line */, ::jni::jdouble /* value */)>;
-	using TSetVolumeMethod = ::jni::Method<TagType, void(::jni::jint /* line */, ::jni::jdouble /* value */)>;
 	using TSetOtherMethod = ::jni::Method<TagType, void(::jni::jint /* line */, ::jni::jint /* column */, ::jni::jdouble /* value */)>;
 
 #define GENOTICK_CLASS_METHODS(f) \
@@ -27,7 +26,6 @@ public:
 	f(TSetHighMethod  , setHigh  ) \
 	f(TSetLowMethod   , setLow   ) \
 	f(TSetCloseMethod , setClose ) \
-	f(TSetVolumeMethod, setVolume) \
 	f(TSetOtherMethod , setOther ) \
 
 	explicit CDataLines(::jni::JNIEnv& javaEnv)
@@ -64,11 +62,6 @@ public:
 	void setClose(const TObject& object, const ::jni::jint line, const ::jni::jdouble value) const
 	{
 		object.Call(GetJavaEnv(), m_setClose, line, value);
-	}
-
-	void setVolume(const TObject& object, const ::jni::jint line, const ::jni::jdouble value) const
-	{
-		object.Call(GetJavaEnv(), m_setVolume, line, value);
 	}
 
 	void setOther(const TObject& object, const ::jni::jint line, const ::jni::jint column, const ::jni::jdouble value) const

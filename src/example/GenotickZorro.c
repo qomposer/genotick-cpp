@@ -45,7 +45,6 @@ void FillDataPoints(TGenotickDataPoint* dataPoints, int barCount)
 		dataPoints[ibar].high = priceHigh(-ibar);
 		dataPoints[ibar].low = priceLow(-ibar);
 		dataPoints[ibar].close = priceClose(-ibar);
-		dataPoints[ibar].volume = marketVol(-ibar);
 	}
 	
 	reset(PEEK);

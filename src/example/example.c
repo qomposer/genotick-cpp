@@ -19,7 +19,6 @@ void GenerateDataPoints(TGenotickDataPoint* dataPoints, TGenotickSize size)
 		dataPoints[i].high   = i + 0.5;
 		dataPoints[i].low    = i - 0.5;
 		dataPoints[i].close  = i + 0.2;
-		dataPoints[i].volume = 10000.0;
 	}
 }
 

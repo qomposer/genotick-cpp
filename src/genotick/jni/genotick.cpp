@@ -212,8 +212,8 @@ EGenotickResult CGenotick::SetAssetDataInternal(TGenotickSessionId sessionId, co
 			return EGenotickResult::ErrorInvalidSession;
 
 		const ::jni::jint lineCount = static_cast<::jni::jint>(pAssetData->dataPointCount);
-		const ::jni::jint otherColumnCount = static_cast<::jni::jint>(pAssetData->dataPoints[0].otherColumnCount);
-		const ::jni::jint columnCount = static_cast<::jni::jint>(GenotickMinColumnCount) + otherColumnCount;
+		const ::jni::jint optionalColumnCount = static_cast<::jni::jint>(pAssetData->optionalColumnCount);
+		const ::jni::jint columnCount = static_cast<::jni::jint>(GenotickMinColumnCount) + optionalColumnCount;
 		const ::jni::jboolean firstIsNewest = pAssetData->firstDataPointIsNewest;
 		const ::jni::String jniAssetName = ::jni::Make<::jni::String>(threadData.javaEnv, pAssetData->assetName);
 
@@ -225,18 +225,16 @@ EGenotickResult CGenotick::SetAssetDataInternal(TGenotickSessionId sessionId, co
 		{
 			const TGenotickDataPoint& dataPoint = pAssetData->dataPoints[line];
 
-			assert(static_cast<::jni::jint>(dataPoint.otherColumnCount) == otherColumnCount);
-
 			threadData.remoteDataLines.setTime(jniDataLines, line, dataPoint.time);
 			threadData.remoteDataLines.setOpen(jniDataLines, line, dataPoint.open);
 			threadData.remoteDataLines.setHigh(jniDataLines, line, dataPoint.high);
 			threadData.remoteDataLines.setLow(jniDataLines, line, dataPoint.low);
 			threadData.remoteDataLines.setClose(jniDataLines, line, dataPoint.close);
-			threadData.remoteDataLines.setVolume(jniDataLines, line, dataPoint.volume);
 
-			for (::jni::jint column = 0; column < otherColumnCount; ++column)
+			for (::jni::jint column = 0; column < optionalColumnCount; ++column)
 			{
-				threadData.remoteDataLines.setOther(jniDataLines, line, column, dataPoint.otherColumns[column]);
+				assert(dataPoint.optionalColumns != nullptr);
+				threadData.remoteDataLines.setOther(jniDataLines, line, column, dataPoint.optionalColumns[column]);
 			}
 		}
 

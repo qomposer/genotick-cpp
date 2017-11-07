@@ -226,23 +226,22 @@ struct SGenotickMainSettings
 
 struct SGenotickDataPoint
 {
-	TGenotickTimePoint     time             GENOTICK_ZERO_INIT;
-	TGenotickDouble        open             GENOTICK_ZERO_INIT;
-	TGenotickDouble        high             GENOTICK_ZERO_INIT;
-	TGenotickDouble        low              GENOTICK_ZERO_INIT;
-	TGenotickDouble        close            GENOTICK_ZERO_INIT;
-	TGenotickDouble        volume           GENOTICK_ZERO_INIT;
-	const TGenotickDouble* otherColumns     GENOTICK_ZERO_INIT;
-	TGenotickSize          otherColumnCount GENOTICK_ZERO_INIT;
+	TGenotickTimePoint     time            GENOTICK_ZERO_INIT;
+	TGenotickDouble        open            GENOTICK_ZERO_INIT;
+	TGenotickDouble        high            GENOTICK_ZERO_INIT;
+	TGenotickDouble        low             GENOTICK_ZERO_INIT;
+	TGenotickDouble        close           GENOTICK_ZERO_INIT;
+	const TGenotickDouble* optionalColumns GENOTICK_ZERO_INIT;
 };
 
-const TGenotickSize GenotickMinColumnCount = 6;
+const TGenotickSize GenotickMinColumnCount = 5;
 
 struct SGenotickAssetData
 {
 	const char*                      assetName              GENOTICK_ZERO_INIT;
 	const struct SGenotickDataPoint* dataPoints             GENOTICK_ZERO_INIT;
 	TGenotickSize                    dataPointCount         GENOTICK_ZERO_INIT;
+	TGenotickSize                    optionalColumnCount    GENOTICK_ZERO_INIT;
 	TGenotickBoolean                 firstDataPointIsNewest GENOTICK_ZERO_INIT;
 	TGenotickByte                    padding[3]             GENOTICK_ZERO_INIT;
 };
