@@ -10,6 +10,9 @@
 #define GENOTICK_UNROLL_FIELD_MEMBERS(type, name) \
 const type m_##name = this->GetUniqueClass()->GetField<typename type::FieldType>(this->GetJavaEnv(), #name);
 
+#define GENOTICK_UNROLL_STATIC_FIELD_MEMBERS(type, name) \
+const type m_##name = this->GetUniqueClass()->GetStaticField<typename type::FieldType>(this->GetJavaEnv(), #name);
+
 #define GENOTICK_UNROLL_METHOD_MEMBERS(type, name) \
 const type m_##name = this->GetUniqueClass()->GetMethod<typename type::MethodType>(this->GetJavaEnv(), #name);
 
@@ -23,6 +26,14 @@ inline void Set_##name(const TObject& object, const typename type::FieldType& va
 #define GENOTICK_UNROLL_GET_FIELD_INLINE_FUNCTIONS(type, name) \
 inline typename type::FieldType Get_##name(const TObject& object) const { \
 	return object.Get(this->GetJavaEnv(), this->m_##name); }
+
+#define GENOTICK_UNROLL_SET_STATIC_FIELD_INLINE_FUNCTIONS(type, name) \
+inline void Set_##name(const typename type::FieldType& value) const { \
+	this->GetUniqueClass()->Set(this->GetJavaEnv(), this->m_##name, value); }
+
+#define GENOTICK_UNROLL_GET_STATIC_FIELD_INLINE_FUNCTIONS(type, name) \
+inline typename type::FieldType Get_##name() const { \
+	return this->GetUniqueClass()->Get(this->GetJavaEnv(), this->m_##name); }
 
 namespace jni
 {
@@ -76,4 +87,14 @@ namespace jni
 	template <class ClassTag> using FloatField = ::jni::Field<ClassTag, ::jni::jfloat>;
 	template <class ClassTag> using DoubleField = ::jni::Field<ClassTag, ::jni::jdouble>;
 	template <class ClassTag> using StringField = ::jni::Field<ClassTag, ::jni::String>;
+
+	template <class ClassTag> using IntStaticField = ::jni::StaticField<ClassTag, ::jni::jint>;
+	template <class ClassTag> using LongStaticField = ::jni::StaticField<ClassTag, ::jni::jlong>;
+	template <class ClassTag> using ByteStaticField = ::jni::StaticField<ClassTag, ::jni::jbyte>;
+	template <class ClassTag> using BooleanStaticField = ::jni::StaticField<ClassTag, ::jni::jboolean>;
+	template <class ClassTag> using CharStaticField = ::jni::StaticField<ClassTag, ::jni::jchar>;
+	template <class ClassTag> using ShortStaticField = ::jni::StaticField<ClassTag, ::jni::jshort>;
+	template <class ClassTag> using FloatStaticField = ::jni::StaticField<ClassTag, ::jni::jfloat>;
+	template <class ClassTag> using DoubleStaticField = ::jni::StaticField<ClassTag, ::jni::jdouble>;
+	template <class ClassTag> using StringStaticField = ::jni::StaticField<ClassTag, ::jni::String>;
 }

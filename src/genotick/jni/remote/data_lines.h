@@ -2,6 +2,8 @@
 #pragma once
 
 #include <genotick/jni/remote/class.h>
+#include <genotick/jni/exceptions.h>
+#include <genotick/interface.h>
 
 namespace genotick {
 namespace jni {
@@ -12,6 +14,7 @@ struct SDataLinesTag { static constexpr auto Name() { return "com/alphatica/geno
 class CDataLines : public CClass<SDataLinesTag>
 {
 public:
+	using TMinColumnCountField = ::jni::IntStaticField<TagType>;
 	using TConstructor1 = ::jni::Constructor<TagType, ::jni::jint, ::jni::jint, ::jni::jboolean>;
 	using TSetTimeMethod = ::jni::Method<TagType, void(::jni::jint /* line */, ::jni::jlong /* value */)>;
 	using TSetOpenMethod = ::jni::Method<TagType, void(::jni::jint /* line */, ::jni::jdouble /* value */)>;
@@ -20,7 +23,10 @@ public:
 	using TSetCloseMethod = ::jni::Method<TagType, void(::jni::jint /* line */, ::jni::jdouble /* value */)>;
 	using TSetOtherMethod = ::jni::Method<TagType, void(::jni::jint /* line */, ::jni::jint /* column */, ::jni::jdouble /* value */)>;
 
-#define GENOTICK_CLASS_METHODS(f) \
+#define GENOTICK_STATIC_CLASS_FIELDS(f) \
+	f(TMinColumnCountField, MIN_COLUMN_COUNT) \
+
+#define GENOTICK_CLASS_METHODS(f)  \
 	f(TSetTimeMethod  , setTime  ) \
 	f(TSetOpenMethod  , setOpen  ) \
 	f(TSetHighMethod  , setHigh  ) \
@@ -32,6 +38,15 @@ public:
 		: CClass<TagType>(javaEnv)
 		, m_constructor1(GetUniqueClass()->GetConstructor<::jni::jint, ::jni::jint, ::jni::jboolean>(GetJavaEnv()))
 	{
+		::jni::jint expectedMinColumnCount = Get_MIN_COLUMN_COUNT();
+		::jni::jint interfaceMinColumnCount = static_cast<::jni::jint>(GenotickMinColumnCount);
+
+		if (expectedMinColumnCount != interfaceMinColumnCount)
+		{
+			throw EnumMismatchException(::stl::string_format(
+				"Expected min column count '%d' and interface min column count '%d' do not match",
+				expectedMinColumnCount, interfaceMinColumnCount));
+		}
 	}
 
 	TObject New(const ::jni::jint lineCount, const ::jni::jint columnCount, const ::jni::jboolean firstLineIsNewest) const
@@ -69,8 +84,14 @@ public:
 		object.Call(GetJavaEnv(), m_setOther, line, column, value);
 	}
 
+	::jni::jint Get_MIN_COLUMN_COUNT() const
+	{
+		return GetUniqueClass()->Get(GetJavaEnv(), m_MIN_COLUMN_COUNT);
+	}
+
 private:
 	const TConstructor1 m_constructor1;
+	GENOTICK_STATIC_CLASS_FIELDS(GENOTICK_UNROLL_STATIC_FIELD_MEMBERS)
 	GENOTICK_CLASS_METHODS(GENOTICK_UNROLL_METHOD_MEMBERS)
 };
 
