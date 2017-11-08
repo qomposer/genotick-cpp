@@ -17,3 +17,8 @@ EGenotickResult GENOTICK_CALL GenotickSpawnConsole()
 {
 	return g_genotickLoader.GenotickSpawnConsole();
 }
+
+EGenotickResult GENOTICK_CALL GenotickDestroyConsole()
+{
+	return g_genotickLoader.GenotickDestroyConsole();
+}

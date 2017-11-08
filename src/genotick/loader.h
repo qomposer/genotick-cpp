@@ -27,6 +27,7 @@ public:
 	EGenotickResult GenotickCreate(IGenotick** ppInstance, const SGenotickCreationSettings* pSettings);
 	EGenotickResult GenotickGetInstances(IGenotickList** ppInstances, const TGenotickCreationSettings* pSettings);
 	EGenotickResult GenotickSpawnConsole();
+	EGenotickResult GenotickDestroyConsole();
 
 protected:
 	EGenotickResult ReleaseInstanceFor(JavaVM& javaVM);

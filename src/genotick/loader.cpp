@@ -125,8 +125,12 @@ EGenotickResult CLoader::GenotickGetInstances(IGenotickList** ppInstances, const
 
 EGenotickResult CLoader::GenotickSpawnConsole()
 {
-	CConsole::Create();
-	return EGenotickResult::Success;
+	return CConsole::Create() ? EGenotickResult::Success : EGenotickResult::Failure;
+}
+
+EGenotickResult CLoader::GenotickDestroyConsole()
+{
+	return CConsole::Destroy() ? EGenotickResult::Success : EGenotickResult::Failure;
 }
 
 IGenotickList* CLoader::CreateGenotickList()

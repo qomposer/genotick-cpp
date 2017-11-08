@@ -17,4 +17,5 @@ class CConsole
 
 public:
 	static bool Create();
+	static bool Destroy();
 };

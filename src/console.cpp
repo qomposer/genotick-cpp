@@ -26,3 +26,8 @@ bool CConsole::Create()
 
 	return false;
 }
+
+bool CConsole::Destroy()
+{
+	return ::FreeConsole() == TRUE;
+}

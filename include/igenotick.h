@@ -84,9 +84,10 @@ const TGenotickBoolean GenotickTrue = 1;
 #define GenotickPrediction_Out   0
 
 #define GenotickResult_Success                 0
-#define GenotickResult_InvalidArgument         1
-#define GenotickResult_ThreadNotAttached       2
-#define GenotickResult_ThreadAlreadyAttached   3
+#define GenotickResult_Failure                 1
+#define GenotickResult_InvalidArgument         2
+#define GenotickResult_ThreadNotAttached       3
+#define GenotickResult_ThreadAlreadyAttached   4
 #define GenotickResult_JvmDllNotFound        100
 #define GenotickResult_JvmExportsNotFound    101
 #define GenotickResult_JniError              200
@@ -155,6 +156,7 @@ GENOTICK_DEFINE_ENUM_CLASS(EGenotickPrediction, TGenotickInt32, GENOTICK_PREDICT
 enum class EGenotickResult : TGenotickInt32
 {
 	Success               = GenotickResult_Success,
+	Failure               = GenotickResult_Failure,
 	InvalidArgument       = GenotickResult_InvalidArgument,
 	ThreadNotAttached     = GenotickResult_ThreadNotAttached,
 	ThreadAlreadyAttached = GenotickResult_ThreadAlreadyAttached,
@@ -522,6 +524,7 @@ GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GenotickGetInstances(IGe
 
 // Spawns a console in native code
 GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GenotickSpawnConsole();
+GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GenotickDestroyConsole();
 
 #ifdef __cplusplus
 }
