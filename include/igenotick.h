@@ -31,12 +31,12 @@
 #pragma pack(push, 4)
 
 #ifdef ZORRO_LITE_C
-struct longlong
+struct SGenotickInt64
 {
 	signed long lo;
 	signed long hi;
 };
-typedef struct longlong  TGenotickInt64;
+typedef struct SGenotickInt64 TGenotickInt64;
 #else
 typedef signed long long TGenotickInt64;
 #endif // ZORRO_LITE_C
@@ -225,6 +225,7 @@ struct SGenotickMainSettings
 	TGenotickBoolean    requireSymmetricalRobots          GENOTICK_ZERO_INIT;
 	TGenotickByte       padding[1]                        GENOTICK_ZERO_INIT;
 };
+typedef struct SGenotickMainSettings     TGenotickMainSettings;
 
 struct SGenotickDataPoint
 {
@@ -235,7 +236,7 @@ struct SGenotickDataPoint
 	TGenotickDouble        close           GENOTICK_ZERO_INIT;
 	const TGenotickDouble* optionalColumns GENOTICK_ZERO_INIT;
 };
-
+typedef struct SGenotickDataPoint TGenotickDataPoint;
 const TGenotickSize GenotickMinColumnCount = 5;
 
 struct SGenotickAssetData
@@ -247,18 +248,21 @@ struct SGenotickAssetData
 	TGenotickBoolean                 firstDataPointIsNewest GENOTICK_ZERO_INIT;
 	TGenotickByte                    padding[3]             GENOTICK_ZERO_INIT;
 };
+typedef struct SGenotickAssetData TGenotickAssetData;
 
 struct SGenotickStartArgs
 {
 	const char* const* elements     GENOTICK_ZERO_INIT;
 	TGenotickSize      elementCount GENOTICK_ZERO_INIT;
 };
+typedef struct SGenotickStartArgs TGenotickStartArgs;
 
 struct SJavaVMOption
 {
 	const char* optionString GENOTICK_ZERO_INIT;
 	const void* extraInfo    GENOTICK_ZERO_INIT;
 };
+typedef struct SJavaVMOption TJavaVMOption;
 
 struct SGenotickCreationSettings
 {
@@ -268,13 +272,7 @@ struct SGenotickCreationSettings
 	const struct SJavaVMOption* javaOptions      GENOTICK_ZERO_INIT; // optional regular Java VM options
 	TGenotickSize               javaOptionCount  GENOTICK_ZERO_INIT;
 };
-
-typedef struct SGenotickMainSettings     TGenotickMainSettings;
-typedef struct SGenotickDataPoint        TGenotickDataPoint;
-typedef struct SGenotickAssetData        TGenotickAssetData;
-typedef struct SGenotickStartArgs        TGenotickStartArgs;
 typedef struct SGenotickCreationSettings TGenotickCreationSettings;
-typedef struct SJavaVMOption             TJavaVMOption;
 
 #ifdef ZORRO_LITE_C
 
