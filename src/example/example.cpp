@@ -1,12 +1,12 @@
 
+#pragma comment(lib, "genotickcpplib.lib")
+
 #include <igenotick.h>
 #include <igenotick_utils.h>
 #include <cassert>
 #include <thread>
 #include <vector>
 #include <time_counter.h>
-
-#pragma comment(lib, "genotickcpplib.lib")
 
 #define GENOTICK_OUTDIR "..\\jar\\.outdir"
 #define GENOTICK_DATADIR ""

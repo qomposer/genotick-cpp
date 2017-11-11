@@ -1,9 +1,10 @@
 
+#pragma comment(lib, "genotickcpp.lib")
+
+#define GENOTICK_DLL
 #include <igenotick.h>
 #include <igenotick_utils.h>
 #include <assert.h>
-
-#pragma comment(lib, "genotickcpp.lib")
 
 #define GENOTICK_OUTDIR "..\\jar\\.outdir"
 #define GENOTICK_DATADIR ""
