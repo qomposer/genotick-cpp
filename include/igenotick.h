@@ -383,12 +383,10 @@ struct SGenotickListFunctions
 	void          (GENOTICK_CALL* Release)(IGenotickList* pThis);
 };
 
-#ifdef __cplusplus
-
 struct SGenotickTimePoints
 {
-	const struct SGenotickTimePointsFunctions functions;
-
+	const struct SGenotickTimePointsFunctions functions GENOTICK_ZERO_INIT;
+#ifdef __cplusplus
 	bool FindIndex(const TGenotickTimePoint* timePoint, TGenotickSize* index) const {
 		return functions.FindIndex(this, timePoint, index) == GenotickTrue ? true : false;
 	}
@@ -404,12 +402,13 @@ struct SGenotickTimePoints
 protected:
 	SGenotickTimePoints() {}
 	~SGenotickTimePoints() {}
+#endif // __cplusplus
 };
 
 struct SGenotickPredictions
 {
-	const struct SGenotickPredictionsFunctions functions;
-
+	const struct SGenotickPredictionsFunctions functions GENOTICK_ZERO_INIT;
+#ifdef __cplusplus
 	const EGenotickPrediction* GetElement(TGenotickSize index) const {
 		return functions.GetElement(this, index);
 	}
@@ -422,12 +421,13 @@ struct SGenotickPredictions
 protected:
 	SGenotickPredictions() {}
 	~SGenotickPredictions() {}
+#endif // __cplusplus
 };
 
 struct SGenotick
 {
-	const struct SGenotickFunctions functions;
-
+	const struct SGenotickFunctions functions GENOTICK_ZERO_INIT;
+#ifdef __cplusplus
 	TGenotickInt32 GetInterfaceVersion() {
 		return functions.GetInterfaceVersion(this);
 	}
@@ -476,12 +476,13 @@ struct SGenotick
 protected:
 	SGenotick() {}
 	~SGenotick() {}
+#endif // __cplusplus
 };
 
 struct SGenotickList
 {
-	const struct SGenotickListFunctions functions;
-
+	const struct SGenotickListFunctions functions GENOTICK_ZERO_INIT;
+#ifdef __cplusplus
 	IGenotick* GetElement(TGenotickSize index) const {
 		return functions.GetElement(this, index);
 	}
@@ -494,9 +495,10 @@ struct SGenotickList
 protected:
 	SGenotickList() {}
 	~SGenotickList() {}
+#endif // __cplusplus
 };
 
-#endif // __cplusplus
+
 
 #endif // ZORRO_LITE_C
 
