@@ -24,13 +24,13 @@ inline TGenotickSize GenotickArraySize(T(&)[size])
 template<int size>
 inline void GenotickSetString(TGenotickString& dst, char(&src)[size])
 {
-	dst.utf8_buffer = src;
+	dst.utf8buffer = src;
 	dst.capacity = size;
 }
 
 inline void GenotickSetConstString(TGenotickString& dst, const char* src)
 {
-	dst.utf8_buffer = const_cast<char*>(src);
+	dst.utf8buffer = const_cast<char*>(src);
 	dst.capacity = 0;
 }
 
@@ -211,13 +211,13 @@ void GenotickSetInt64(TGenotickInt64* pValue, long hi, long lo)
 
 inline void GenotickSetString(TGenotickString* dst, char* src, unsigned int capacity)
 {
-	dst->utf8_buffer = src;
+	dst->utf8buffer = src;
 	dst->capacity = capacity;
 }
 
 inline void GenotickSetConstString(TGenotickString* dst, const char* src)
 {
-	dst->utf8_buffer = (char*)src;
+	dst->utf8buffer = (char*)src;
 	dst->capacity = 0;
 }
 

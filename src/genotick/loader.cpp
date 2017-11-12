@@ -35,7 +35,7 @@ EGenotickResult CLoader::GenotickCreate(IGenotick** ppInstance, const TGenotickC
 	if (pSettings->javaOptionCount > 0 && !pSettings->javaOptions)
 		return EGenotickResult::InvalidArgument;
 
-	EGenotickResult result = LoadJvmModule(pSettings->utf8_jvmDllPath);
+	EGenotickResult result = LoadJvmModule(pSettings->utf8jvmDllPath);
 	if (result != EGenotickResult::Success)
 		return result;
 	
@@ -87,7 +87,7 @@ EGenotickResult CLoader::GenotickGetInstances(IGenotickList** ppInstances, const
 	if (!ppInstances || !pSettings)
 		return EGenotickResult::InvalidArgument;
 
-	EGenotickResult result = LoadJvmModule(pSettings->utf8_jvmDllPath);
+	EGenotickResult result = LoadJvmModule(pSettings->utf8jvmDllPath);
 	if (result != EGenotickResult::Success)
 		return result;
 

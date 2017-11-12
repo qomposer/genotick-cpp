@@ -146,7 +146,7 @@ private:
 	template <> void ToNative(TGenotickString& dst, const ::jni::String src) const {
 		if (dst.capacity > 0u) {
 			std::string buf = ::jni::Make<std::string>(GetThreadData().javaEnv, src);
-			strlcpy(dst.utf8_buffer, buf.c_str(), dst.capacity);
+			strlcpy(dst.utf8buffer, buf.c_str(), dst.capacity);
 		}
 	}
 
@@ -171,7 +171,7 @@ private:
 	}
 
 	template <> ::jni::String ToJava(const TGenotickString src) const {
-		const std::string buf = (src.utf8_buffer != nullptr) ? src.utf8_buffer : "";
+		const std::string buf = (src.utf8buffer != nullptr) ? src.utf8buffer : "";
 		return ::jni::Make<::jni::String>(GetThreadData().javaEnv, buf);
 	}
 

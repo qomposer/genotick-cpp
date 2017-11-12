@@ -50,8 +50,8 @@ typedef unsigned long  TGenotickSize;
 
 struct SGenotickString
 {
-	char* utf8_buffer;
-	TGenotickSize capacity;
+	char* utf8buffer       GENOTICK_ZERO_INIT;
+	TGenotickSize capacity GENOTICK_ZERO_INIT;
 };
 typedef struct SGenotickString TGenotickString;
 
@@ -262,7 +262,7 @@ typedef struct SJavaVMOption TJavaVMOption;
 
 struct SGenotickCreationSettings
 {
-	const char*                 utf8_jvmDllPath  GENOTICK_ZERO_INIT; // mandatory path to jvm.dll
+	const char*                 utf8jvmDllPath   GENOTICK_ZERO_INIT; // mandatory path to jvm.dll
 	const char*                 javaClassPath    GENOTICK_ZERO_INIT; // optional [ex: "genotick.jar"]
 	const char*                 javaDebugAddress GENOTICK_ZERO_INIT; // optional [ex: "127.0.0.1:8888"]
 	const struct SJavaVMOption* javaOptions      GENOTICK_ZERO_INIT; // optional regular Java VM options

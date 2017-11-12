@@ -136,7 +136,7 @@ int main(int argc, char** argv)
 	IGenotick* pInstance = nullptr;
 
 	TGenotickCreationSettings creationSettings;
-	creationSettings.utf8_jvmDllPath = JVM_PATH;
+	creationSettings.utf8jvmDllPath = JVM_PATH;
 	creationSettings.javaClassPath = JAVA_CLASS_PATH;
 	//creationSettings.javaDebugAddress = "127.0.0.1:8888";
 
