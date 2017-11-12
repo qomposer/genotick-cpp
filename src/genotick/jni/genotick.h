@@ -61,8 +61,8 @@ private:
 		remote::CPredictions remotePredictions;
 	};
 
-	using TThreadId = std::thread::id;
-	using TThreadDataMap = std::unordered_map<TThreadId, SThreadData>;
+	using TThreadId = ::std::thread::id;
+	using TThreadDataMap = ::std::unordered_map<TThreadId, SThreadData>;
 	
 public:
 	CGenotick(CLoader& loader, JavaVM& javaVM, JNIEnv& javaEnv);

@@ -4,7 +4,6 @@
 #include <genotick/jni/simple_remote_container.h>
 #include <genotick/jni/remote/timepoints.h>
 #include <utils.h>
-#include "checks.h"
 
 namespace genotick {
 namespace jni {

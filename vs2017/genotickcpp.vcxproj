@@ -123,7 +123,6 @@
     <ClInclude Include="..\include\igenotick_utils.h" />
     <ClInclude Include="..\src\console.h" />
     <ClInclude Include="..\src\genotick\interface.h" />
-    <ClInclude Include="..\src\genotick\jni\checks.h" />
     <ClInclude Include="..\src\genotick\jni\error.h" />
     <ClInclude Include="..\src\genotick\jni\exceptions.h" />
     <ClInclude Include="..\src\genotick\jni\genotick.h" />
