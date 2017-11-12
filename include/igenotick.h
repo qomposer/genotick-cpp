@@ -1,8 +1,4 @@
 
-// Genotick interface for C & C++
-// Supports lib, dll, Win32, x64
-// All given strings are expected to be null-terminated
-
 #ifndef I_GENOTICK_H
 #define I_GENOTICK_H
 
