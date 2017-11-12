@@ -1,18 +1,11 @@
 
-// Helper functions/macros for convenience
-
 #ifndef I_GENOTICK_UTILS_H
 #define I_GENOTICK_UTILS_H
 
 #ifdef __cplusplus
-#if __cplusplus >= 201103L || _MSVC_LANG >= 201103L
-#define GENOTICK_CPP_11
-#endif
-#endif
-
-#ifdef __cplusplus
 
 #include <cassert>
+#include <memory>
 
 template <class T>
 inline void GenotickSafeRelease(T*& p) {
@@ -139,10 +132,6 @@ private:
 	TGenotickSessionId m_sessionId;
 };
 
-
-#ifdef GENOTICK_CPP_11
-#include <memory>
-
 template <class T>
 class CGenotickObjectDeleter
 {
@@ -204,9 +193,6 @@ inline EGenotickResult GenotickGetPredictions(IGenotick& genotick, TGenotickSess
 	return result;
 }
 
-#endif // GENOTICK_CPP_11
-
-#undef GENOTICK_CPP_11
 #else // __cplusplus
 
 #ifdef ZORRO_LITE_C
