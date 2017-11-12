@@ -184,7 +184,6 @@
   <ItemGroup>
     <ClCompile Include="..\src\console.cpp" />
     <ClCompile Include="..\src\dllmain.cpp" />
-    <ClCompile Include="..\src\exports.cpp" />
     <ClCompile Include="..\src\genotick\jni\genotick.cpp" />
     <ClCompile Include="..\src\genotick\loader.cpp" />
   </ItemGroup>

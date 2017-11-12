@@ -1,7 +1,10 @@
 
+#include <msvc_codecvt_fix_impl.h>
+#include <genotick/loader.h>
+
 #ifdef GENOTICK_DLL
 
-#include <windows.h>
+#include <Windows.h>
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
@@ -13,4 +16,24 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 
 #endif
 
-#include "msvc_codecvt_fix_impl.h"
+::genotick::CLoader g_genotickLoader;
+
+EGenotickResult GENOTICK_CALL GenotickCreate(IGenotick** ppInstance, const TGenotickCreationSettings* pSettings)
+{
+	return g_genotickLoader.GenotickCreate(ppInstance, pSettings);
+}
+
+EGenotickResult GENOTICK_CALL GenotickGetInstances(IGenotickList** ppInstances, const TGenotickCreationSettings* pSettings)
+{
+	return g_genotickLoader.GenotickGetInstances(ppInstances, pSettings);
+}
+
+EGenotickResult GENOTICK_CALL GenotickSpawnConsole()
+{
+	return g_genotickLoader.GenotickSpawnConsole();
+}
+
+EGenotickResult GENOTICK_CALL GenotickDestroyConsole()
+{
+	return g_genotickLoader.GenotickDestroyConsole();
+}

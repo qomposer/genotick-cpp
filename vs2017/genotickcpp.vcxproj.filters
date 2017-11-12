@@ -218,9 +218,6 @@
     <ClCompile Include="..\src\dllmain.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\exports.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\genotick\jni\genotick.cpp">
       <Filter>src\genotick\jni</Filter>
     </ClCompile>
