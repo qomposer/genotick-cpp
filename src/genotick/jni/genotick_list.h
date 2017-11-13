@@ -36,6 +36,9 @@ public:
 	}
 
 private:
+	UTILS_DELETE_COPY_CONSTRUCTOR(CGenotickList)
+
+private:
 	static IGenotick* GENOTICK_CALL GetElement(IGenotickList* pThis, TGenotickSize index) {
 		return static_cast<const CGenotickList*>(pThis)->GetElementInternal(index);
 	}

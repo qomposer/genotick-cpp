@@ -37,6 +37,9 @@ public:
 	}
 
 private:
+	UTILS_DELETE_COPY_CONSTRUCTOR(CGenotickPredictions)
+
+private:
 	static const EGenotickPrediction* GENOTICK_CALL GetElement(IGenotickPredictions* pThis, TGenotickSize index) {
 		return static_cast<const CGenotickPredictions*>(pThis)->GetElementPtrInternal(index);
 	}

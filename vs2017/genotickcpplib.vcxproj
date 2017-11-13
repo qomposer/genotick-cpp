@@ -125,6 +125,7 @@
     <ClInclude Include="..\src\genotick\jni\genotick_list.h" />
     <ClInclude Include="..\src\genotick\jni\genotick_predictions.h" />
     <ClInclude Include="..\src\genotick\jni\genotick_timepoints.h" />
+    <ClInclude Include="..\src\genotick\jni\genotick_tpl.h" />
     <ClInclude Include="..\src\genotick\jni\jni_helpers.h" />
     <ClInclude Include="..\src\genotick\jni\simple_container.h" />
     <ClInclude Include="..\src\genotick\jni\simple_remote_container.h" />

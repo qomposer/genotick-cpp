@@ -38,6 +38,9 @@ public:
 	}
 
 private:
+	UTILS_DELETE_COPY_CONSTRUCTOR(CGenotickTimePoints)
+
+private:
 	static TGenotickBoolean GENOTICK_CALL FindIndex(IGenotickTimePoints* pThis, const TGenotickTimePoint* timePoint, TGenotickSize* pIndex) {
 		return static_cast<const CGenotickTimePoints*>(pThis)->FindIndexInternal(timePoint, pIndex);
 	}

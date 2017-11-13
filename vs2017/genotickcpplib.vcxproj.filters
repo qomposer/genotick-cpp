@@ -213,6 +213,9 @@
     <ClInclude Include="..\src\genotick\jni\checks.h">
       <Filter>src\genotick\jni</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\genotick_tpl.h">
+      <Filter>src\genotick\jni</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\dllmain.cpp">

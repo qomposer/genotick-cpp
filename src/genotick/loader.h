@@ -12,9 +12,9 @@ namespace genotick {
 class CLoader
 {
 private:
-	typedef jint (JNICALL* pJNI_GetDefaultJavaVMInitArgs)(void *args);
-	typedef jint (JNICALL* pJNI_CreateJavaVM)(JavaVM **pvm, void **penv, void *args);
-	typedef jint (JNICALL* pJNI_GetCreatedJavaVMs)(JavaVM **pvm, jsize size, jsize *psize);
+	typedef jint (JNICALL* pJNI_GetDefaultJavaVMInitArgs)(void* args);
+	typedef jint (JNICALL* pJNI_CreateJavaVM)(JavaVM** pvm, void** penv, void* args);
+	typedef jint (JNICALL* pJNI_GetCreatedJavaVMs)(JavaVM** pvm, jsize size, jsize* psize);
 
 	typedef ::std::unique_ptr<IGenotickDestructable> TGenotickPtr;
 	typedef ::std::vector<TGenotickPtr> TGenotickPtrs;

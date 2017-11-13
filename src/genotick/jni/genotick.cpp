@@ -3,7 +3,6 @@
 #include <genotick/jni/error.h>
 #include <genotick/jni/genotick_predictions.h>
 #include <genotick/jni/genotick_timepoints.h>
-#include <utils.h>
 #include <cassert>
 
 #define MISMATCH_MESSAGE "Mismatching Data Type Found"
@@ -28,27 +27,6 @@ CGenotick::CGenotick(CLoader& loader, JavaVM& javaVM, JNIEnv& javaEnv)
 	: m_loader(static_cast<CLoaderFriend&>(loader))
 	, m_javaVM(javaVM)
 {
-	SGenotickFunctions& mutableFunctions = const_cast<SGenotickFunctions&>(functions);
-	memset(&mutableFunctions, 0, sizeof(mutableFunctions));
-	mutableFunctions.GetInterfaceVersion = GetInterfaceVersion;
-	mutableFunctions.CreateSession = CreateSession;
-	mutableFunctions.RemoveSession = RemoveSession;
-	mutableFunctions.RemoveAllSessions = RemoveAllSessions;
-	mutableFunctions.GetSettings = GetSettings;
-	mutableFunctions.ChangeSettings = ChangeSettings;
-	mutableFunctions.SetAssetData = SetAssetData;
-	mutableFunctions.Start = Start;
-	mutableFunctions.GetTimePoints = GetTimePoints;
-	mutableFunctions.GetPredictions = GetPredictions;
-	mutableFunctions.GetNewestTimePoint = GetNewestTimePoint;
-	mutableFunctions.GetNewestPrediction = GetNewestPrediction;
-	mutableFunctions.AttachCurrentThread = AttachCurrentThread;
-	mutableFunctions.DetachCurrentThread = DetachCurrentThread;
-	mutableFunctions.Release = Release;
-
-	::utils::VerifyFunctionsStruct(functions);
-	::utils::VerifyEqualPointers(&functions, static_cast<IGenotick*>(this));
-
 	AddThreadData(javaEnv);
 }
 
@@ -56,7 +34,7 @@ CGenotick::~CGenotick()
 {
 }
 
-TGenotickInt32 CGenotick::GetInterfaceVersionInternal() const
+TGenotickInt32 CGenotick::GetInterfaceVersion() const
 {
 	try
 	{
@@ -69,7 +47,7 @@ TGenotickInt32 CGenotick::GetInterfaceVersionInternal() const
 	}
 }
 
-EGenotickResult CGenotick::CreateSessionInternal(TGenotickSessionId sessionId) const
+EGenotickResult CGenotick::CreateSession(TGenotickSessionId sessionId) const
 {
 	try
 	{
@@ -87,7 +65,7 @@ EGenotickResult CGenotick::CreateSessionInternal(TGenotickSessionId sessionId) c
 	}
 }
 
-EGenotickResult CGenotick::RemoveSessionInternal(TGenotickSessionId sessionId) const
+EGenotickResult CGenotick::RemoveSession(TGenotickSessionId sessionId) const
 {
 	try
 	{
@@ -105,7 +83,7 @@ EGenotickResult CGenotick::RemoveSessionInternal(TGenotickSessionId sessionId) c
 	}
 }
 
-EGenotickResult CGenotick::RemoveAllSessionsInternal() const
+EGenotickResult CGenotick::RemoveAllSessions() const
 {
 	try
 	{
@@ -130,7 +108,7 @@ this->ToNative(pSettings->name, threadData.remoteMainSettings.Get_##name(jniSett
 auto value = ToJava<typename remote::CMainSettings::type::FieldType>(pSettings->name); \
 threadData.remoteMainSettings.Set_##name(jniSettings, value); }
 
-EGenotickResult CGenotick::GetSettingsInternal(TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) const
+EGenotickResult CGenotick::GetSettings(TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) const
 {
 	if (pSettings == nullptr)
 		return EGenotickResult::InvalidArgument;
@@ -159,7 +137,7 @@ EGenotickResult CGenotick::GetSettingsInternal(TGenotickSessionId sessionId, TGe
 	}
 }
 
-EGenotickResult CGenotick::ChangeSettingsInternal(TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings) const
+EGenotickResult CGenotick::ChangeSettings(TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings) const
 {
 	if (pSettings == nullptr)
 		return EGenotickResult::InvalidArgument;
@@ -192,7 +170,7 @@ EGenotickResult CGenotick::ChangeSettingsInternal(TGenotickSessionId sessionId, 
 #undef GENOTICK_UNROLL_FIELDS_TO_JAVA
 
 
-EGenotickResult CGenotick::SetAssetDataInternal(TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData) const
+EGenotickResult CGenotick::SetAssetData(TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData) const
 {
 	if (pAssetData == nullptr ||
 		pAssetData->dataPoints == nullptr ||
@@ -250,7 +228,7 @@ EGenotickResult CGenotick::SetAssetDataInternal(TGenotickSessionId sessionId, co
 	}
 }
 
-EGenotickResult CGenotick::StartInternal(TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs) const
+EGenotickResult CGenotick::Start(TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs) const
 {
 	if (pArgs == nullptr)
 		return EGenotickResult::InvalidArgument;
@@ -279,7 +257,7 @@ EGenotickResult CGenotick::StartInternal(TGenotickSessionId sessionId, const TGe
 	}
 }
 
-EGenotickResult CGenotick::GetTimePointsInternal(TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) const
+EGenotickResult CGenotick::GetTimePoints(TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) const
 {
 	if (ppTimePoints == nullptr)
 		return EGenotickResult::InvalidArgument;
@@ -304,7 +282,7 @@ EGenotickResult CGenotick::GetTimePointsInternal(TGenotickSessionId sessionId, I
 	}
 }
 
-EGenotickResult CGenotick::GetPredictionsInternal(TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) const
+EGenotickResult CGenotick::GetPredictions(TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) const
 {
 	if (ppPredictions == nullptr)
 		return EGenotickResult::InvalidArgument;
@@ -330,7 +308,7 @@ EGenotickResult CGenotick::GetPredictionsInternal(TGenotickSessionId sessionId, 
 	}
 }
 
-EGenotickResult CGenotick::GetNewestTimePointInternal(TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) const
+EGenotickResult CGenotick::GetNewestTimePoint(TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) const
 {
 	if (pTimePoint == nullptr)
 		return EGenotickResult::InvalidArgument;
@@ -355,7 +333,7 @@ EGenotickResult CGenotick::GetNewestTimePointInternal(TGenotickSessionId session
 	}
 }
 
-EGenotickResult CGenotick::GetNewestPredictionInternal(TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) const
+EGenotickResult CGenotick::GetNewestPrediction(TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) const
 {
 	if (pPrediction == nullptr)
 		return EGenotickResult::InvalidArgument;
@@ -382,7 +360,7 @@ EGenotickResult CGenotick::GetNewestPredictionInternal(TGenotickSessionId sessio
 	}
 }
 
-EGenotickResult CGenotick::AttachCurrentThreadInternal(TGenotickBoolean asDaemon)
+EGenotickResult CGenotick::AttachCurrentThread(TGenotickBoolean asDaemon)
 {
 	if (HasThreadData())
 	{
@@ -404,7 +382,7 @@ EGenotickResult CGenotick::AttachCurrentThreadInternal(TGenotickBoolean asDaemon
 	return result;
 }
 
-EGenotickResult CGenotick::DetachCurrentThreadInternal()
+EGenotickResult CGenotick::DetachCurrentThread()
 {
 	if (!HasThreadData())
 	{
@@ -417,7 +395,7 @@ EGenotickResult CGenotick::DetachCurrentThreadInternal()
 	return JniErrorToGenotickResult(jniResult);
 }
 
-EGenotickResult CGenotick::ReleaseInternal() const
+EGenotickResult CGenotick::Release() const
 {
 	return m_loader.ReleaseInstanceFor(m_javaVM);
 }

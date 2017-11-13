@@ -12,6 +12,8 @@
 
 namespace genotick {
 
+using TGenotick = jni::CGenotickTpl<jni::CGenotick>;
+
 CLoader::CLoader()
 	: JNI_GetDefaultJavaVMInitArgs_FuncPtr(nullptr)
 	, JNI_CreateJavaVM_FuncPtr(nullptr)
@@ -152,7 +154,7 @@ EGenotickResult CLoader::AddNewInstanceFor(JavaVM& javaVM)
 
 	try
 	{
-		IGenotickDestructable* pNewInstance = new ::genotick::jni::CGenotick(*this, javaVM, javaEnv);
+		IGenotickDestructable* pNewInstance = new TGenotick(*this, javaVM, javaEnv);
 		m_instancePtrs.push_back(TGenotickPtr(pNewInstance));
 		return EGenotickResult::Success;
 	}

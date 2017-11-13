@@ -1,8 +1,7 @@
 
 #pragma once
 
-#include <genotick/interface.h>
-#include <genotick/loader.h>
+#include <genotick/jni/genotick_tpl.h>
 #include <genotick/jni/remote/main_interface.h>
 #include <genotick/jni/remote/main_settings.h>
 #include <genotick/jni/remote/data_lines.h>
@@ -68,72 +67,24 @@ public:
 	CGenotick(CLoader& loader, JavaVM& javaVM, JNIEnv& javaEnv);
 	virtual ~CGenotick();
 
-	CGenotick(const CGenotick&) = delete;
-	CGenotick& operator=(const CGenotick&) = delete;
+protected:
+	TGenotickInt32 GetInterfaceVersion() const;
+	EGenotickResult CreateSession(TGenotickSessionId sessionId) const;
+	EGenotickResult RemoveSession(TGenotickSessionId sessionId) const;
+	EGenotickResult RemoveAllSessions() const;
+	EGenotickResult GetSettings(TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) const;
+	EGenotickResult ChangeSettings(TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings) const;
+	EGenotickResult SetAssetData(TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData) const;
+	EGenotickResult Start(TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs) const;
+	EGenotickResult GetTimePoints(TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) const;
+	EGenotickResult GetPredictions(TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) const;
+	EGenotickResult GetNewestTimePoint(TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) const;
+	EGenotickResult GetNewestPrediction(TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) const;
+	EGenotickResult AttachCurrentThread(TGenotickBoolean asDaemon);
+	EGenotickResult DetachCurrentThread();
+	EGenotickResult Release() const;
 
 private:
-	static TGenotickInt32 GENOTICK_CALL GetInterfaceVersion(IGenotick* pThis) {
-		return static_cast<const CGenotick*>(pThis)->GetInterfaceVersionInternal();
-	}
-	static EGenotickResult GENOTICK_CALL CreateSession(IGenotick* pThis, TGenotickSessionId sessionId) {
-		return static_cast<const CGenotick*>(pThis)->CreateSessionInternal(sessionId);
-	}
-	static EGenotickResult GENOTICK_CALL RemoveSession(IGenotick* pThis, TGenotickSessionId sessionId) {
-		return static_cast<const CGenotick*>(pThis)->RemoveSessionInternal(sessionId);
-	}
-	static EGenotickResult GENOTICK_CALL RemoveAllSessions(IGenotick* pThis) {
-		return static_cast<const CGenotick*>(pThis)->RemoveAllSessionsInternal();
-	}
-	static EGenotickResult GENOTICK_CALL GetSettings(IGenotick* pThis, TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) {
-		return static_cast<const CGenotick*>(pThis)->GetSettingsInternal(sessionId, pSettings);
-	}
-	static EGenotickResult GENOTICK_CALL ChangeSettings(IGenotick* pThis, TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings) {
-		return static_cast<const CGenotick*>(pThis)->ChangeSettingsInternal(sessionId, pSettings);
-	}
-	static EGenotickResult GENOTICK_CALL SetAssetData(IGenotick* pThis, TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData) {
-		return static_cast<const CGenotick*>(pThis)->SetAssetDataInternal(sessionId, pAssetData);
-	}
-	static EGenotickResult GENOTICK_CALL Start(IGenotick* pThis, TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs) {
-		return static_cast<const CGenotick*>(pThis)->StartInternal(sessionId, pArgs);
-	}
-	static EGenotickResult GENOTICK_CALL GetTimePoints(IGenotick* pThis, TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) {
-		return static_cast<const CGenotick*>(pThis)->GetTimePointsInternal(sessionId, ppTimePoints);
-	}
-	static EGenotickResult GENOTICK_CALL GetPredictions(IGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) {
-		return static_cast<const CGenotick*>(pThis)->GetPredictionsInternal(sessionId, assetName, ppPredictions);
-	}
-	static EGenotickResult GENOTICK_CALL GetNewestTimePoint(IGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) {
-		return static_cast<const CGenotick*>(pThis)->GetNewestTimePointInternal(sessionId, pTimePoint);
-	}
-	static EGenotickResult GENOTICK_CALL GetNewestPrediction(IGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) {
-		return static_cast<const CGenotick*>(pThis)->GetNewestPredictionInternal(sessionId, assetName, pPrediction);
-	}
-	static EGenotickResult GENOTICK_CALL AttachCurrentThread(IGenotick* pThis, TGenotickBoolean asDaemon) {
-		return static_cast<      CGenotick*>(pThis)->AttachCurrentThreadInternal(asDaemon);
-	}
-	static EGenotickResult GENOTICK_CALL DetachCurrentThread(IGenotick* pThis) {
-		return static_cast<      CGenotick*>(pThis)->DetachCurrentThreadInternal();
-	}
-	static EGenotickResult GENOTICK_CALL Release(IGenotick* pThis) {
-		return static_cast<const CGenotick*>(pThis)->ReleaseInternal();
-	}
-
-	TGenotickInt32 GetInterfaceVersionInternal() const;
-	EGenotickResult CreateSessionInternal(TGenotickSessionId sessionId) const;
-	EGenotickResult RemoveSessionInternal(TGenotickSessionId sessionId) const;
-	EGenotickResult RemoveAllSessionsInternal() const;
-	EGenotickResult GetSettingsInternal(TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) const;
-	EGenotickResult ChangeSettingsInternal(TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings) const;
-	EGenotickResult SetAssetDataInternal(TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData) const;
-	EGenotickResult StartInternal(TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs) const;
-	EGenotickResult GetTimePointsInternal(TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) const;
-	EGenotickResult GetPredictionsInternal(TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) const;
-	EGenotickResult GetNewestTimePointInternal(TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) const;
-	EGenotickResult GetNewestPredictionInternal(TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) const;
-	EGenotickResult AttachCurrentThreadInternal(TGenotickBoolean asDaemon);
-	EGenotickResult DetachCurrentThreadInternal();
-	EGenotickResult ReleaseInternal() const;
-
 	void AddThreadData(JNIEnv& javaEnv);
 	void RemoveThreadData();
 	bool HasThreadData() const;
@@ -199,10 +150,7 @@ private:
 	CLoaderFriend& m_loader;
 	JavaVM& m_javaVM;
 	TThreadDataMap m_threadDataMap;
-
-	// TODO remove mutable
 };
 
 } // namespace jni
 } // namespace genotick
-
