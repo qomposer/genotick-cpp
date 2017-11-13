@@ -6,7 +6,7 @@
 #include <genotick/jni/genotick_list.h>
 #include <utils_win.h>
 #include <utf8.h>
-#include <assert.h>
+#include <cassert>
 #include <console.h>
 #include <vector>
 
@@ -43,12 +43,12 @@ EGenotickResult CLoader::GenotickCreate(IGenotick** ppInstance, const TGenotickC
 	std::string buffer1;
 	std::string buffer2;
 	std::vector<JavaVMOption> options;
-	if (::utils::IsValidString(pSettings->javaClassPath))
+	if (::IsValidString(pSettings->javaClassPath))
 	{
 		buffer1 = ::stl::string_format("-Djava.class.path=%s", pSettings->javaClassPath);
 		options.push_back({ const_cast<char*>(buffer1.c_str()), nullptr });
 	}
-	if (::utils::IsValidString(pSettings->javaDebugAddress))
+	if (::IsValidString(pSettings->javaDebugAddress))
 	{
 		buffer2 = ::stl::string_format("-agentlib:jdwp=transport=dt_socket,address=%s,server=y,suspend=y", pSettings->javaDebugAddress);
 		options.push_back({ const_cast<char*>(buffer2.c_str()), nullptr });
