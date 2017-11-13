@@ -10,7 +10,7 @@ template <class NativeElement, class RemoteContainer>
 class CSimpleRemoteContainer : public CSimpleContainer<NativeElement>
 {
 protected:
-	using TNativeContainer = ::std::vector<NativeElement>;
+	using TNativeContainer = std::vector<NativeElement>;
 	using TNativeElement = NativeElement;
 	using TRemoteContainer = RemoteContainer;
 	using TRemoteElement = typename RemoteContainer::TElement;

@@ -13,14 +13,14 @@ bool CConsole::Create()
 	{
 		::SetConsoleTitleA("Genotick Console");
 
-		*(iobuf*)stdout = *(iobuf*)::_fdopen(::_open_osfhandle((::std::intptr_t)::GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT), "w");
-		*(iobuf*)stderr = *(iobuf*)::_fdopen(::_open_osfhandle((::std::intptr_t)::GetStdHandle(STD_ERROR_HANDLE), _O_TEXT), "w");
-		*(iobuf*)stdin = *(iobuf*)::_fdopen(::_open_osfhandle((::std::intptr_t)::GetStdHandle(STD_INPUT_HANDLE), _O_TEXT), "r");
+		*(iobuf*)stdout = *(iobuf*)::_fdopen(::_open_osfhandle((std::intptr_t)::GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT), "w");
+		*(iobuf*)stderr = *(iobuf*)::_fdopen(::_open_osfhandle((std::intptr_t)::GetStdHandle(STD_ERROR_HANDLE), _O_TEXT), "w");
+		*(iobuf*)stdin = *(iobuf*)::_fdopen(::_open_osfhandle((std::intptr_t)::GetStdHandle(STD_INPUT_HANDLE), _O_TEXT), "r");
 		::setvbuf(stdout, NULL, _IONBF, 0);
 		::setvbuf(stderr, NULL, _IONBF, 0);
 		::setvbuf(stdin, NULL, _IONBF, 0);
 
-		::std::cout << "Spawned console" << ::std::endl;
+		std::cout << "Spawned console" << std::endl;
 		return true;
 	}
 

@@ -17,8 +17,8 @@ private:
 	using TJNI_CreateJavaVM = jint (JNICALL*)(JavaVM** pvm, void** penv, void* args);
 	using TJNI_GetCreatedJavaVMs = jint (JNICALL*)(JavaVM** pvm, jsize size, jsize* psize);
 
-	using TGenotickPtr = ::std::unique_ptr<TGenotick>;
-	using TGenotickPtrs = ::std::vector<TGenotickPtr>;
+	using TGenotickPtr = std::unique_ptr<TGenotick>;
+	using TGenotickPtrs = std::vector<TGenotickPtr>;
 	using TGenotickPtrsIterator = typename TGenotickPtrs::iterator;
 
 public:

@@ -14,7 +14,7 @@ class CSimpleContainer
 protected:
 	using TElement = Element;
 	using TElementPtr = const TElement*;
-	using TContainer = ::std::vector<Element>;
+	using TContainer = std::vector<Element>;
 
 private:
 	using TConstIterator = typename TContainer::const_iterator;
@@ -51,7 +51,7 @@ protected:
 		const TConstIterator it = ::stl::binary_find(first, last, *pElement);
 		if (it != last)
 		{
-			const TDifferenceType index = ::std::distance(first, it);
+			const TDifferenceType index = std::distance(first, it);
 			*pIndex = static_cast<TGenotickSize>(index);
 			return GenotickTrue;
 		}

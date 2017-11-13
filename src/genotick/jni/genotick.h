@@ -61,10 +61,10 @@ private:
 		remote::CPredictions remotePredictions;
 	};
 
-	using TThreadId      = ::std::thread::id;
-	using TThreadDataMap = ::std::unordered_map<TThreadId, SThreadData>;
-	using TMutex         = ::std::mutex;
-	using TLockGuard     = ::std::lock_guard<TMutex>;
+	using TThreadId      = std::thread::id;
+	using TThreadDataMap = std::unordered_map<TThreadId, SThreadData>;
+	using TMutex         = std::mutex;
+	using TLockGuard     = std::lock_guard<TMutex>;
 	
 public:
 	CGenotick(CLoader& loader, JavaVM& javaVM, JNIEnv& javaEnv);

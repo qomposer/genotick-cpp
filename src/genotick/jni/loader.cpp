@@ -40,9 +40,9 @@ EGenotickResult CLoader::GenotickCreate(IGenotick** ppInstance, const TGenotickC
 	if (result != EGenotickResult::Success)
 		return result;
 	
-	::std::string buffer1;
-	::std::string buffer2;
-	::std::vector<JavaVMOption> options;
+	std::string buffer1;
+	std::string buffer2;
+	std::vector<JavaVMOption> options;
 	if (::utils::IsValidString(pSettings->javaClassPath))
 	{
 		buffer1 = ::stl::string_format("-Djava.class.path=%s", pSettings->javaClassPath);
@@ -97,7 +97,7 @@ EGenotickResult CLoader::GenotickGetInstances(IGenotickList** ppInstances, const
 	if (jniResult != JNI_OK)
 		return ::genotick::jni::JniErrorToGenotickResult(jniResult);
 
-	::std::unique_ptr<JavaVM*[]> javaVMs(new JavaVM*[javaVMCount]);
+	std::unique_ptr<JavaVM*[]> javaVMs(new JavaVM*[javaVMCount]);
 	JavaVM** ppJavaVMs = javaVMs.get();
 	jniResult = JNI_CreatedJavaVMs_FuncPtr(ppJavaVMs, javaVMCount, &javaVMCount);
 	if (jniResult != JNI_OK)
@@ -188,7 +188,7 @@ EGenotickResult CLoader::ReleaseInstanceFor(JavaVM& javaVM)
 CLoader::TGenotickPtrsIterator CLoader::FindInstanceFor(JavaVM& javaVM)
 {
 	auto Compare = [&javaVM](TGenotickPtr& p) { return p->Contains(javaVM); };
-	return ::std::find_if(m_instancePtrs.begin(), m_instancePtrs.end(), Compare);
+	return std::find_if(m_instancePtrs.begin(), m_instancePtrs.end(), Compare);
 }
 
 bool CLoader::HasInstanceFor(JavaVM& javaVM)
