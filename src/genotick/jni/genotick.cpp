@@ -403,16 +403,19 @@ EGenotickResult CGenotick::Release() const
 
 void CGenotick::AddThreadData(JNIEnv& javaEnv)
 {
+	TLockGuard lock(m_mutex);
 	m_threadDataMap.insert({std::this_thread::get_id(), SThreadData(javaEnv)});
 }
 
 void CGenotick::RemoveThreadData()
 {
+	TLockGuard lock(m_mutex);
 	m_threadDataMap.erase(std::this_thread::get_id());
 }
 
 bool CGenotick::HasThreadData() const
 {
+	TLockGuard lock(m_mutex);
 	TThreadDataMap::const_iterator it = m_threadDataMap.find(std::this_thread::get_id());
 	return it != m_threadDataMap.end();
 }
@@ -421,6 +424,7 @@ const CGenotick::SThreadData& CGenotick::GetThreadData() const
 {
 	try
 	{
+		TLockGuard lock(m_mutex);
 		return m_threadDataMap.at(std::this_thread::get_id());
 	}
 	catch (std::out_of_range&)

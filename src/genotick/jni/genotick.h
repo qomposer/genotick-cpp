@@ -17,6 +17,7 @@
 #include <genotick/jni/exceptions.h>
 #include <strlcpy.h>
 #include <thread>
+#include <mutex>
 #include <unordered_map>
 
 namespace genotick {
@@ -60,8 +61,10 @@ private:
 		remote::CPredictions remotePredictions;
 	};
 
-	using TThreadId = ::std::thread::id;
+	using TThreadId      = ::std::thread::id;
 	using TThreadDataMap = ::std::unordered_map<TThreadId, SThreadData>;
+	using TMutex         = ::std::mutex;
+	using TLockGuard     = ::std::lock_guard<TMutex>;
 	
 public:
 	CGenotick(CLoader& loader, JavaVM& javaVM, JNIEnv& javaEnv);
@@ -146,6 +149,7 @@ private:
 
 	CLoaderFriend& m_loader;
 	JavaVM& m_javaVM;
+	mutable TMutex m_mutex;
 	TThreadDataMap m_threadDataMap;
 };
 
