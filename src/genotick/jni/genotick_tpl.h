@@ -2,7 +2,7 @@
 #pragma once
 
 #include <genotick/interface.h>
-#include <genotick/loader.h>
+#include <genotick/jni/loader.h>
 #include <utils.h>
 
 namespace genotick {

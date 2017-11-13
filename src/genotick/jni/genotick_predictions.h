@@ -37,9 +37,10 @@ public:
 	}
 
 private:
+	virtual ~CGenotickPredictions() {}
+
 	UTILS_DELETE_COPY_CONSTRUCTOR(CGenotickPredictions)
 
-private:
 	static const EGenotickPrediction* GENOTICK_CALL GetElement(IGenotickPredictions* pThis, TGenotickSize index) {
 		return static_cast<const CGenotickPredictions*>(pThis)->GetElementPtrInternal(index);
 	}
@@ -49,9 +50,6 @@ private:
 	static void GENOTICK_CALL Release(IGenotickPredictions* pThis) {
 		return static_cast<const CGenotickPredictions*>(pThis)->ReleaseInternal();
 	}
-
-private:
-	virtual ~CGenotickPredictions() {}
 };
 
 } // namespace jni

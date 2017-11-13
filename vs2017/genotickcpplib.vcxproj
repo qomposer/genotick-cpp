@@ -118,7 +118,6 @@
     <ClInclude Include="..\include\igenotick_utils.h" />
     <ClInclude Include="..\src\console.h" />
     <ClInclude Include="..\src\genotick\interface.h" />
-    <ClInclude Include="..\src\genotick\jni\checks.h" />
     <ClInclude Include="..\src\genotick\jni\error.h" />
     <ClInclude Include="..\src\genotick\jni\exceptions.h" />
     <ClInclude Include="..\src\genotick\jni\genotick.h" />
@@ -127,6 +126,7 @@
     <ClInclude Include="..\src\genotick\jni\genotick_timepoints.h" />
     <ClInclude Include="..\src\genotick\jni\genotick_tpl.h" />
     <ClInclude Include="..\src\genotick\jni\jni_helpers.h" />
+    <ClInclude Include="..\src\genotick\jni\loader.h" />
     <ClInclude Include="..\src\genotick\jni\simple_container.h" />
     <ClInclude Include="..\src\genotick\jni\simple_remote_container.h" />
     <ClInclude Include="..\src\genotick\jni\remote\chart_mode.h" />
@@ -144,7 +144,6 @@
     <ClInclude Include="..\src\genotick\jni\remote\timepoint.h" />
     <ClInclude Include="..\src\genotick\jni\remote\timepoints.h" />
     <ClInclude Include="..\src\genotick\jni\remote\weight_mode.h" />
-    <ClInclude Include="..\src\genotick\loader.h" />
     <ClInclude Include="..\src\jdk\classfile_constants.h" />
     <ClInclude Include="..\src\jdk\jawt.h" />
     <ClInclude Include="..\src\jdk\jdwpTransport.h" />
@@ -182,7 +181,7 @@
     <ClCompile Include="..\src\console.cpp" />
     <ClCompile Include="..\src\dllmain.cpp" />
     <ClCompile Include="..\src\genotick\jni\genotick.cpp" />
-    <ClCompile Include="..\src\genotick\loader.cpp" />
+    <ClCompile Include="..\src\genotick\jni\loader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

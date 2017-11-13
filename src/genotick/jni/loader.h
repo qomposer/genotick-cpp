@@ -8,6 +8,7 @@
 #include <memory>
 
 namespace genotick {
+namespace jni {
 
 class CLoader
 {
@@ -56,4 +57,5 @@ public:
 	using CLoader::ReleaseInstanceFor;
 };
 
+} // namespace jni
 } // namespace genotick

@@ -1,6 +1,6 @@
 
 #include <msvc_codecvt_fix_impl.h>
-#include <genotick/loader.h>
+#include <genotick/jni/loader.h>
 
 #ifdef GENOTICK_DLL
 
@@ -16,7 +16,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 
 #endif
 
-::genotick::CLoader g_genotickLoader;
+::genotick::jni::CLoader g_genotickLoader;
 
 EGenotickResult GENOTICK_CALL GenotickCreate(IGenotick** ppInstance, const TGenotickCreationSettings* pSettings)
 {

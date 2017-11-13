@@ -11,6 +11,7 @@
 #include <vector>
 
 namespace genotick {
+namespace jni {
 
 using TGenotick = jni::CGenotickTpl<jni::CGenotick>;
 
@@ -232,4 +233,5 @@ void CLoader::FreeJvmModule()
 	}
 }
 
+} // namespace jni
 } // namespace genotick

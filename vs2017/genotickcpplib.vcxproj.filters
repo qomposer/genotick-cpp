@@ -141,9 +141,6 @@
     <ClInclude Include="..\src\genotick\jni\jni_helpers.h">
       <Filter>src\genotick\jni</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\genotick\loader.h">
-      <Filter>src\genotick</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\genotick\interface.h">
       <Filter>src\genotick</Filter>
     </ClInclude>
@@ -210,10 +207,10 @@
     <ClInclude Include="..\src\console.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\checks.h">
+    <ClInclude Include="..\src\genotick\jni\genotick_tpl.h">
       <Filter>src\genotick\jni</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\genotick_tpl.h">
+    <ClInclude Include="..\src\genotick\jni\loader.h">
       <Filter>src\genotick\jni</Filter>
     </ClInclude>
   </ItemGroup>
@@ -224,11 +221,11 @@
     <ClCompile Include="..\src\genotick\jni\genotick.cpp">
       <Filter>src\genotick\jni</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\genotick\loader.cpp">
-      <Filter>src\genotick</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\console.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\genotick\jni\loader.cpp">
+      <Filter>src\genotick\jni</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

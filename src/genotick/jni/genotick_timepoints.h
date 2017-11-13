@@ -38,9 +38,10 @@ public:
 	}
 
 private:
+	virtual ~CGenotickTimePoints() {}
+
 	UTILS_DELETE_COPY_CONSTRUCTOR(CGenotickTimePoints)
 
-private:
 	static TGenotickBoolean GENOTICK_CALL FindIndex(IGenotickTimePoints* pThis, const TGenotickTimePoint* timePoint, TGenotickSize* pIndex) {
 		return static_cast<const CGenotickTimePoints*>(pThis)->FindIndexInternal(timePoint, pIndex);
 	}
@@ -53,9 +54,6 @@ private:
 	static void GENOTICK_CALL Release(IGenotickTimePoints* pThis) {
 		return static_cast<const CGenotickTimePoints*>(pThis)->ReleaseInternal();
 	}
-
-private:
-	virtual ~CGenotickTimePoints() {}
 };
 
 } // namespace jni
