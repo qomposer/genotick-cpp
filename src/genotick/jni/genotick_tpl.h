@@ -2,11 +2,14 @@
 #pragma once
 
 #include <genotick/interface.h>
-#include <genotick/jni/loader.h>
+#include <genotick/jni/jni_helpers.h>
 #include <utils.h>
 
 namespace genotick {
 namespace jni {
+
+class CLoader;
+class CLoaderFriend;
 
 template <class GenotickImpl>
 class CGenotickTpl : public GenotickImpl

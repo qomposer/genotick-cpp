@@ -22,7 +22,7 @@
 namespace genotick {
 namespace jni {
 
-class CGenotick : public IGenotickDestructable
+class CGenotick : public IGenotick
 {
 private:
 	struct SThreadData
@@ -65,7 +65,9 @@ private:
 	
 public:
 	CGenotick(CLoader& loader, JavaVM& javaVM, JNIEnv& javaEnv);
-	virtual ~CGenotick();
+	~CGenotick();
+
+	inline bool Contains(JavaVM& javaVM) const { return (&m_javaVM == &javaVM); }
 
 protected:
 	TGenotickInt32 GetInterfaceVersion() const;
@@ -142,15 +144,12 @@ private:
 		return GetThreadData().remoteChartMode.GetEnumObject(src.value());
 	}
 
-	virtual bool Contains(JavaVM& javaVM) const override final
-	{
-		return (&m_javaVM == &javaVM);
-	}
-
 	CLoaderFriend& m_loader;
 	JavaVM& m_javaVM;
 	TThreadDataMap m_threadDataMap;
 };
+
+using TGenotick = CGenotickTpl<CGenotick>;
 
 } // namespace jni
 } // namespace genotick

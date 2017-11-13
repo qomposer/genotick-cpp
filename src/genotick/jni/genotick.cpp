@@ -1,5 +1,6 @@
 
 #include "genotick.h"
+#include <genotick/jni/loader.h>
 #include <genotick/jni/error.h>
 #include <genotick/jni/genotick_predictions.h>
 #include <genotick/jni/genotick_timepoints.h>

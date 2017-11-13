@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <genotick/interface.h>
+#include <genotick/jni/genotick.h>
 #include <jni.h>
 #include <Windows.h>
 #include <vector>
@@ -17,7 +17,7 @@ private:
 	typedef jint (JNICALL* pJNI_CreateJavaVM)(JavaVM** pvm, void** penv, void* args);
 	typedef jint (JNICALL* pJNI_GetCreatedJavaVMs)(JavaVM** pvm, jsize size, jsize* psize);
 
-	typedef ::std::unique_ptr<IGenotickDestructable> TGenotickPtr;
+	typedef ::std::unique_ptr<TGenotick> TGenotickPtr;
 	typedef ::std::vector<TGenotickPtr> TGenotickPtrs;
 	typedef typename TGenotickPtrs::iterator TGenotickPtrsIterator;
 
