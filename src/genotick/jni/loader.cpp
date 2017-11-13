@@ -206,9 +206,9 @@ EGenotickResult CLoader::LoadJvmModule(const char* path)
 	if (!JvmModuleLoaded())
 		return EGenotickResult::JvmDllNotFound;
 
-	JNI_GetDefaultJavaVMInitArgs_FuncPtr = ::utils::GetProcAddressT<pJNI_GetDefaultJavaVMInitArgs>(m_jvmModule, "JNI_GetDefaultJavaVMInitArgs");
-	JNI_CreateJavaVM_FuncPtr = ::utils::GetProcAddressT<pJNI_CreateJavaVM>(m_jvmModule, "JNI_CreateJavaVM");
-	JNI_CreatedJavaVMs_FuncPtr = ::utils::GetProcAddressT<pJNI_GetCreatedJavaVMs>(m_jvmModule, "JNI_GetCreatedJavaVMs");
+	JNI_GetDefaultJavaVMInitArgs_FuncPtr = ::utils::GetProcAddressT<TJNI_GetDefaultJavaVMInitArgs>(m_jvmModule, "JNI_GetDefaultJavaVMInitArgs");
+	JNI_CreateJavaVM_FuncPtr = ::utils::GetProcAddressT<TJNI_CreateJavaVM>(m_jvmModule, "JNI_CreateJavaVM");
+	JNI_CreatedJavaVMs_FuncPtr = ::utils::GetProcAddressT<TJNI_GetCreatedJavaVMs>(m_jvmModule, "JNI_GetCreatedJavaVMs");
 
 	const bool bValid = (JNI_GetDefaultJavaVMInitArgs_FuncPtr && JNI_CreateJavaVM_FuncPtr && JNI_CreatedJavaVMs_FuncPtr);
 	if (!bValid)

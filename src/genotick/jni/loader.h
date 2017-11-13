@@ -13,13 +13,13 @@ namespace jni {
 class CLoader
 {
 private:
-	typedef jint (JNICALL* pJNI_GetDefaultJavaVMInitArgs)(void* args);
-	typedef jint (JNICALL* pJNI_CreateJavaVM)(JavaVM** pvm, void** penv, void* args);
-	typedef jint (JNICALL* pJNI_GetCreatedJavaVMs)(JavaVM** pvm, jsize size, jsize* psize);
+	using TJNI_GetDefaultJavaVMInitArgs = jint (JNICALL*)(void* args);
+	using TJNI_CreateJavaVM = jint (JNICALL*)(JavaVM** pvm, void** penv, void* args);
+	using TJNI_GetCreatedJavaVMs = jint (JNICALL*)(JavaVM** pvm, jsize size, jsize* psize);
 
-	typedef ::std::unique_ptr<TGenotick> TGenotickPtr;
-	typedef ::std::vector<TGenotickPtr> TGenotickPtrs;
-	typedef typename TGenotickPtrs::iterator TGenotickPtrsIterator;
+	using TGenotickPtr = ::std::unique_ptr<TGenotick>;
+	using TGenotickPtrs = ::std::vector<TGenotickPtr>;
+	using TGenotickPtrsIterator = typename TGenotickPtrs::iterator;
 
 public:
 	CLoader();
@@ -43,9 +43,9 @@ private:
 	
 	inline bool JvmModuleLoaded() { return m_jvmModule != 0; }
 
-	pJNI_GetDefaultJavaVMInitArgs JNI_GetDefaultJavaVMInitArgs_FuncPtr;
-	pJNI_CreateJavaVM JNI_CreateJavaVM_FuncPtr;
-	pJNI_GetCreatedJavaVMs JNI_CreatedJavaVMs_FuncPtr;
+	TJNI_GetDefaultJavaVMInitArgs JNI_GetDefaultJavaVMInitArgs_FuncPtr;
+	TJNI_CreateJavaVM JNI_CreateJavaVM_FuncPtr;
+	TJNI_GetCreatedJavaVMs JNI_CreatedJavaVMs_FuncPtr;
 
 	HMODULE m_jvmModule;
 	TGenotickPtrs m_instancePtrs;
