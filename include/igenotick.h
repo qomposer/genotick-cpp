@@ -1,6 +1,8 @@
 
-#ifndef I_GENOTICK_H
-#define I_GENOTICK_H
+#ifndef I_GENOTICK_H_
+#define I_GENOTICK_H_
+
+#include <common/types.h>
 
 #define GENOTICK_INTERFACE_VERSION 1
 
@@ -35,27 +37,17 @@
 
 #pragma pack(push, 4)
 
-#ifdef ZORRO_LITE_C
-struct SGenotickInt64
-{
-	signed long lo;
-	signed long hi;
-};
-typedef struct SGenotickInt64 TGenotickInt64;
-#else
-typedef signed long long TGenotickInt64;
-#endif // ZORRO_LITE_C
-
-typedef signed long    TGenotickInt32;
-typedef unsigned char  TGenotickBoolean;
-typedef signed char    TGenotickByte;
-typedef unsigned short TGenotickChar;
-typedef signed short   TGenotickShort;
-typedef float          TGenotickFloat;
-typedef double         TGenotickDouble;
-typedef TGenotickInt64 TGenotickTimePoint;
-typedef TGenotickInt32 TGenotickSessionId;
-typedef unsigned long  TGenotickSize;
+typedef int32_t  TGenotickInt32;
+typedef int64_t  TGenotickInt64;
+typedef uint8_t  TGenotickBoolean;
+typedef int8_t   TGenotickByte;
+typedef uint16_t TGenotickChar;
+typedef int16_t  TGenotickShort;
+typedef float    TGenotickFloat;
+typedef double   TGenotickDouble;
+typedef int64_t  TGenotickTimePoint;
+typedef int32_t  TGenotickSessionId;
+typedef uint32_t TGenotickSize;
 
 struct SGenotickString
 {
@@ -479,4 +471,4 @@ GENOTICK_IMPORT_EXPORT EGenotickResult GENOTICK_CALL GenotickDestroyConsole();
 #undef FPTR
 #undef ITYPE
 
-#endif // I_GENOTICK_H
+#endif // I_GENOTICK_H_

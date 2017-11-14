@@ -1,6 +1,6 @@
 
-#ifndef I_GENOTICK_UTILS_H
-#define I_GENOTICK_UTILS_H
+#ifndef I_GENOTICK_UTILS_H_
+#define I_GENOTICK_UTILS_H_
 
 #ifdef __cplusplus
 
@@ -248,4 +248,4 @@ inline EGenotickResult GenotickGetOrCreate(IGenotick** ppInstance, const TGenoti
 
 #endif // __cplusplus
 
-#endif // I_GENOTICK_UTILS_H
+#endif // I_GENOTICK_UTILS_H_

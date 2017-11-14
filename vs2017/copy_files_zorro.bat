@@ -9,12 +9,24 @@ set outDir=%1
 set targetName=%2
 set path=%3
 set path=%path:"=%
-set zorroIncludePath="%path%\include\genotick"
+set zorroIncludeCommonPath="%path%\include\common"
+set zorroIncludeGenotickPath="%path%\include\genotick"
 set zorroStrategyPath="%path%\Strategy"
 
 echo Executing post build event: %currentFilename%
+mkdir %zorroIncludeCommonPath% 2>nul
+mkdir %zorroIncludeGenotickPath% 2>nul
 
-echo Target: %zorroIncludePath%
+echo Target: %zorroIncludeCommonPath%
+
+for %%f in (
+	"%currentPath%..\..\commonlib\include\common\types.h"
+	) do (
+	echo Source: %%f
+	copy %%f %zorroIncludeCommonPath% /Y
+)
+
+echo Target: %zorroIncludeGenotickPath%
 
 for %%f in (
 	"%currentPath%..\include\igenotick.h"
@@ -24,7 +36,7 @@ for %%f in (
 	"%outDir%%targetName%.pdb"
 	) do (
 	echo Source: %%f
-	copy %%f %zorroIncludePath% /Y
+	copy %%f %zorroIncludeGenotickPath% /Y
 )
 
 echo Target: %zorroStrategyPath%
