@@ -19,9 +19,18 @@
 #endif
 
 #ifdef __cplusplus
-#define GENOTICK_ZERO_INIT = {}
+#define ZERO_INIT = {}
+#define FTHIS(type) struct type* pThis
+#define ITYPE(type, name) typedef struct type name;
 #else
-#define GENOTICK_ZERO_INIT
+#define ZERO_INIT
+#define FTHIS(type) const struct type##Functions* pThis
+#define ITYPE(type, name) typedef const struct type##Functions name;
+#endif
+#ifdef ZORRO_LITE_C
+#define FPTR(name)  GENOTICK_CALL  name
+#else
+#define FPTR(name) (GENOTICK_CALL* name)
 #endif
 
 #pragma pack(push, 4)
@@ -50,8 +59,8 @@ typedef unsigned long  TGenotickSize;
 
 struct SGenotickString
 {
-	char* utf8buffer       GENOTICK_ZERO_INIT;
-	TGenotickSize capacity GENOTICK_ZERO_INIT;
+	char* utf8buffer       ZERO_INIT;
+	TGenotickSize capacity ZERO_INIT;
 };
 typedef struct SGenotickString TGenotickString;
 
@@ -189,216 +198,155 @@ typedef TGenotickInt32 EGenotickResult;
 
 struct SGenotickMainSettings
 {
-	TGenotickDouble     maximumDeathByAge                 GENOTICK_ZERO_INIT;
-	TGenotickDouble     maximumDeathByWeight              GENOTICK_ZERO_INIT;
-	TGenotickDouble     probabilityOfDeathByAge           GENOTICK_ZERO_INIT;
-	TGenotickDouble     probabilityOfDeathByWeight        GENOTICK_ZERO_INIT;
-	TGenotickDouble     weightExponent                    GENOTICK_ZERO_INIT;
-	TGenotickDouble     inheritedChildWeight              GENOTICK_ZERO_INIT;
-	TGenotickDouble     newInstructionProbability         GENOTICK_ZERO_INIT;
-	TGenotickDouble     instructionMutationProbability    GENOTICK_ZERO_INIT;
-	TGenotickDouble     skipInstructionProbability        GENOTICK_ZERO_INIT;
-	TGenotickDouble     randomRobotsAtEachUpdate          GENOTICK_ZERO_INIT;
-	TGenotickDouble     protectBestRobots                 GENOTICK_ZERO_INIT;
-	TGenotickDouble     resultThreshold                   GENOTICK_ZERO_INIT;
-	TGenotickTimePoint  startTimePoint                    GENOTICK_ZERO_INIT;
-	TGenotickTimePoint  endTimePoint                      GENOTICK_ZERO_INIT;
-	TGenotickInt64      randomSeed                        GENOTICK_ZERO_INIT;
-	TGenotickString     dataDirectory                     GENOTICK_ZERO_INIT;
-	TGenotickString     populationDAO                     GENOTICK_ZERO_INIT;
-	TGenotickInt32      populationDesiredSize             GENOTICK_ZERO_INIT;
-	TGenotickInt32      minimumRobotInstructions          GENOTICK_ZERO_INIT;
-	TGenotickInt32      maximumRobotInstructions          GENOTICK_ZERO_INIT;
-	TGenotickInt32      maximumProcessorInstructionFactor GENOTICK_ZERO_INIT;
-	TGenotickInt32      maximumDataOffset                 GENOTICK_ZERO_INIT;
-	TGenotickInt32      protectRobotsUntilOutcomes        GENOTICK_ZERO_INIT;
-	TGenotickInt32      minimumOutcomesToAllowBreeding    GENOTICK_ZERO_INIT;
-	TGenotickInt32      minimumOutcomesBetweenBreeding    GENOTICK_ZERO_INIT;
-	TGenotickInt32      ignoreColumns                     GENOTICK_ZERO_INIT;
+	TGenotickDouble     maximumDeathByAge                 ZERO_INIT;
+	TGenotickDouble     maximumDeathByWeight              ZERO_INIT;
+	TGenotickDouble     probabilityOfDeathByAge           ZERO_INIT;
+	TGenotickDouble     probabilityOfDeathByWeight        ZERO_INIT;
+	TGenotickDouble     weightExponent                    ZERO_INIT;
+	TGenotickDouble     inheritedChildWeight              ZERO_INIT;
+	TGenotickDouble     newInstructionProbability         ZERO_INIT;
+	TGenotickDouble     instructionMutationProbability    ZERO_INIT;
+	TGenotickDouble     skipInstructionProbability        ZERO_INIT;
+	TGenotickDouble     randomRobotsAtEachUpdate          ZERO_INIT;
+	TGenotickDouble     protectBestRobots                 ZERO_INIT;
+	TGenotickDouble     resultThreshold                   ZERO_INIT;
+	TGenotickTimePoint  startTimePoint                    ZERO_INIT;
+	TGenotickTimePoint  endTimePoint                      ZERO_INIT;
+	TGenotickInt64      randomSeed                        ZERO_INIT;
+	TGenotickString     dataDirectory                     ZERO_INIT;
+	TGenotickString     populationDAO                     ZERO_INIT;
+	TGenotickInt32      populationDesiredSize             ZERO_INIT;
+	TGenotickInt32      minimumRobotInstructions          ZERO_INIT;
+	TGenotickInt32      maximumRobotInstructions          ZERO_INIT;
+	TGenotickInt32      maximumProcessorInstructionFactor ZERO_INIT;
+	TGenotickInt32      maximumDataOffset                 ZERO_INIT;
+	TGenotickInt32      protectRobotsUntilOutcomes        ZERO_INIT;
+	TGenotickInt32      minimumOutcomesToAllowBreeding    ZERO_INIT;
+	TGenotickInt32      minimumOutcomesBetweenBreeding    ZERO_INIT;
+	TGenotickInt32      ignoreColumns                     ZERO_INIT;
 	EGenotickWeightMode          weightMode;
 	EGenotickInheritedWeightMode inheritedChildWeightMode;
 	EGenotickChartMode           chartMode;
-	TGenotickBoolean    performTraining                   GENOTICK_ZERO_INIT;
-	TGenotickBoolean    killNonPredictingRobots           GENOTICK_ZERO_INIT;
-	TGenotickBoolean    requireSymmetricalRobots          GENOTICK_ZERO_INIT;
-	TGenotickByte       padding[1]                        GENOTICK_ZERO_INIT;
+	TGenotickBoolean    performTraining                   ZERO_INIT;
+	TGenotickBoolean    killNonPredictingRobots           ZERO_INIT;
+	TGenotickBoolean    requireSymmetricalRobots          ZERO_INIT;
+	TGenotickByte       padding[1]                        ZERO_INIT;
 };
 typedef struct SGenotickMainSettings     TGenotickMainSettings;
 
 struct SGenotickDataPoint
 {
-	TGenotickTimePoint     time            GENOTICK_ZERO_INIT;
-	TGenotickDouble        open            GENOTICK_ZERO_INIT;
-	TGenotickDouble        high            GENOTICK_ZERO_INIT;
-	TGenotickDouble        low             GENOTICK_ZERO_INIT;
-	TGenotickDouble        close           GENOTICK_ZERO_INIT;
-	const TGenotickDouble* optionalColumns GENOTICK_ZERO_INIT;
+	TGenotickTimePoint     time            ZERO_INIT;
+	TGenotickDouble        open            ZERO_INIT;
+	TGenotickDouble        high            ZERO_INIT;
+	TGenotickDouble        low             ZERO_INIT;
+	TGenotickDouble        close           ZERO_INIT;
+	const TGenotickDouble* optionalColumns ZERO_INIT;
 };
 typedef struct SGenotickDataPoint TGenotickDataPoint;
 const TGenotickSize GenotickMinColumnCount = 5;
 
 struct SGenotickAssetData
 {
-	const char*                      assetName              GENOTICK_ZERO_INIT;
-	const struct SGenotickDataPoint* dataPoints             GENOTICK_ZERO_INIT;
-	TGenotickSize                    dataPointCount         GENOTICK_ZERO_INIT;
-	TGenotickSize                    optionalColumnCount    GENOTICK_ZERO_INIT;
-	TGenotickBoolean                 firstDataPointIsNewest GENOTICK_ZERO_INIT;
-	TGenotickByte                    padding[3]             GENOTICK_ZERO_INIT;
+	const char*                      assetName              ZERO_INIT;
+	const struct SGenotickDataPoint* dataPoints             ZERO_INIT;
+	TGenotickSize                    dataPointCount         ZERO_INIT;
+	TGenotickSize                    optionalColumnCount    ZERO_INIT;
+	TGenotickBoolean                 firstDataPointIsNewest ZERO_INIT;
+	TGenotickByte                    padding[3]             ZERO_INIT;
 };
 typedef struct SGenotickAssetData TGenotickAssetData;
 
 struct SGenotickStartArgs
 {
-	const char* const* elements     GENOTICK_ZERO_INIT;
-	TGenotickSize      elementCount GENOTICK_ZERO_INIT;
+	const char* const* elements     ZERO_INIT;
+	TGenotickSize      elementCount ZERO_INIT;
 };
 typedef struct SGenotickStartArgs TGenotickStartArgs;
 
 struct SJavaVMOption
 {
-	const char* optionString GENOTICK_ZERO_INIT;
-	const void* extraInfo    GENOTICK_ZERO_INIT;
+	const char* optionString ZERO_INIT;
+	const void* extraInfo    ZERO_INIT;
 };
 typedef struct SJavaVMOption TJavaVMOption;
 
 struct SGenotickCreationSettings
 {
-	const char*                 utf8jvmDllPath   GENOTICK_ZERO_INIT; // mandatory path to jvm.dll
-	const char*                 javaClassPath    GENOTICK_ZERO_INIT; // optional [ex: "genotick.jar"]
-	const char*                 javaDebugAddress GENOTICK_ZERO_INIT; // optional [ex: "127.0.0.1:8888"]
-	const struct SJavaVMOption* javaOptions      GENOTICK_ZERO_INIT; // optional regular Java VM options
-	TGenotickSize               javaOptionCount  GENOTICK_ZERO_INIT;
+	const char*                 utf8jvmDllPath   ZERO_INIT; // mandatory path to jvm.dll
+	const char*                 javaClassPath    ZERO_INIT; // optional [ex: "genotick.jar"]
+	const char*                 javaDebugAddress ZERO_INIT; // optional [ex: "127.0.0.1:8888"]
+	const struct SJavaVMOption* javaOptions      ZERO_INIT; // optional regular Java VM options
+	TGenotickSize               javaOptionCount  ZERO_INIT;
 };
 typedef struct SGenotickCreationSettings TGenotickCreationSettings;
 
-#ifdef ZORRO_LITE_C
-
-struct SGenotickTimePoints
-{
-	TGenotickBoolean          GENOTICK_CALL FindIndex(const struct SGenotickTimePoints* pThis, const TGenotickTimePoint* timePoint, TGenotickSize* pIndex);
-	const TGenotickTimePoint* GENOTICK_CALL GetElement(const struct SGenotickTimePoints* pThis, TGenotickSize index);
-	TGenotickSize             GENOTICK_CALL GetElementCount(const struct SGenotickTimePoints* pThis);
-	void                      GENOTICK_CALL Release(const struct SGenotickTimePoints* pThis);
-};
-
-struct SGenotickPredictions
-{
-	const EGenotickPrediction* GENOTICK_CALL GetElement(const struct SGenotickPredictions* pThis, TGenotickSize index);
-	TGenotickSize              GENOTICK_CALL GetElementCount(const struct SGenotickPredictions* pThis);
-	void                       GENOTICK_CALL Release(const struct SGenotickPredictions* pThis);
-};
-
-typedef const struct SGenotickTimePoints IGenotickTimePoints;
-typedef const struct SGenotickPredictions IGenotickPredictions;
-
-struct SGenotick
-{
-	TGenotickInt32  GENOTICK_CALL GetInterfaceVersion(const struct SGenotick* pThis);
-	EGenotickResult GENOTICK_CALL CreateSession(const struct SGenotick* pThis, TGenotickSessionId sessionId);
-	EGenotickResult GENOTICK_CALL RemoveSession(const struct SGenotick* pThis, TGenotickSessionId sessionId);
-	EGenotickResult GENOTICK_CALL RemoveAllSessions(const struct SGenotick* pThis);
-	EGenotickResult GENOTICK_CALL GetSettings(const struct SGenotick* pThis, TGenotickSessionId sessionId, TGenotickMainSettings* pSettings);
-	EGenotickResult GENOTICK_CALL ChangeSettings(const struct SGenotick* pThis, TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings);
-	EGenotickResult GENOTICK_CALL SetAssetData(const struct SGenotick* pThis, TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData);
-	EGenotickResult GENOTICK_CALL Start(const struct SGenotick* pThis, TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs);
-	EGenotickResult GENOTICK_CALL GetTimePoints(const struct SGenotick* pThis, TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints);
-	EGenotickResult GENOTICK_CALL GetPredictions(const struct SGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions);
-	EGenotickResult GENOTICK_CALL GetNewestTimePoint(const struct SGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint);
-	EGenotickResult GENOTICK_CALL GetNewestPrediction(const struct SGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction);
-	EGenotickResult GENOTICK_CALL AttachCurrentThread(const struct SGenotick* pThis, TGenotickBoolean asDaemon);
-	EGenotickResult GENOTICK_CALL DetachCurrentThread(const struct SGenotick* pThis);
-	EGenotickResult GENOTICK_CALL Release(const struct SGenotick* pThis);
-};
-
-typedef const struct SGenotick IGenotick;
-
-struct SGenotickList
-{
-	IGenotick*    GENOTICK_CALL GetElement(const struct SGenotickList* pThis, TGenotickSize index);
-	TGenotickSize GENOTICK_CALL GetElementCount(const struct SGenotickList* pThis);
-	void          GENOTICK_CALL Release(const struct SGenotickList* pThis);
-};
-
-typedef const struct SGenotickList IGenotickList;
-
-#else
-
-struct SGenotickTimePointsFunctions;
-struct SGenotickTimePoints;
-struct SGenotickPredictionsFunctions;
-struct SGenotickPredictions;
-struct SGenotickFunctions;
-struct SGenotick;
-struct SGenotickListFunctions;
-struct SGenotickList;
 #ifdef __cplusplus
-typedef const struct SGenotickTimePoints IGenotickTimePoints;
-typedef const struct SGenotickPredictions IGenotickPredictions;
-typedef       struct SGenotick IGenotick;
-typedef const struct SGenotickList IGenotickList;
-#else
-typedef const struct SGenotickTimePointsFunctions IGenotickTimePoints;
-typedef const struct SGenotickPredictionsFunctions IGenotickPredictions;
-typedef const struct SGenotickFunctions IGenotick;
-typedef const struct SGenotickListFunctions IGenotickList;
+struct SGenotickTimePoints;
+struct SGenotickPredictions;
+struct SGenotick;
+struct SGenotickList;
 #endif
 
 struct SGenotickTimePointsFunctions
 {
-	TGenotickBoolean          (GENOTICK_CALL* FindIndex)(IGenotickTimePoints* pThis, const TGenotickTimePoint* timePoint, TGenotickSize* pIndex);
-	const TGenotickTimePoint* (GENOTICK_CALL* GetElement)(IGenotickTimePoints* pThis, TGenotickSize index);
-	TGenotickSize             (GENOTICK_CALL* GetElementCount)(IGenotickTimePoints* pThis);
-	void                      (GENOTICK_CALL* Release)(IGenotickTimePoints* pThis);
+	TGenotickBoolean          FPTR(FindIndex)(FTHIS(SGenotickTimePoints), const TGenotickTimePoint* timePoint, TGenotickSize* pIndex);
+	const TGenotickTimePoint* FPTR(GetElement)(FTHIS(SGenotickTimePoints), TGenotickSize index);
+	TGenotickSize             FPTR(GetElementCount)(FTHIS(SGenotickTimePoints));
+	void                      FPTR(Release)(FTHIS(SGenotickTimePoints));
 };
+ITYPE(SGenotickTimePoints, IGenotickTimePoints)
 
 struct SGenotickPredictionsFunctions
 {
-	const EGenotickPrediction* (GENOTICK_CALL* GetElement)(IGenotickPredictions* pThis, TGenotickSize index);
-	TGenotickSize              (GENOTICK_CALL* GetElementCount)(IGenotickPredictions* pThis);
-	void                       (GENOTICK_CALL* Release)(IGenotickPredictions* pThis);
+	const EGenotickPrediction* FPTR(GetElement)(FTHIS(SGenotickPredictions), TGenotickSize index);
+	TGenotickSize              FPTR(GetElementCount)(FTHIS(SGenotickPredictions));
+	void                       FPTR(Release)(FTHIS(SGenotickPredictions));
 };
+ITYPE(SGenotickPredictions, IGenotickPredictions)
 
 struct SGenotickFunctions
 {
-	TGenotickInt32  (GENOTICK_CALL* GetInterfaceVersion)(IGenotick* pThis);
-	EGenotickResult (GENOTICK_CALL* CreateSession)(IGenotick* pThis, TGenotickSessionId sessionId);
-	EGenotickResult (GENOTICK_CALL* RemoveSession)(IGenotick* pThis, TGenotickSessionId sessionId);
-	EGenotickResult (GENOTICK_CALL* RemoveAllSessions)(IGenotick* pThis);
-	EGenotickResult (GENOTICK_CALL* GetSettings)(IGenotick* pThis, TGenotickSessionId sessionId, TGenotickMainSettings* pSettings);
-	EGenotickResult (GENOTICK_CALL* ChangeSettings)(IGenotick* pThis, TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings);
-	EGenotickResult (GENOTICK_CALL* SetAssetData)(IGenotick* pThis, TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData);
-	EGenotickResult (GENOTICK_CALL* Start)(IGenotick* pThis, TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs);
-	EGenotickResult (GENOTICK_CALL* GetTimePoints)(IGenotick* pThis, TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints);
-	EGenotickResult (GENOTICK_CALL* GetPredictions)(IGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions);
-	EGenotickResult (GENOTICK_CALL* GetNewestTimePoint)(IGenotick* pThis, TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint);
-	EGenotickResult (GENOTICK_CALL* GetNewestPrediction)(IGenotick* pThis, TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction);
-	EGenotickResult (GENOTICK_CALL* AttachCurrentThread)(IGenotick* pThis, TGenotickBoolean asDaemon);
-	EGenotickResult (GENOTICK_CALL* DetachCurrentThread)(IGenotick* pThis);
-	EGenotickResult (GENOTICK_CALL* Release)(IGenotick* pThis);
+	TGenotickInt32  FPTR(GetInterfaceVersion)(FTHIS(SGenotick));
+	EGenotickResult FPTR(CreateSession)(FTHIS(SGenotick), TGenotickSessionId sessionId);
+	EGenotickResult FPTR(RemoveSession)(FTHIS(SGenotick), TGenotickSessionId sessionId);
+	EGenotickResult FPTR(RemoveAllSessions)(FTHIS(SGenotick));
+	EGenotickResult FPTR(GetSettings)(FTHIS(SGenotick), TGenotickSessionId sessionId, TGenotickMainSettings* pSettings);
+	EGenotickResult FPTR(ChangeSettings)(FTHIS(SGenotick), TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings);
+	EGenotickResult FPTR(SetAssetData)(FTHIS(SGenotick), TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData);
+	EGenotickResult FPTR(Start)(FTHIS(SGenotick), TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs);
+	EGenotickResult FPTR(GetTimePoints)(FTHIS(SGenotick), TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints);
+	EGenotickResult FPTR(GetPredictions)(FTHIS(SGenotick), TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions);
+	EGenotickResult FPTR(GetNewestTimePoint)(FTHIS(SGenotick), TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint);
+	EGenotickResult FPTR(GetNewestPrediction)(FTHIS(SGenotick), TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction);
+	EGenotickResult FPTR(AttachCurrentThread)(FTHIS(SGenotick), TGenotickBoolean asDaemon);
+	EGenotickResult FPTR(DetachCurrentThread)(FTHIS(SGenotick));
+	EGenotickResult FPTR(Release)(FTHIS(SGenotick));
 };
+ITYPE(SGenotick, IGenotick)
 
 struct SGenotickListFunctions
 {
-	IGenotick*    (GENOTICK_CALL* GetElement)(IGenotickList* pThis, TGenotickSize index);
-	TGenotickSize (GENOTICK_CALL* GetElementCount)(IGenotickList* pThis);
-	void          (GENOTICK_CALL* Release)(IGenotickList* pThis);
+	IGenotick*    FPTR(GetElement)(FTHIS(SGenotickList), TGenotickSize index);
+	TGenotickSize FPTR(GetElementCount)(FTHIS(SGenotickList));
+	void          FPTR(Release)(FTHIS(SGenotickList));
 };
+ITYPE(SGenotickList, IGenotickList)
 
 struct SGenotickTimePoints
 {
-	const struct SGenotickTimePointsFunctions functions GENOTICK_ZERO_INIT;
+	const struct SGenotickTimePointsFunctions functions ZERO_INIT;
 #ifdef __cplusplus
-	bool FindIndex(const TGenotickTimePoint* timePoint, TGenotickSize* index) const {
+	bool FindIndex(const TGenotickTimePoint* timePoint, TGenotickSize* index) {
 		return functions.FindIndex(this, timePoint, index) == GenotickTrue ? true : false;
 	}
-	const TGenotickTimePoint* GetElement(TGenotickSize index) const {
+	const TGenotickTimePoint* GetElement(TGenotickSize index) {
 		return functions.GetElement(this, index);
 	}
-	TGenotickSize GetElementCount() const {
+	TGenotickSize GetElementCount() {
 		return functions.GetElementCount(this);
 	}
-	void Release() const {
+	void Release() {
 		return functions.Release(this);
 	}
 protected:
@@ -409,15 +357,15 @@ protected:
 
 struct SGenotickPredictions
 {
-	const struct SGenotickPredictionsFunctions functions GENOTICK_ZERO_INIT;
+	const struct SGenotickPredictionsFunctions functions ZERO_INIT;
 #ifdef __cplusplus
-	const EGenotickPrediction* GetElement(TGenotickSize index) const {
+	const EGenotickPrediction* GetElement(TGenotickSize index) {
 		return functions.GetElement(this, index);
 	}
-	TGenotickSize GetElementCount() const {
+	TGenotickSize GetElementCount() {
 		return functions.GetElementCount(this);
 	}
-	void Release() const {
+	void Release() {
 		return functions.Release(this);
 	}
 protected:
@@ -428,7 +376,7 @@ protected:
 
 struct SGenotick
 {
-	const struct SGenotickFunctions functions GENOTICK_ZERO_INIT;
+	const struct SGenotickFunctions functions ZERO_INIT;
 #ifdef __cplusplus
 	TGenotickInt32 GetInterfaceVersion() {
 		return functions.GetInterfaceVersion(this);
@@ -483,15 +431,15 @@ protected:
 
 struct SGenotickList
 {
-	const struct SGenotickListFunctions functions GENOTICK_ZERO_INIT;
+	const struct SGenotickListFunctions functions ZERO_INIT;
 #ifdef __cplusplus
-	IGenotick* GetElement(TGenotickSize index) const {
+	IGenotick* GetElement(TGenotickSize index) {
 		return functions.GetElement(this, index);
 	}
-	TGenotickSize GetElementCount() const {
+	TGenotickSize GetElementCount() {
 		return functions.GetElementCount(this);
 	}
-	void Release() const {
+	void Release() {
 		return functions.Release(this);
 	}
 protected:
@@ -499,10 +447,6 @@ protected:
 	~SGenotickList() {}
 #endif // __cplusplus
 };
-
-
-
-#endif // ZORRO_LITE_C
 
 #ifdef __cplusplus
 extern "C" {
@@ -530,6 +474,9 @@ GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GenotickDestroyConsole()
 
 #pragma pack(pop)
 
-#undef GENOTICK_ZERO_INIT
+#undef ZERO_INIT
+#undef FTHIS
+#undef FPTR
+#undef ITYPE
 
 #endif // I_GENOTICK_H
