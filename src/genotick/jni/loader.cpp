@@ -4,8 +4,8 @@
 #include <genotick/jni/error.h>
 #include <genotick/jni/exceptions.h>
 #include <genotick/jni/genotick_list.h>
-#include <utils_win.h>
-#include <utf8.h>
+#include <common/utils_win.h>
+#include <common/utf8.h>
 #include <cassert>
 #include <console.h>
 #include <vector>

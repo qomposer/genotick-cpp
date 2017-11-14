@@ -3,7 +3,7 @@
 
 #include <genotick/jni/simple_remote_container.h>
 #include <genotick/jni/remote/timepoints.h>
-#include <utils.h>
+#include <common/utils.h>
 
 namespace genotick {
 namespace jni {

@@ -3,7 +3,7 @@
 
 #include <genotick/interface.h>
 #include <genotick/jni/jni_helpers.h>
-#include <utils.h>
+#include <common/utils.h>
 
 namespace genotick {
 namespace jni {

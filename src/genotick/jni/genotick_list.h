@@ -4,7 +4,7 @@
 #include <genotick/jni/simple_container.h>
 #include <vector>
 #include <memory>
-#include <utils.h>
+#include <common/utils.h>
 
 namespace genotick {
 namespace jni {

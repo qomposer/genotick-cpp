@@ -15,7 +15,7 @@
 #include <genotick/jni/remote/prediction.h>
 #include <genotick/jni/remote/predictions.h>
 #include <genotick/jni/exceptions.h>
-#include <strlcpy.h>
+#include <common/strlcpy.h>
 #include <thread>
 #include <mutex>
 #include <unordered_map>

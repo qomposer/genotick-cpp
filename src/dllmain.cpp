@@ -1,5 +1,5 @@
 
-#include <msvc_codecvt_fix_impl.h>
+#include <common/msvc_codecvt_fix_impl.h>
 #include <genotick/jni/loader.h>
 
 #ifdef GENOTICK_DLL

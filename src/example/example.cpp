@@ -6,7 +6,7 @@
 #include <cassert>
 #include <thread>
 #include <vector>
-#include <time_counter.h>
+#include <common/time_counter.h>
 
 #define GENOTICK_OUTDIR "..\\jar\\.outdir"
 #define GENOTICK_DATADIR ""

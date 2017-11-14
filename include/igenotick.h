@@ -10,12 +10,12 @@
 
 #ifdef GENOTICK_DLL
 #ifdef GENOTICK_IMPL
-#define GENOTICK_IMPORT_OR_EXPORT GENOTICK_EXPORT
+#define GENOTICK_IMPORT_EXPORT GENOTICK_EXPORT
 #else
-#define GENOTICK_IMPORT_OR_EXPORT GENOTICK_IMPORT
+#define GENOTICK_IMPORT_EXPORT GENOTICK_IMPORT
 #endif
 #else
-#define GENOTICK_IMPORT_OR_EXPORT
+#define GENOTICK_IMPORT_EXPORT
 #endif
 
 #ifdef __cplusplus
@@ -113,7 +113,7 @@ const TGenotickBoolean GenotickTrue = 1;
 
 #ifdef __cplusplus
 
-#include <data_enum.h>
+#include <common/enum.h>
 
 #ifdef GENOTICK_IMPL
 #define GENOTICK_DEFINE_ENUM_CLASS(clazz, underlying_t, list, meta_t) DEFINE_DATA_ENUM_CLASS(clazz, underlying_t, list, meta_t)
@@ -457,16 +457,16 @@ extern "C" {
 // After releasing a JavaVM, you cannot even start a new one.
 // So keep the returned instance sacred and use it until the process dies.
 // Do not bother calling IGenotick::Release() at any time.
-GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GenotickCreate(IGenotick** ppInstance, const TGenotickCreationSettings* pSettings);
+GENOTICK_IMPORT_EXPORT EGenotickResult GENOTICK_CALL GenotickCreate(IGenotick** ppInstance, const TGenotickCreationSettings* pSettings);
 
 // If you use a platform where you cannot keep hold of a IGenotick instance
 // from one test run to another while the process itself remains alive,
 // then use this function to retrieve previously created Genotick instance(s).
-GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GenotickGetInstances(IGenotickList** ppInstances, const TGenotickCreationSettings* pSettings);
+GENOTICK_IMPORT_EXPORT EGenotickResult GENOTICK_CALL GenotickGetInstances(IGenotickList** ppInstances, const TGenotickCreationSettings* pSettings);
 
 // Spawns a console in native code
-GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GenotickSpawnConsole();
-GENOTICK_IMPORT_OR_EXPORT EGenotickResult GENOTICK_CALL GenotickDestroyConsole();
+GENOTICK_IMPORT_EXPORT EGenotickResult GENOTICK_CALL GenotickSpawnConsole();
+GENOTICK_IMPORT_EXPORT EGenotickResult GENOTICK_CALL GenotickDestroyConsole();
 
 #ifdef __cplusplus
 }
