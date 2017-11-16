@@ -13,7 +13,7 @@
     <ClCompile>
       <RuntimeLibrary Condition="'$(Configuration)'=='Debug'">MultiThreadedDebug</RuntimeLibrary>
       <RuntimeLibrary Condition="'$(Configuration)'=='Release'">MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\include;..\src;..\..\commonlib\include;..\src\jdk;..\src\jdk\win32;..\src\jdk\win32\bridge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\src;..\..\commonlib\include;..\..\gsl\include;..\src\jdk;..\src\jdk\win32;..\src\jdk\win32\bridge;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />
