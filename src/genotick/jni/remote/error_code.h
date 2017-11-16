@@ -5,8 +5,6 @@
 #include <genotick/interface.h>
 
 namespace genotick {
-namespace jni {
-namespace remote {
 
 struct SGenotickErrorCodeMeta
 {
@@ -26,11 +24,14 @@ struct SGenotickErrorCodeMeta
 	f(DuplicateSession , = 5 , (SGenotickErrorCodeMeta("DUPLICATE_SESSION", EGenotickResult::ErrorDuplicateSession))) \
 	f(InsufficientData , = 6 , (SGenotickErrorCodeMeta("INSUFFICIENT_DATA", EGenotickResult::ErrorInsufficientData))) \
 
-DEFINE_DATA_ENUM_CLASS(EErrorCode, ::jni::jint, GENOTICK_ENUM_ERROR_CODE, SGenotickErrorCodeMeta)
+DEFINE_DATA_ENUM_CLASS(EGenotickErrorCode, CGenotickErrorCode, ::jni::jint, GENOTICK_ENUM_ERROR_CODE, SGenotickErrorCodeMeta)
+
+namespace jni {
+namespace remote {
 
 struct SErrorCodeTag { static constexpr auto Name() { return "com/alphatica/genotick/genotick/ErrorCode"; } };
 
-class CErrorCode : public CEnum<SErrorCodeTag, EErrorCode>
+class CErrorCode : public CEnum<SErrorCodeTag, CGenotickErrorCode>
 {
 public:
 	using TValueMethod = ::jni::Method<TagType, ::jni::jint()>;
@@ -39,7 +40,7 @@ public:
 	f(TValueMethod, getValue) \
 
 	explicit CErrorCode(::jni::JNIEnv& javaEnv)
-		: CEnum<TagType, TEnumClass>(javaEnv)
+		: CEnum<TagType, TCppEnum>(javaEnv)
 	{
 	}
 
@@ -65,7 +66,7 @@ private:
 inline EGenotickResult ErrorCodeToGenotickResult(const CErrorCode& errorCode, const CErrorCode::TObject& errorCodeObject)
 {
 	const ::jni::jint errorCodeValue = errorCode.getValue(errorCodeObject);
-	return EErrorCode::get_by_value(errorCodeValue).meta().result;
+	return CGenotickErrorCode::get_by_value(errorCodeValue).meta().result;
 }
 
 #undef GENOTICK_CLASS_METHODS

@@ -111,15 +111,15 @@ private:
 	}
 
 	template <> void ToNative(EGenotickWeightMode& dst, const remote::CWeightMode::TObject src) const {
-		dst = EGenotickWeightMode::get_by_value(GetThreadData().remoteWeightMode.GetEnumValue(src));
+		dst = CGenotickWeightMode::get_by_value(GetThreadData().remoteWeightMode.GetEnumValue(src));
 	}
 
 	template <> void ToNative(EGenotickInheritedWeightMode& dst, const remote::CInheritedWeightMode::TObject src) const {
-		dst = EGenotickInheritedWeightMode::get_by_value(GetThreadData().remoteInheritedWeightMode.GetEnumValue(src));
+		dst = CGenotickInheritedWeightMode::get_by_value(GetThreadData().remoteInheritedWeightMode.GetEnumValue(src));
 	}
 
 	template <> void ToNative(EGenotickChartMode& dst, const remote::CChartMode::TObject src) const {
-		dst = EGenotickChartMode::get_by_value(GetThreadData().remoteChartMode.GetEnumValue(src));
+		dst = CGenotickChartMode::get_by_value(GetThreadData().remoteChartMode.GetEnumValue(src));
 	}
 
 	template <class D, class S> D ToJava(const S src) const {
@@ -136,15 +136,15 @@ private:
 	}
 
 	template <> remote::CWeightMode::TObject ToJava(const EGenotickWeightMode src) const {
-		return GetThreadData().remoteWeightMode.GetEnumObject(src.value());
+		return GetThreadData().remoteWeightMode.GetEnumObject(static_cast<::jni::jint>(src));
 	}
 
 	template <> remote::CInheritedWeightMode::TObject ToJava(const EGenotickInheritedWeightMode src) const {
-		return GetThreadData().remoteInheritedWeightMode.GetEnumObject(src.value());
+		return GetThreadData().remoteInheritedWeightMode.GetEnumObject(static_cast<::jni::jint>(src));
 	}
 
 	template <> remote::CChartMode::TObject ToJava(const EGenotickChartMode src) const {
-		return GetThreadData().remoteChartMode.GetEnumObject(src.value());
+		return GetThreadData().remoteChartMode.GetEnumObject(static_cast<::jni::jint>(src));
 	}
 
 	CLoaderFriend& m_loader;

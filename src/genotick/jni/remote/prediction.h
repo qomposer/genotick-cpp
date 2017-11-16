@@ -10,7 +10,7 @@ namespace remote {
 
 struct SPredictionTag { static constexpr auto Name() { return "com/alphatica/genotick/genotick/Prediction"; } };
 
-class CPrediction : public CEnum<SPredictionTag, EGenotickPrediction>
+class CPrediction : public CEnum<SPredictionTag, CGenotickPrediction>
 {
 public:
 	using TGetValueMethod = ::jni::Method<TagType, ::jni::jint()>;
@@ -19,7 +19,7 @@ public:
 	f(TGetValueMethod, getValue) \
 
 	explicit CPrediction(::jni::JNIEnv& javaEnv)
-		: CEnum<TagType, TEnumClass>(javaEnv)
+		: CEnum<TagType, TCppEnum>(javaEnv)
 	{
 		VerifyEnumValues();
 	}

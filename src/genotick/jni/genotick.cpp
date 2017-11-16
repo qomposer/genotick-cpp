@@ -348,7 +348,7 @@ EGenotickResult CGenotick::GetNewestPrediction(TGenotickSessionId sessionId, con
 			return EGenotickResult::ErrorInvalidSession;
 
 		const ::jni::jint predictionValue = threadData.remotePrediction.getValue(jniPrediction);
-		*pPrediction = EGenotickPrediction::get_by_value(predictionValue);
+		*pPrediction = CGenotickPrediction::get_by_value(predictionValue);
 		return EGenotickResult::Success;
 	}
 	catch (const ::jni::PendingJavaException& exception)

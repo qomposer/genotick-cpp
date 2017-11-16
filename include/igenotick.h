@@ -56,8 +56,8 @@ struct SGenotickString
 };
 typedef struct SGenotickString TGenotickString;
 
-const TGenotickBoolean GenotickFalse = 0;
-const TGenotickBoolean GenotickTrue = 1;
+#define GenotickFalse 0
+#define GenotickTrue 1
 
 #define GenotickWeightMode_WinCount     0
 #define GenotickWeightMode_WinRate      1
@@ -108,14 +108,17 @@ const TGenotickBoolean GenotickTrue = 1;
 #include <common/enum.h>
 
 #ifdef GENOTICK_IMPL
-#define GENOTICK_DEFINE_ENUM_CLASS(clazz, underlying_t, list, meta_t) DEFINE_DATA_ENUM_CLASS(clazz, underlying_t, list, meta_t)
+#define GENOTICK_DEFINE_ENUM_CLASS(enumClass, enumDataClass, underlying, list, meta) \
+            DEFINE_DATA_ENUM_CLASS(enumClass, enumDataClass, underlying, list, meta)
 #else
-#define GENOTICK_DEFINE_ENUM_CLASS(clazz, underlying_t, list, meta_t) DEFINE_NORMAL_ENUM_CLASS(clazz, underlying_t, list)
+#define GENOTICK_DEFINE_ENUM_CLASS(enumClass, enumDataClass, underlying, list, meta) \
+          DEFINE_NORMAL_ENUM_CLASS(enumClass, underlying, list)
 #endif
 
 struct SGenotickEnumMeta
 {
-	constexpr SGenotickEnumMeta(const char* const javaValueName) : javaValueName(javaValueName) {}
+	constexpr SGenotickEnumMeta(const char* const javaValueName)
+		: javaValueName(javaValueName) {}
 	const char* const javaValueName;
 };
 
@@ -125,14 +128,14 @@ struct SGenotickEnumMeta
 	e(ProfitCount  , = GenotickWeightMode_ProfitCount  , (SGenotickEnumMeta("PROFIT_COUNT" ))) \
 	e(ProfitFactor , = GenotickWeightMode_ProfitFactor , (SGenotickEnumMeta("PROFIT_FACTOR"))) \
 
-GENOTICK_DEFINE_ENUM_CLASS(EGenotickWeightMode, TGenotickInt32, GENOTICK_ENUM_WEIGHT_MODE, SGenotickEnumMeta)
+GENOTICK_DEFINE_ENUM_CLASS(EGenotickWeightMode, CGenotickWeightMode, TGenotickInt32, GENOTICK_ENUM_WEIGHT_MODE, SGenotickEnumMeta)
 
 #define GENOTICK_ENUM_INHERITED_WEIGHT_MODE(e) \
 	e(Parents      , = GenotickInheritedWeightMode_Parents      , (SGenotickEnumMeta("PARENTS"      ))) \
 	e(Ancestors    , = GenotickInheritedWeightMode_Ancestors    , (SGenotickEnumMeta("ANCESTORS"    ))) \
 	e(AncestorsLog , = GenotickInheritedWeightMode_AncestorsLog , (SGenotickEnumMeta("ANCESTORS_LOG"))) \
 
-GENOTICK_DEFINE_ENUM_CLASS(EGenotickInheritedWeightMode, TGenotickInt32, GENOTICK_ENUM_INHERITED_WEIGHT_MODE, SGenotickEnumMeta)
+GENOTICK_DEFINE_ENUM_CLASS(EGenotickInheritedWeightMode, CGenotickInheritedWeightMode, TGenotickInt32, GENOTICK_ENUM_INHERITED_WEIGHT_MODE, SGenotickEnumMeta)
 
 #define GENOTICK_ENUM_CHART_MODE(e) \
 	e(None                 , = GenotickChartMode_None                 , (SGenotickEnumMeta("NONE"                ))) \
@@ -143,14 +146,14 @@ GENOTICK_DEFINE_ENUM_CLASS(EGenotickInheritedWeightMode, TGenotickInt32, GENOTIC
 	e(JFreeChart_Save      , = GenotickChartMode_JFreeChart_Save      , (SGenotickEnumMeta("JFREECHART_SAVE"     ))) \
 	e(JFreeChart_Draw_Save , = GenotickChartMode_JFreeChart_Draw_Save , (SGenotickEnumMeta("JFREECHART_DRAW_SAVE"))) \
 
-GENOTICK_DEFINE_ENUM_CLASS(EGenotickChartMode, TGenotickInt32, GENOTICK_ENUM_CHART_MODE, SGenotickEnumMeta)
+GENOTICK_DEFINE_ENUM_CLASS(EGenotickChartMode, CGenotickChartMode, TGenotickInt32, GENOTICK_ENUM_CHART_MODE, SGenotickEnumMeta)
 
 #define GENOTICK_PREDICTION(e) \
 	e(Up   , = GenotickPrediction_Up   , (SGenotickEnumMeta("UP"  ))) \
 	e(Down , = GenotickPrediction_Down , (SGenotickEnumMeta("DOWN"))) \
 	e(Out  , = GenotickPrediction_Out  , (SGenotickEnumMeta("OUT" ))) \
 
-GENOTICK_DEFINE_ENUM_CLASS(EGenotickPrediction, TGenotickInt32, GENOTICK_PREDICTION, SGenotickEnumMeta)
+GENOTICK_DEFINE_ENUM_CLASS(EGenotickPrediction, CGenotickPrediction, TGenotickInt32, GENOTICK_PREDICTION, SGenotickEnumMeta)
 
 enum class EGenotickResult : TGenotickInt32
 {
@@ -236,7 +239,7 @@ struct SGenotickDataPoint
 	const TGenotickDouble* optionalColumns ZERO_INIT;
 };
 typedef struct SGenotickDataPoint TGenotickDataPoint;
-const TGenotickSize GenotickMinColumnCount = 5;
+#define GenotickMinColumnCount 5u
 
 struct SGenotickAssetData
 {
@@ -291,9 +294,9 @@ ITYPE(SGenotickTimePoints, IGenotickTimePoints)
 
 struct SGenotickPredictionsFunctions
 {
-	const EGenotickPrediction* FPTR(GetElement)(FTHIS(SGenotickPredictions), TGenotickSize index);
-	TGenotickSize              FPTR(GetElementCount)(FTHIS(SGenotickPredictions));
-	void                       FPTR(Release)(FTHIS(SGenotickPredictions));
+	EGenotickPrediction       FPTR(GetElement)(FTHIS(SGenotickPredictions), TGenotickSize index);
+	TGenotickSize             FPTR(GetElementCount)(FTHIS(SGenotickPredictions));
+	void                      FPTR(Release)(FTHIS(SGenotickPredictions));
 };
 ITYPE(SGenotickPredictions, IGenotickPredictions)
 
@@ -351,7 +354,7 @@ struct SGenotickPredictions
 {
 	const struct SGenotickPredictionsFunctions functions ZERO_INIT;
 #ifdef __cplusplus
-	const EGenotickPrediction* GetElement(TGenotickSize index) {
+	EGenotickPrediction GetElement(TGenotickSize index) {
 		return functions.GetElement(this, index);
 	}
 	TGenotickSize GetElementCount() {

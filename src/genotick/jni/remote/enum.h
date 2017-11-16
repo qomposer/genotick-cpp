@@ -12,7 +12,8 @@ template <class Tag, class Enum>
 class CEnum : public CClass<Tag>
 {
 public:
-	using TEnumClass = Enum;
+	using TCppEnum = Enum;
+	using TOrdinal = typename Enum::ordinal_type;
 
 	using TNameMethod = ::jni::Method<TagType, ::jni::String()>;
 	using TOrdinalMethod = ::jni::Method<TagType, ::jni::jint()>;
@@ -72,7 +73,7 @@ protected:
 private:
 	void VerifyEnumBasics();
 	void VerifyEnumOrdinal(const ::jni::jint nativeOrdinal, const char* const javaValueName);
-	void VerifyEnumValueCount(typename TEnumClass::ordinal_type nativeValueCount);
+	void VerifyEnumValueCount(TOrdinal nativeValueCount);
 
 private:
 	JAVA_ENUM_METHODS(GENOTICK_UNROLL_METHOD_MEMBERS)

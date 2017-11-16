@@ -10,7 +10,7 @@ namespace remote {
 
 struct SChartModeTag { static constexpr auto Name() { return "com/alphatica/genotick/chart/GenoChartMode"; } };
 
-class CChartMode : public CEnum<SChartModeTag, EGenotickChartMode>
+class CChartMode : public CEnum<SChartModeTag, CGenotickChartMode>
 {
 public:
 	using TValueMethod = ::jni::Method<TagType, ::jni::jint()>;
@@ -19,7 +19,7 @@ public:
 	f(TValueMethod, value) \
 
 	explicit CChartMode(::jni::JNIEnv& javaEnv)
-		: CEnum<TagType, TEnumClass>(javaEnv)
+		: CEnum<TagType, TCppEnum>(javaEnv)
 	{
 		VerifyEnumValues();
 	}

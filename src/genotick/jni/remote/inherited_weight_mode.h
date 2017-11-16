@@ -10,11 +10,11 @@ namespace remote {
 
 struct SInheritedWeightModeTag { static constexpr auto Name() { return "com/alphatica/genotick/breeder/InheritedWeightMode"; } };
 
-class CInheritedWeightMode : public CEnum<SInheritedWeightModeTag, EGenotickInheritedWeightMode>
+class CInheritedWeightMode : public CEnum<SInheritedWeightModeTag, CGenotickInheritedWeightMode>
 {
 public:
 	explicit CInheritedWeightMode(::jni::JNIEnv& javaEnv)
-		: CEnum<TagType, TEnumClass>(javaEnv)
+		: CEnum<TagType, TCppEnum>(javaEnv)
 	{
 		VerifyEnumValues();
 	}

@@ -112,13 +112,13 @@ void GenotickTestRun(IGenotick* pInstance, ETestRunFlag flags)
 	for (TGenotickSize i = 0, c = pTimePoints->GetElementCount(); i < c; ++i)
 	{
 		const TGenotickTimePoint* pTimePoint = pTimePoints->GetElement(i);
-		(void)pTimePoint;
+		pTimePoint = nullptr;
 	}
 
 	for (TGenotickSize i = 0, c = pPredictions->GetElementCount(); i < c; ++i)
 	{
-		const EGenotickPrediction* pPrediction = pPredictions->GetElement(i);
-		(void)pPrediction;
+		EGenotickPrediction prediction2 = pPredictions->GetElement(i);
+		prediction2 = EGenotickPrediction::Out;
 	}
 	
 	if (flags & eTestRunFlag_IsNewThread)

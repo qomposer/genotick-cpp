@@ -10,11 +10,11 @@ namespace remote {
 
 struct SWeightModeTag { static constexpr auto Name() { return "com/alphatica/genotick/genotick/WeightMode"; } };
 
-class CWeightMode : public CEnum<SWeightModeTag, EGenotickWeightMode>
+class CWeightMode : public CEnum<SWeightModeTag, CGenotickWeightMode>
 {
 public:
 	explicit CWeightMode(::jni::JNIEnv& javaEnv)
-		: CEnum<TagType, TEnumClass>(javaEnv)
+		: CEnum<TagType, TCppEnum>(javaEnv)
 	{
 		VerifyEnumValues();
 	}

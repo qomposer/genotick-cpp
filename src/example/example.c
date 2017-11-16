@@ -110,13 +110,13 @@ int main(int argc, char** argv)
 		for (TGenotickSize i = 0, c = pTimePoints->GetElementCount(pTimePoints); i < c; ++i)
 		{
 			const TGenotickTimePoint* pTimePoint = pTimePoints->GetElement(pTimePoints, i);
-			(void)pTimePoint;
+			pTimePoint = 0;
 		}
 
 		for (TGenotickSize i = 0, c = pPredictions->GetElementCount(pPredictions); i < c; ++i)
 		{
-			const EGenotickPrediction* pPrediction = pPredictions->GetElement(pPredictions, i);
-			(void)pPrediction;
+			EGenotickPrediction prediction2 = pPredictions->GetElement(pPredictions, i);
+			prediction2 = GenotickPrediction_Out;
 		}
 
 		GENOTICK_SAFE_RELEASE(pTimePoints);

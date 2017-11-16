@@ -38,10 +38,10 @@ typename CEnum<Tag, Enum>::TObject CEnum<Tag, Enum>::GetEnumObjectByOrdinal(cons
 template <class Tag, class Enum>
 void CEnum<Tag, Enum>::VerifyEnumValues()
 {
-	const TEnumClass::ordinal_type count = TEnumClass::count();
-	for (TEnumClass::ordinal_type i = 0; i < count; ++i)
+	const TOrdinal count = TCppEnum::count();
+	for (TOrdinal i = 0; i < count; ++i)
 	{
-		const TEnumClass& instance = TEnumClass::get_by_ordinal(i);
+		const TCppEnum& instance = TCppEnum::get_by_ordinal(i);
 		VerifyEnumValue(instance.value(), instance.meta().javaValueName);
 	}
 }
@@ -63,11 +63,11 @@ void CEnum<Tag, Enum>::VerifyEnumValue(const ::jni::jint nativeValue, const char
 template <class Tag, class Enum>
 void CEnum<Tag, Enum>::VerifyEnumBasics()
 {
-	const TEnumClass::ordinal_type count = TEnumClass::count();
+	const TOrdinal count = TCppEnum::count();
 	VerifyEnumValueCount(count);
-	for (TEnumClass::ordinal_type i = 0; i < count; ++i)
+	for (TOrdinal i = 0; i < count; ++i)
 	{
-		const TEnumClass& instance = TEnumClass::get_by_ordinal(i);
+		const TCppEnum& instance = TCppEnum::get_by_ordinal(i);
 		VerifyEnumOrdinal(static_cast<::jni::jint>(instance.ordinal()), instance.meta().javaValueName);
 	}
 }
@@ -87,7 +87,7 @@ void CEnum<Tag, Enum>::VerifyEnumOrdinal(const ::jni::jint nativeOrdinal, const 
 }
 
 template <class Tag, class Enum>
-void CEnum<Tag, Enum>::VerifyEnumValueCount(typename TEnumClass::ordinal_type nativeValueCount)
+void CEnum<Tag, Enum>::VerifyEnumValueCount(TOrdinal nativeValueCount)
 {
 	const TObjectArray enumObjects = values();
 	const ::jni::jsize javaValueCount = enumObjects.Length(GetJavaEnv());

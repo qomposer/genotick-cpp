@@ -10,7 +10,7 @@ namespace jni {
 
 class CGenotickPredictions
 	: public IGenotickPredictions
-	, public CSimpleRemoteContainer<EGenotickPrediction, remote::CPredictions>
+	, public CSimpleRemoteContainer<CGenotickPrediction, remote::CPredictions>
 {
 private:
 	using TRemoteValue = typename TRemoteElement::TGetValueMethod::ReturnType;
@@ -41,8 +41,8 @@ private:
 
 	UTILS_DELETE_COPY_CONSTRUCTOR(CGenotickPredictions)
 
-	static const EGenotickPrediction* GENOTICK_CALL GetElement(IGenotickPredictions* pThis, TGenotickSize index) {
-		return static_cast<const CGenotickPredictions*>(pThis)->GetElementPtrInternal(index);
+	static EGenotickPrediction GENOTICK_CALL GetElement(IGenotickPredictions* pThis, TGenotickSize index) {
+		return static_cast<const CGenotickPredictions*>(pThis)->GetElementInternal(index);
 	}
 	static TGenotickSize GENOTICK_CALL GetElementCount(IGenotickPredictions* pThis) {
 		return static_cast<const CGenotickPredictions*>(pThis)->GetElementCountInternal();
