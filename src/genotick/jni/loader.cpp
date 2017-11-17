@@ -43,12 +43,12 @@ EGenotickResult CLoader::GenotickCreate(IGenotick** ppInstance, const TGenotickC
 	std::string buffer1;
 	std::string buffer2;
 	std::vector<JavaVMOption> options;
-	if (::IsValidString(pSettings->javaClassPath))
+	if (::is_valid_string(pSettings->javaClassPath))
 	{
 		buffer1 = ::stl::string_format("-Djava.class.path=%s", pSettings->javaClassPath);
 		options.push_back({ const_cast<char*>(buffer1.c_str()), nullptr });
 	}
-	if (::IsValidString(pSettings->javaDebugAddress))
+	if (::is_valid_string(pSettings->javaDebugAddress))
 	{
 		buffer2 = ::stl::string_format("-agentlib:jdwp=transport=dt_socket,address=%s,server=y,suspend=y", pSettings->javaDebugAddress);
 		options.push_back({ const_cast<char*>(buffer2.c_str()), nullptr });
