@@ -15,10 +15,10 @@ static_assert(sizeof(TGenotickChar) == sizeof(::jni::jchar), MISMATCH_MESSAGE);
 static_assert(sizeof(TGenotickShort) == sizeof(::jni::jshort), MISMATCH_MESSAGE);
 static_assert(sizeof(TGenotickFloat) == sizeof(::jni::jfloat), MISMATCH_MESSAGE);
 static_assert(sizeof(TGenotickDouble) == sizeof(::jni::jdouble), MISMATCH_MESSAGE);
-static_assert(sizeof(EGenotickWeightMode) == sizeof(TGenotickInt32), MISMATCH_MESSAGE);
-static_assert(sizeof(EGenotickInheritedWeightMode) == sizeof(TGenotickInt32), MISMATCH_MESSAGE);
-static_assert(sizeof(EGenotickChartMode) == sizeof(TGenotickInt32), MISMATCH_MESSAGE);
-static_assert(sizeof(EGenotickPrediction) == sizeof(TGenotickInt32), MISMATCH_MESSAGE);
+static_assert(sizeof(CGenotickWeightMode) == sizeof(::jni::jint), MISMATCH_MESSAGE);
+static_assert(sizeof(CGenotickInheritedWeightMode) == sizeof(::jni::jint), MISMATCH_MESSAGE);
+static_assert(sizeof(CGenotickChartMode) == sizeof(::jni::jint), MISMATCH_MESSAGE);
+static_assert(sizeof(CGenotickPrediction) == sizeof(::jni::jint), MISMATCH_MESSAGE);
 #undef MISMATCH_MESSAGE
 
 namespace genotick {
