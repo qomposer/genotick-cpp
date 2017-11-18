@@ -107,39 +107,30 @@ typedef struct SGenotickString TGenotickString;
 
 #include <common/enum.h>
 
-#ifdef GENOTICK_IMPL
-#define GENOTICK_DEFINE_ENUM_CLASS(enumClass, enumDataClass, underlying, list, meta) \
-            DEFINE_DATA_ENUM_CLASS(enumClass, enumDataClass, underlying, list, meta)
-#else
-#define GENOTICK_DEFINE_ENUM_CLASS(enumClass, enumDataClass, underlying, list, meta) \
-          DEFINE_NORMAL_ENUM_CLASS(enumClass, underlying, list)
-#endif
-
-#ifdef GENOTICK_IMPL
 struct SGenotickEnumMeta
 {
 	constexpr SGenotickEnumMeta(const char* const javaValueName)
 		: javaValueName(javaValueName) {}
 	const char* const javaValueName;
 };
-#endif
 
-#define GENOTICK_ENUM_WEIGHT_MODE(e) \
+#define GENOTICK_WEIGHT_MODE_LIST(e) \
 	e( WinCount     , = GenotickWeightMode_WinCount     , (SGenotickEnumMeta("WIN_COUNT"    )) ) \
 	e( WinRate      , = GenotickWeightMode_WinRate      , (SGenotickEnumMeta("WIN_RATE"     )) ) \
 	e( ProfitCount  , = GenotickWeightMode_ProfitCount  , (SGenotickEnumMeta("PROFIT_COUNT" )) ) \
 	e( ProfitFactor , = GenotickWeightMode_ProfitFactor , (SGenotickEnumMeta("PROFIT_FACTOR")) ) \
 
-GENOTICK_DEFINE_ENUM_CLASS(EGenotickWeightMode, CGenotickWeightMode, TGenotickInt32, GENOTICK_ENUM_WEIGHT_MODE, SGenotickEnumMeta)
+DEFINE_DATA_ENUM_CLASS(EGenotickWeightMode, CGenotickWeightMode, TGenotickInt32, GENOTICK_WEIGHT_MODE_LIST, SGenotickEnumMeta)
 
-#define GENOTICK_ENUM_INHERITED_WEIGHT_MODE(e) \
+
+#define GENOTICK_INHERITED_WEIGHT_MODE_LIST(e) \
 	e( Parents      , = GenotickInheritedWeightMode_Parents      , (SGenotickEnumMeta("PARENTS"      )) ) \
 	e( Ancestors    , = GenotickInheritedWeightMode_Ancestors    , (SGenotickEnumMeta("ANCESTORS"    )) ) \
 	e( AncestorsLog , = GenotickInheritedWeightMode_AncestorsLog , (SGenotickEnumMeta("ANCESTORS_LOG")) ) \
 
-GENOTICK_DEFINE_ENUM_CLASS(EGenotickInheritedWeightMode, CGenotickInheritedWeightMode, TGenotickInt32, GENOTICK_ENUM_INHERITED_WEIGHT_MODE, SGenotickEnumMeta)
+DEFINE_DATA_ENUM_CLASS(EGenotickInheritedWeightMode, CGenotickInheritedWeightMode, TGenotickInt32, GENOTICK_INHERITED_WEIGHT_MODE_LIST, SGenotickEnumMeta)
 
-#define GENOTICK_ENUM_CHART_MODE(e) \
+#define GENOTICK_CHART_MODE_LIST(e) \
 	e( None                 , = GenotickChartMode_None                 , (SGenotickEnumMeta("NONE"                )) ) \
 	e( Draw                 , = GenotickChartMode_Draw                 , (SGenotickEnumMeta("DRAW"                )) ) \
 	e( Save                 , = GenotickChartMode_Save                 , (SGenotickEnumMeta("SAVE"                )) ) \
@@ -148,14 +139,19 @@ GENOTICK_DEFINE_ENUM_CLASS(EGenotickInheritedWeightMode, CGenotickInheritedWeigh
 	e( JFreeChart_Save      , = GenotickChartMode_JFreeChart_Save      , (SGenotickEnumMeta("JFREECHART_SAVE"     )) ) \
 	e( JFreeChart_Draw_Save , = GenotickChartMode_JFreeChart_Draw_Save , (SGenotickEnumMeta("JFREECHART_DRAW_SAVE")) ) \
 
-GENOTICK_DEFINE_ENUM_CLASS(EGenotickChartMode, CGenotickChartMode, TGenotickInt32, GENOTICK_ENUM_CHART_MODE, SGenotickEnumMeta)
+DEFINE_DATA_ENUM_CLASS(EGenotickChartMode, CGenotickChartMode, TGenotickInt32, GENOTICK_CHART_MODE_LIST, SGenotickEnumMeta)
 
-#define GENOTICK_PREDICTION(e) \
+#define GENOTICK_PREDICTION_LIST(e) \
 	e( Up   , = GenotickPrediction_Up   , (SGenotickEnumMeta("UP"  )) ) \
 	e( Down , = GenotickPrediction_Down , (SGenotickEnumMeta("DOWN")) ) \
 	e( Out  , = GenotickPrediction_Out  , (SGenotickEnumMeta("OUT" )) ) \
 
-GENOTICK_DEFINE_ENUM_CLASS(EGenotickPrediction, CGenotickPrediction, TGenotickInt32, GENOTICK_PREDICTION, SGenotickEnumMeta)
+DEFINE_DATA_ENUM_CLASS(EGenotickPrediction, CGenotickPrediction, TGenotickInt32, GENOTICK_PREDICTION_LIST, SGenotickEnumMeta)
+
+#undef GENOTICK_WEIGHT_MODE_LIST
+#undef GENOTICK_INHERITED_WEIGHT_MODE_LIST
+#undef GENOTICK_CHART_MODE_LIST
+#undef GENOTICK_PREDICTION_LIST
 
 enum class EGenotickResult : TGenotickInt32
 {
