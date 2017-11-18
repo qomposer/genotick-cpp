@@ -38,10 +38,8 @@ typename CEnum<Tag, Enum>::TObject CEnum<Tag, Enum>::GetEnumObjectByOrdinal(cons
 template <class Tag, class Enum>
 void CEnum<Tag, Enum>::VerifyEnumValues()
 {
-	const TOrdinal count = TCppEnum::count();
-	for (TOrdinal i = 0; i < count; ++i)
+	for (const TCppEnum& instance : TCppEnum())
 	{
-		const TCppEnum& instance = TCppEnum::get_by_ordinal(i);
 		VerifyEnumValue(instance.value(), instance.meta().javaValueName);
 	}
 }
@@ -63,11 +61,10 @@ void CEnum<Tag, Enum>::VerifyEnumValue(const ::jni::jint nativeValue, const char
 template <class Tag, class Enum>
 void CEnum<Tag, Enum>::VerifyEnumBasics()
 {
-	const TOrdinal count = TCppEnum::count();
-	VerifyEnumValueCount(count);
-	for (TOrdinal i = 0; i < count; ++i)
+	VerifyEnumValueCount(TCppEnum::count());
+
+	for (const TCppEnum& instance : TCppEnum())
 	{
-		const TCppEnum& instance = TCppEnum::get_by_ordinal(i);
 		VerifyEnumOrdinal(static_cast<::jni::jint>(instance.ordinal()), instance.meta().javaValueName);
 	}
 }
