@@ -20,14 +20,14 @@ public:
 	CGenotickList(TGenotickSize size)
 		: TSimpleContainer(size)
 	{
-		SGenotickListFunctions& mutableFunctions = const_cast<SGenotickListFunctions&>(functions);
+		SGenotickListFunctions& mutableFunctions = const_cast<SGenotickListFunctions&>(m_functions);
 		memset(&mutableFunctions, 0, sizeof(mutableFunctions));
 		mutableFunctions.GetElement = GetElement;
 		mutableFunctions.GetElementCount = GetElementCount;
 		mutableFunctions.Release = Release;
 
-		::utils::VerifyFunctionsStruct(functions);
-		::utils::VerifyEqualPointers(&functions, static_cast<IGenotickList*>(this));
+		utils::VerifyFunctionsStruct(m_functions);
+		utils::VerifyEqualPointers(&m_functions, static_cast<IGenotickList*>(this));
 	}
 
 	inline void Set(TGenotickSize index, const TElement& element)

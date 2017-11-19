@@ -22,11 +22,11 @@
 
 #ifdef __cplusplus
 #define ZERO_INIT = {}
-#define FTHIS(type) struct type* pThis
+#define FTHIS(type)               struct type*
 #define ITYPE(type, name) typedef struct type name;
 #else
 #define ZERO_INIT
-#define FTHIS(type) const struct type##Functions* pThis
+#define FTHIS(type)               const struct type##Functions*
 #define ITYPE(type, name) typedef const struct type##Functions name;
 #endif
 #ifdef ZORRO_LITE_C
@@ -326,120 +326,114 @@ struct SGenotickListFunctions
 };
 ITYPE(SGenotickList, IGenotickList)
 
+#ifdef __cplusplus
 struct SGenotickTimePoints
 {
-	const struct SGenotickTimePointsFunctions functions ZERO_INIT;
-#ifdef __cplusplus
 	bool FindIndex(const TGenotickTimePoint* timePoint, TGenotickSize* index) {
-		return functions.FindIndex(this, timePoint, index) == GenotickTrue ? true : false;
+		return m_functions.FindIndex(this, timePoint, index) == GenotickTrue ? true : false;
 	}
 	const TGenotickTimePoint* GetElement(TGenotickSize index) {
-		return functions.GetElement(this, index);
+		return m_functions.GetElement(this, index);
 	}
 	TGenotickSize GetElementCount() {
-		return functions.GetElementCount(this);
+		return m_functions.GetElementCount(this);
 	}
 	void Release() {
-		return functions.Release(this);
+		return m_functions.Release(this);
 	}
 protected:
-	SGenotickTimePoints() {}
+	using TInterfaceFunctions = SGenotickTimePointsFunctions;
+	const TInterfaceFunctions m_functions ZERO_INIT;
 	~SGenotickTimePoints() {}
-#endif // __cplusplus
 };
 
 struct SGenotickPredictions
 {
-	const struct SGenotickPredictionsFunctions functions ZERO_INIT;
-#ifdef __cplusplus
 	EGenotickPrediction GetElement(TGenotickSize index) {
-		return functions.GetElement(this, index);
+		return m_functions.GetElement(this, index);
 	}
 	TGenotickSize GetElementCount() {
-		return functions.GetElementCount(this);
+		return m_functions.GetElementCount(this);
 	}
 	void Release() {
-		return functions.Release(this);
+		return m_functions.Release(this);
 	}
 protected:
-	SGenotickPredictions() {}
+	using TInterfaceFunctions = SGenotickPredictionsFunctions;
+	const TInterfaceFunctions m_functions ZERO_INIT;
 	~SGenotickPredictions() {}
-#endif // __cplusplus
 };
 
 struct SGenotick
 {
-	const struct SGenotickFunctions functions ZERO_INIT;
-#ifdef __cplusplus
 	TGenotickInt32 GetInterfaceVersion() {
-		return functions.GetInterfaceVersion(this);
+		return m_functions.GetInterfaceVersion(this);
 	}
 	EGenotickResult CreateSession(TGenotickSessionId sessionId) {
-		return functions.CreateSession(this, sessionId);
+		return m_functions.CreateSession(this, sessionId);
 	}
 	EGenotickResult RemoveSession(TGenotickSessionId sessionId) {
-		return functions.RemoveSession(this, sessionId);
+		return m_functions.RemoveSession(this, sessionId);
 	}
 	EGenotickResult RemoveAllSessions() {
-		return functions.RemoveAllSessions(this);
+		return m_functions.RemoveAllSessions(this);
 	}
 	EGenotickResult GetSettings(TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) {
-		return functions.GetSettings(this, sessionId, pSettings);
+		return m_functions.GetSettings(this, sessionId, pSettings);
 	}
 	EGenotickResult ChangeSettings(TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings) {
-		return functions.ChangeSettings(this, sessionId, pSettings);
+		return m_functions.ChangeSettings(this, sessionId, pSettings);
 	}
 	EGenotickResult SetAssetData(TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData) {
-		return functions.SetAssetData(this, sessionId, pAssetData);
+		return m_functions.SetAssetData(this, sessionId, pAssetData);
 	}
 	EGenotickResult Start(TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs) {
-		return functions.Start(this, sessionId, pArgs);
+		return m_functions.Start(this, sessionId, pArgs);
 	}
 	EGenotickResult GetTimePoints(TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) {
-		return functions.GetTimePoints(this, sessionId, ppTimePoints);
+		return m_functions.GetTimePoints(this, sessionId, ppTimePoints);
 	}
 	EGenotickResult GetPredictions(TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) {
-		return functions.GetPredictions(this, sessionId, assetName, ppPredictions);
+		return m_functions.GetPredictions(this, sessionId, assetName, ppPredictions);
 	}
 	EGenotickResult GetNewestTimePoint(TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) {
-		return functions.GetNewestTimePoint(this, sessionId, pTimePoint);
+		return m_functions.GetNewestTimePoint(this, sessionId, pTimePoint);
 	}
 	EGenotickResult GetNewestPrediction(TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) {
-		return functions.GetNewestPrediction(this, sessionId, assetName, pPrediction);
+		return m_functions.GetNewestPrediction(this, sessionId, assetName, pPrediction);
 	}
 	EGenotickResult AttachCurrentThread(bool asDaemon) {
-		return functions.AttachCurrentThread(this, asDaemon ? GenotickTrue : GenotickFalse);
+		return m_functions.AttachCurrentThread(this, asDaemon ? GenotickTrue : GenotickFalse);
 	}
 	EGenotickResult DetachCurrentThread() {
-		return functions.DetachCurrentThread(this);
+		return m_functions.DetachCurrentThread(this);
 	}
 	EGenotickResult Release() {
-		return functions.Release(this);
+		return m_functions.Release(this);
 	}
 protected:
-	SGenotick() {}
+	using TInterfaceFunctions = SGenotickFunctions;
+	const TInterfaceFunctions m_functions ZERO_INIT;
 	~SGenotick() {}
-#endif // __cplusplus
 };
 
 struct SGenotickList
 {
-	const struct SGenotickListFunctions functions ZERO_INIT;
-#ifdef __cplusplus
 	IGenotick* GetElement(TGenotickSize index) {
-		return functions.GetElement(this, index);
+		return m_functions.GetElement(this, index);
 	}
 	TGenotickSize GetElementCount() {
-		return functions.GetElementCount(this);
+		return m_functions.GetElementCount(this);
 	}
 	void Release() {
-		return functions.Release(this);
+		return m_functions.Release(this);
 	}
 protected:
-	SGenotickList() {}
+	using TInterfaceFunctions = SGenotickListFunctions;
+	const TInterfaceFunctions m_functions ZERO_INIT;
 	~SGenotickList() {}
-#endif // __cplusplus
 };
+#endif // __cplusplus
 
 #ifdef __cplusplus
 extern "C" {

@@ -18,7 +18,7 @@ public:
 	CGenotickTpl(CLoader& loader, JavaVM& javaVM, JNIEnv& javaEnv)
 		: GenotickImpl(loader, javaVM, javaEnv)
 	{
-		SGenotickFunctions& mutableFunctions = const_cast<SGenotickFunctions&>(functions);
+		SGenotickFunctions& mutableFunctions = const_cast<SGenotickFunctions&>(m_functions);
 		memset(&mutableFunctions, 0, sizeof(mutableFunctions));
 
 		mutableFunctions.GetInterfaceVersion = Static_GetInterfaceVersion;
@@ -37,8 +37,8 @@ public:
 		mutableFunctions.DetachCurrentThread = Static_DetachCurrentThread;
 		mutableFunctions.Release             = Static_Release;
 
-		::utils::VerifyFunctionsStruct(functions);
-		::utils::VerifyEqualPointers(&functions, static_cast<IGenotick*>(this));
+		utils::VerifyFunctionsStruct(m_functions);
+		utils::VerifyEqualPointers(&m_functions, static_cast<IGenotick*>(this));
 	}
 
 	virtual ~CGenotickTpl() {}
