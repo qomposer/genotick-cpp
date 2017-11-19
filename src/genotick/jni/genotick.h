@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <genotick/jni/genotick_tpl.h>
+#include <genotick/jni/genotick_functions.h>
 #include <genotick/jni/remote/main_interface.h>
 #include <genotick/jni/remote/main_settings.h>
 #include <genotick/jni/remote/data_lines.h>
@@ -25,6 +25,9 @@ namespace jni {
 
 class CGenotick : public IGenotick
 {
+protected:
+	using TInterface  = IGenotick;
+
 private:
 	struct SThreadData
 	{
@@ -152,8 +155,6 @@ private:
 	mutable TMutex m_mutex;
 	TThreadDataMap m_threadDataMap;
 };
-
-using TGenotick = CGenotickTpl<CGenotick>;
 
 } // namespace jni
 } // namespace genotick

@@ -10,6 +10,8 @@
 namespace genotick {
 namespace jni {
 
+using TGenotick = CGenotickFunctions<CGenotick>;
+
 class CLoader
 {
 private:

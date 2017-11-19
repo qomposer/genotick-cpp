@@ -26,15 +26,16 @@ public:
 			[&remoteElement](TNativeElement& nativeElement, const TRemoteElementObject& remoteElementObject)
 				{ nativeElement = remoteElement.getValue(remoteElementObject); })
 	{
-		SGenotickTimePointsFunctions& mutableFunctions = const_cast<SGenotickTimePointsFunctions&>(m_functions);
-		memset(&mutableFunctions, 0, sizeof(mutableFunctions));
+		auto& mutableFunctions = const_cast<TInterfaceFunctions&>(m_functions);
+		utils::nullify_object_debug(mutableFunctions);
+
 		mutableFunctions.FindIndex = FindIndex;
 		mutableFunctions.GetElement = GetElement;
 		mutableFunctions.GetElementCount = GetElementCount;
 		mutableFunctions.Release = Release;
 
-		utils::VerifyFunctionsStruct(m_functions);
-		utils::VerifyEqualPointers(&m_functions, static_cast<IGenotickTimePoints*>(this));
+		utils::verify_initialized_pointers_debug(m_functions);
+		utils::verify_equal_pointers_debug(&m_functions, static_cast<IGenotickTimePoints*>(this));
 	}
 
 private:

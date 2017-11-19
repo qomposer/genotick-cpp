@@ -26,14 +26,15 @@ public:
 			[&remoteElement](TNativeElement& nativeElement, const TRemoteElementObject& remoteElementObject)
 				{ nativeElement = TNativeElement::get_by_value(remoteElement.GetEnumValue(remoteElementObject)); })
 	{
-		SGenotickPredictionsFunctions& mutableFunctions = const_cast<SGenotickPredictionsFunctions&>(m_functions);
-		memset(&mutableFunctions, 0, sizeof(mutableFunctions));
+		auto& mutableFunctions = const_cast<TInterfaceFunctions&>(m_functions);
+		utils::nullify_object_debug(mutableFunctions);
+
 		mutableFunctions.GetElement = GetElement;
 		mutableFunctions.GetElementCount = GetElementCount;
 		mutableFunctions.Release = Release;
 
-		utils::VerifyFunctionsStruct(m_functions);
-		utils::VerifyEqualPointers(&m_functions, static_cast<IGenotickPredictions*>(this));
+		utils::verify_initialized_pointers_debug(m_functions);
+		utils::verify_equal_pointers_debug(&m_functions, static_cast<IGenotickPredictions*>(this));
 	}
 
 private:

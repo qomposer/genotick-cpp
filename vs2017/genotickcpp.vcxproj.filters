@@ -132,10 +132,10 @@
     <ClInclude Include="..\src\console.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\genotick_tpl.h">
+    <ClInclude Include="..\src\genotick\jni\loader.h">
       <Filter>src\genotick\jni</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\loader.h">
+    <ClInclude Include="..\src\genotick\jni\genotick_functions.h">
       <Filter>src\genotick\jni</Filter>
     </ClInclude>
   </ItemGroup>
