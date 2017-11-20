@@ -143,7 +143,7 @@ int main(int argc, char** argv)
 	EGenotickResult result = GenotickCreate(&pInstance, &creationSettings);
 	assert(result == EGenotickResult::Success);
 
-	CTimeCounter<std::chrono::nanoseconds, CTimeCounterStdOutPrinter> counter;
+	util::time_counter<std::chrono::nanoseconds> counter;
 
 	for (int run = 0; run < 2; ++run)
 	{

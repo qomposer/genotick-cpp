@@ -3,7 +3,7 @@
 
 #include <genotick/jni/simple_remote_container.h>
 #include <genotick/jni/remote/predictions.h>
-#include <common/utils.h>
+#include <common/util.h>
 
 namespace genotick {
 namespace jni {
@@ -27,14 +27,14 @@ public:
 				{ nativeElement = TNativeElement::get_by_value(remoteElement.GetEnumValue(remoteElementObject)); })
 	{
 		auto& mutableFunctions = const_cast<TInterfaceFunctions&>(m_functions);
-		utils::nullify_object_debug(mutableFunctions);
+		util::nullify_object_debug(mutableFunctions);
 
 		mutableFunctions.GetElement = GetElement;
 		mutableFunctions.GetElementCount = GetElementCount;
 		mutableFunctions.Release = Release;
 
-		utils::verify_initialized_pointers_debug(m_functions);
-		utils::verify_equal_pointers_debug(&m_functions, static_cast<IGenotickPredictions*>(this));
+		util::verify_initialized_pointers_debug(m_functions);
+		util::verify_equal_pointers_debug(&m_functions, static_cast<IGenotickPredictions*>(this));
 	}
 
 private:

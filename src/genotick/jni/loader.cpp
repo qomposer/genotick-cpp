@@ -4,7 +4,7 @@
 #include <genotick/jni/error.h>
 #include <genotick/jni/exceptions.h>
 #include <genotick/jni/genotick_list.h>
-#include <common/utils_win.h>
+#include <common/util_win.h>
 #include <common/utf8.h>
 #include <cassert>
 #include <console.h>
@@ -43,12 +43,12 @@ EGenotickResult CLoader::GenotickCreate(IGenotick** ppInstance, const TGenotickC
 	std::string buffer1;
 	std::string buffer2;
 	std::vector<JavaVMOption> options;
-	if (::is_valid_string(pSettings->javaClassPath))
+	if (util::is_valid_string(pSettings->javaClassPath))
 	{
 		buffer1 = ::stl::string_format("-Djava.class.path=%s", pSettings->javaClassPath);
 		options.push_back({ const_cast<char*>(buffer1.c_str()), nullptr });
 	}
-	if (::is_valid_string(pSettings->javaDebugAddress))
+	if (util::is_valid_string(pSettings->javaDebugAddress))
 	{
 		buffer2 = ::stl::string_format("-agentlib:jdwp=transport=dt_socket,address=%s,server=y,suspend=y", pSettings->javaDebugAddress);
 		options.push_back({ const_cast<char*>(buffer2.c_str()), nullptr });
@@ -206,9 +206,9 @@ EGenotickResult CLoader::LoadJvmModule(const char* path)
 	if (!JvmModuleLoaded())
 		return EGenotickResult::JvmDllNotFound;
 
-	JNI_GetDefaultJavaVMInitArgs_FuncPtr = utils::GetProcAddressT<TJNI_GetDefaultJavaVMInitArgs>(m_jvmModule, "JNI_GetDefaultJavaVMInitArgs");
-	JNI_CreateJavaVM_FuncPtr = utils::GetProcAddressT<TJNI_CreateJavaVM>(m_jvmModule, "JNI_CreateJavaVM");
-	JNI_CreatedJavaVMs_FuncPtr = utils::GetProcAddressT<TJNI_GetCreatedJavaVMs>(m_jvmModule, "JNI_GetCreatedJavaVMs");
+	JNI_GetDefaultJavaVMInitArgs_FuncPtr = util::GetProcAddressT<TJNI_GetDefaultJavaVMInitArgs>(m_jvmModule, "JNI_GetDefaultJavaVMInitArgs");
+	JNI_CreateJavaVM_FuncPtr = util::GetProcAddressT<TJNI_CreateJavaVM>(m_jvmModule, "JNI_CreateJavaVM");
+	JNI_CreatedJavaVMs_FuncPtr = util::GetProcAddressT<TJNI_GetCreatedJavaVMs>(m_jvmModule, "JNI_GetCreatedJavaVMs");
 
 	const bool bValid = (JNI_GetDefaultJavaVMInitArgs_FuncPtr && JNI_CreateJavaVM_FuncPtr && JNI_CreatedJavaVMs_FuncPtr);
 	if (!bValid)

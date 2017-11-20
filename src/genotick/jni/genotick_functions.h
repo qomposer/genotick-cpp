@@ -3,7 +3,7 @@
 
 #include <genotick/interface.h>
 #include <genotick/jni/jni_helpers.h>
-#include <common/utils.h>
+#include <common/util.h>
 
 namespace genotick {
 namespace jni {
@@ -25,7 +25,7 @@ public:
 		: TImplementation(loader, javaVM, javaEnv)
 	{
 		auto& mutableFunctions = const_cast<TInterfaceFunctions&>(m_functions);
-		utils::nullify_object_debug(mutableFunctions);
+		util::nullify_object_debug(mutableFunctions);
 
 		mutableFunctions.GetInterfaceVersion = Static_GetInterfaceVersion;
 		mutableFunctions.CreateSession       = Static_CreateSession;
@@ -43,8 +43,8 @@ public:
 		mutableFunctions.DetachCurrentThread = Static_DetachCurrentThread;
 		mutableFunctions.Release             = Static_Release;
 
-		utils::verify_initialized_pointers_debug(m_functions);
-		utils::verify_equal_pointers_debug(&m_functions, static_cast<TInterface*>(this));
+		util::verify_initialized_pointers_debug(m_functions);
+		util::verify_equal_pointers_debug(&m_functions, static_cast<TInterface*>(this));
 	}
 
 	virtual ~CGenotickFunctions() {}

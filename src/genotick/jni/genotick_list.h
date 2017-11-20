@@ -4,7 +4,7 @@
 #include <genotick/jni/simple_container.h>
 #include <vector>
 #include <memory>
-#include <common/utils.h>
+#include <common/util.h>
 
 namespace genotick {
 namespace jni {
@@ -21,14 +21,14 @@ public:
 		: TSimpleContainer(size)
 	{
 		auto& mutableFunctions = const_cast<TInterfaceFunctions&>(m_functions);
-		utils::nullify_object_debug(mutableFunctions);
+		util::nullify_object_debug(mutableFunctions);
 
 		mutableFunctions.GetElement = GetElement;
 		mutableFunctions.GetElementCount = GetElementCount;
 		mutableFunctions.Release = Release;
 
-		utils::verify_initialized_pointers_debug(m_functions);
-		utils::verify_equal_pointers_debug(&m_functions, static_cast<IGenotickList*>(this));
+		util::verify_initialized_pointers_debug(m_functions);
+		util::verify_equal_pointers_debug(&m_functions, static_cast<IGenotickList*>(this));
 	}
 
 	inline void Set(TGenotickSize index, const TElement& element)
