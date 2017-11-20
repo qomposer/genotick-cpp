@@ -114,6 +114,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\jni.hpp\include\jni\array.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\arraylike.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\class.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\constructor.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\errors.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\field.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\functions.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\jni.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\make.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\method.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\native_method.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\npe.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\object.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\ownership.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\pointer_to_value.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\static_field.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\static_method.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\string.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\tagging.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\traits.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\typed_methods.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\types.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\type_signature.hpp" />
+    <ClInclude Include="..\..\jni.hpp\include\jni\wrapping.hpp" />
     <ClInclude Include="..\include\igenotick.h" />
     <ClInclude Include="..\include\igenotick_utils.h" />
     <ClInclude Include="..\src\console.h" />

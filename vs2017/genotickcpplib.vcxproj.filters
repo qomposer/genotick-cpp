@@ -22,6 +22,9 @@
     <Filter Include="src\genotick\jni\remote">
       <UniqueIdentifier>{6e4ec4b1-a030-4b48-966e-a04a75918969}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\jni">
+      <UniqueIdentifier>{74aa0294-ce9a-4370-9ed2-e8098fbae139}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\jdk\classfile_constants.h">
@@ -137,6 +140,78 @@
     </ClInclude>
     <ClInclude Include="..\src\genotick\jni\loader.h">
       <Filter>src\genotick\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\array.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\arraylike.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\class.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\constructor.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\errors.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\field.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\functions.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\jni.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\make.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\method.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\native_method.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\npe.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\object.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\ownership.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\pointer_to_value.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\static_field.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\static_method.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\string.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\tagging.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\traits.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\type_signature.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\typed_methods.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\types.hpp">
+      <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\jni.hpp\include\jni\wrapping.hpp">
+      <Filter>src\jni</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
