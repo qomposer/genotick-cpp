@@ -274,12 +274,6 @@ struct SGenotickCreationSettings
 };
 typedef struct SGenotickCreationSettings TGenotickCreationSettings;
 
-#ifdef __cplusplus
-struct SGenotickTimePoints;
-struct SGenotickPredictions;
-struct SGenotick;
-struct SGenotickList;
-#endif
 
 struct SGenotickTimePointsFunctions
 {
