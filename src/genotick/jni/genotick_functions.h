@@ -4,6 +4,7 @@
 #include <genotick/interface.h>
 #include <genotick/jni/jni_helpers.h>
 #include <common/util.h>
+#include <utility>
 
 namespace genotick {
 namespace jni {
@@ -21,8 +22,9 @@ private:
 	using TInterfaceFunctions = typename TInterface::TInterfaceFunctions;
 
 public:
-	CGenotickFunctions(CLoader& loader, JavaVM& javaVM, JNIEnv& javaEnv)
-		: TImplementation(loader, javaVM, javaEnv)
+	template <class... Args>
+	CGenotickFunctions(Args&&... args)
+		: TImplementation(std::forward<Args>(args)...)
 	{
 		auto& mutableFunctions = const_cast<TInterfaceFunctions&>(m_functions);
 		util::nullify_object_debug(mutableFunctions);
