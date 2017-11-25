@@ -33,10 +33,8 @@ public:
 	{}
 };
 
-inline EGenotickResult HandleJavaException(::jni::JNIEnv& env, const ::jni::PendingJavaException& exception)
+inline EGenotickResult HandleJavaException(::jni::JNIEnv& env, const ::jni::PendingJavaException&)
 {
-	(void)exception;
-	// TODO get and store exception description
 	//jni::ThrowableObject throwableObj(jni::ExceptionOccurred(env));
 	::jni::ExceptionDescribe(env);
 	::jni::ExceptionClear(env);
@@ -45,16 +43,12 @@ inline EGenotickResult HandleJavaException(::jni::JNIEnv& env, const ::jni::Pend
 
 inline EGenotickResult HandleEnumMismatchException(const EnumMismatchException& exception)
 {
-	(void)exception;
-	// TODO store and print exception
 	std::cout << exception.what() << std::endl;
 	return EGenotickResult::JavaEnumMismatch;
 }
 
 inline EGenotickResult HandleUnrecognizedThreadException(const UnrecognizedThreadException& exception)
 {
-	(void)exception;
-	// TODO store and print exception
 	std::cout << exception.what() << std::endl;
 	return EGenotickResult::ThreadNotAttached;
 }
