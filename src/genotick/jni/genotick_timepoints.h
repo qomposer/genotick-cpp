@@ -13,7 +13,10 @@ class CGenotickTimePoints
 	, public CSimpleRemoteContainer<TGenotickTimePoint, remote::CTimePoints>
 {
 private:
-	using TRemoteValue = typename TRemoteElement::TGetValueMethod::ReturnType;
+	using TThis               = CGenotickTimePoints;
+	using TInterface          = IGenotickTimePoints;
+	using TInterfaceFunctions = typename TInterface::TInterfaceFunctions;
+	using TRemoteValue        = typename TRemoteElement::TGetValueMethod::ReturnType;
 
 public:
 	CGenotickTimePoints(
@@ -29,32 +32,27 @@ public:
 		auto& mutableFunctions = const_cast<TInterfaceFunctions&>(m_functions);
 		util::nullify_object_debug(mutableFunctions);
 
-		mutableFunctions.FindIndex = FindIndex;
-		mutableFunctions.GetElement = GetElement;
-		mutableFunctions.GetElementCount = GetElementCount;
-		mutableFunctions.Release = Release;
+		mutableFunctions.FindIndex = [](TInterface* pThis, const TGenotickTimePoint* timePoint, TGenotickSize* pIndex) {
+			return static_cast<const TThis*>(pThis)->FindIndexInternal(timePoint, pIndex);
+		};
+		mutableFunctions.GetElement = [](TInterface* pThis, TGenotickSize index) {
+			return static_cast<const TThis*>(pThis)->GetElementPtrInternal(index);
+		};
+		mutableFunctions.GetElementCount = [](TInterface* pThis) {
+			return static_cast<const TThis*>(pThis)->GetElementCountInternal();
+		};
+		mutableFunctions.Release = [](TInterface* pThis) {
+			return static_cast<const TThis*>(pThis)->ReleaseInternal();
+		};
 
 		util::verify_initialized_pointers_debug(m_functions);
-		util::verify_equal_pointers_debug(&m_functions, static_cast<IGenotickTimePoints*>(this));
+		util::verify_equal_pointers_debug(&m_functions, static_cast<TInterface*>(this));
 	}
 
 private:
 	virtual ~CGenotickTimePoints() {}
 
-	UTILS_DELETE_COPY_CONSTRUCTOR(CGenotickTimePoints)
-
-	static TGenotickBoolean GENOTICK_CALL FindIndex(IGenotickTimePoints* pThis, const TGenotickTimePoint* timePoint, TGenotickSize* pIndex) {
-		return static_cast<const CGenotickTimePoints*>(pThis)->FindIndexInternal(timePoint, pIndex);
-	}
-	static const TGenotickTimePoint* GENOTICK_CALL GetElement(IGenotickTimePoints* pThis, TGenotickSize index) {
-		return static_cast<const CGenotickTimePoints*>(pThis)->GetElementPtrInternal(index);
-	}
-	static TGenotickSize GENOTICK_CALL GetElementCount(IGenotickTimePoints* pThis) {
-		return static_cast<const CGenotickTimePoints*>(pThis)->GetElementCountInternal();
-	}
-	static void GENOTICK_CALL Release(IGenotickTimePoints* pThis) {
-		return static_cast<const CGenotickTimePoints*>(pThis)->ReleaseInternal();
-	}
+	UTILS_DELETE_COPY_CONSTRUCTOR(TThis)
 };
 
 } // namespace jni

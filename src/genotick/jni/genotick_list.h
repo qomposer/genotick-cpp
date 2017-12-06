@@ -14,7 +14,10 @@ class CGenotickList
 	, public CSimpleContainer<IGenotick*>
 {
 private:
-	using TSimpleContainer = CSimpleContainer<IGenotick*>;
+	using TThis               = CGenotickList;
+	using TInterface          = IGenotickList;
+	using TInterfaceFunctions = typename TInterface::TInterfaceFunctions;
+	using TSimpleContainer    = CSimpleContainer<IGenotick*>;
 
 public:
 	CGenotickList(TGenotickSize size)
@@ -23,12 +26,18 @@ public:
 		auto& mutableFunctions = const_cast<TInterfaceFunctions&>(m_functions);
 		util::nullify_object_debug(mutableFunctions);
 
-		mutableFunctions.GetElement = GetElement;
-		mutableFunctions.GetElementCount = GetElementCount;
-		mutableFunctions.Release = Release;
+		mutableFunctions.GetElement = [](TInterface* pThis, TGenotickSize index) {
+			return static_cast<const TThis*>(pThis)->GetElementInternal(index);
+		};
+		mutableFunctions.GetElementCount = [](TInterface* pThis) {
+			return static_cast<const TThis*>(pThis)->GetElementCountInternal();
+		};
+		mutableFunctions.Release = [](TInterface* pThis) {
+			return static_cast<const TThis*>(pThis)->ReleaseInternal();
+		};
 
 		util::verify_initialized_pointers_debug(m_functions);
-		util::verify_equal_pointers_debug(&m_functions, static_cast<IGenotickList*>(this));
+		util::verify_equal_pointers_debug(&m_functions, static_cast<TInterface*>(this));
 	}
 
 	inline void Set(TGenotickSize index, const TElement& element)
@@ -39,17 +48,7 @@ public:
 private:
 	virtual ~CGenotickList() {}
 
-	UTILS_DELETE_COPY_CONSTRUCTOR(CGenotickList)
-
-	static IGenotick* GENOTICK_CALL GetElement(IGenotickList* pThis, TGenotickSize index) {
-		return static_cast<const CGenotickList*>(pThis)->GetElementInternal(index);
-	}
-	static TGenotickSize GENOTICK_CALL GetElementCount(IGenotickList* pThis) {
-		return static_cast<const CGenotickList*>(pThis)->GetElementCountInternal();
-	}
-	static void GENOTICK_CALL Release(IGenotickList* pThis) {
-		return static_cast<const CGenotickList*>(pThis)->ReleaseInternal();
-	}
+	UTILS_DELETE_COPY_CONSTRUCTOR(TThis)
 };
 
 } // namespace jni

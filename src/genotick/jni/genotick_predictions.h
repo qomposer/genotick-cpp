@@ -13,7 +13,10 @@ class CGenotickPredictions
 	, public CSimpleRemoteContainer<CGenotickPrediction, remote::CPredictions>
 {
 private:
-	using TRemoteValue = typename TRemoteElement::TGetValueMethod::ReturnType;
+	using TThis               = CGenotickPredictions;
+	using TInterface          = IGenotickPredictions;
+	using TInterfaceFunctions = typename TInterface::TInterfaceFunctions;
+	using TRemoteValue        = typename TRemoteElement::TGetValueMethod::ReturnType;
 
 public:
 	CGenotickPredictions(
@@ -29,28 +32,24 @@ public:
 		auto& mutableFunctions = const_cast<TInterfaceFunctions&>(m_functions);
 		util::nullify_object_debug(mutableFunctions);
 
-		mutableFunctions.GetElement = GetElement;
-		mutableFunctions.GetElementCount = GetElementCount;
-		mutableFunctions.Release = Release;
+		mutableFunctions.GetElement = [](TInterface* pThis, TGenotickSize index) -> EGenotickPrediction {
+			return static_cast<const TThis*>(pThis)->GetElementInternal(index);
+		};
+		mutableFunctions.GetElementCount = [](TInterface* pThis) {
+			return static_cast<const TThis*>(pThis)->GetElementCountInternal();
+		};
+		mutableFunctions.Release = [](TInterface* pThis) {
+			return static_cast<const TThis*>(pThis)->ReleaseInternal();
+		};
 
 		util::verify_initialized_pointers_debug(m_functions);
-		util::verify_equal_pointers_debug(&m_functions, static_cast<IGenotickPredictions*>(this));
+		util::verify_equal_pointers_debug(&m_functions, static_cast<TInterface*>(this));
 	}
 
 private:
 	virtual ~CGenotickPredictions() {}
 
-	UTILS_DELETE_COPY_CONSTRUCTOR(CGenotickPredictions)
-
-	static EGenotickPrediction GENOTICK_CALL GetElement(IGenotickPredictions* pThis, TGenotickSize index) {
-		return static_cast<const CGenotickPredictions*>(pThis)->GetElementInternal(index);
-	}
-	static TGenotickSize GENOTICK_CALL GetElementCount(IGenotickPredictions* pThis) {
-		return static_cast<const CGenotickPredictions*>(pThis)->GetElementCountInternal();
-	}
-	static void GENOTICK_CALL Release(IGenotickPredictions* pThis) {
-		return static_cast<const CGenotickPredictions*>(pThis)->ReleaseInternal();
-	}
+	UTILS_DELETE_COPY_CONSTRUCTOR(TThis)
 };
 
 } // namespace jni
