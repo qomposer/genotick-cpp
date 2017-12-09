@@ -204,6 +204,7 @@ struct SGenotickMainSettings
 	TGenotickDouble     newInstructionProbability         ZERO_INIT;
 	TGenotickDouble     instructionMutationProbability    ZERO_INIT;
 	TGenotickDouble     skipInstructionProbability        ZERO_INIT;
+	TGenotickDouble     minimumScoreToSaveToDisk          ZERO_INIT;
 	TGenotickDouble     randomRobotsAtEachUpdate          ZERO_INIT;
 	TGenotickDouble     protectBestRobots                 ZERO_INIT;
 	TGenotickDouble     resultThreshold                   ZERO_INIT;

@@ -51,6 +51,7 @@ public:
 	f(TIntField                , minimumOutcomesToAllowBreeding   ) \
 	f(TIntField                , minimumOutcomesBetweenBreeding   ) \
 	f(TBooleanField            , killNonPredictingRobots          ) \
+	f(TDoubleField             , minimumScoreToSaveToDisk         ) \
 	f(TDoubleField             , randomRobotsAtEachUpdate         ) \
 	f(TDoubleField             , protectBestRobots                ) \
 	f(TBooleanField            , requireSymmetricalRobots         ) \
