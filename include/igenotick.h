@@ -279,18 +279,17 @@ typedef struct SGenotickCreationSettings TGenotickCreationSettings;
 
 struct SGenotickTimePointsFunctions
 {
-	TGenotickBoolean          FPTR(FindIndex)(FTHISC(SGenotickTimePoints), const TGenotickTimePoint* timePoint, TGenotickSize* pIndex);
-	const TGenotickTimePoint* FPTR(GetElement)(FTHISC(SGenotickTimePoints), TGenotickSize index);
-	TGenotickSize             FPTR(GetElementCount)(FTHISC(SGenotickTimePoints));
+	const TGenotickTimePoint* FPTR(Get)(FTHISC(SGenotickTimePoints), TGenotickSize index);
+	TGenotickSize             FPTR(Size)(FTHISC(SGenotickTimePoints));
 	void                      FPTR(Release)(FTHIS(SGenotickTimePoints));
 };
 ITYPE(SGenotickTimePoints, IGenotickTimePoints)
 
 struct SGenotickPredictionsFunctions
 {
-	EGenotickPrediction       FPTR(GetElement)(FTHISC(SGenotickPredictions), TGenotickSize index);
-	TGenotickSize             FPTR(GetElementCount)(FTHISC(SGenotickPredictions));
-	void                      FPTR(Release)(FTHIS(SGenotickPredictions));
+	const EGenotickPrediction* FPTR(Get)(FTHISC(SGenotickPredictions), TGenotickSize index);
+	TGenotickSize              FPTR(Size)(FTHISC(SGenotickPredictions));
+	void                       FPTR(Release)(FTHIS(SGenotickPredictions));
 };
 ITYPE(SGenotickPredictions, IGenotickPredictions)
 
@@ -316,8 +315,8 @@ ITYPE(SGenotick, IGenotick)
 
 struct SGenotickListFunctions
 {
-	IGenotick*    FPTR(GetElement)(FTHISC(SGenotickList), TGenotickSize index);
-	TGenotickSize FPTR(GetElementCount)(FTHISC(SGenotickList));
+	IGenotick*    FPTR(Get)(FTHISC(SGenotickList), TGenotickSize index);
+	TGenotickSize FPTR(Size)(FTHISC(SGenotickList));
 	void          FPTR(Release)(FTHIS(SGenotickList));
 };
 ITYPE(SGenotickList, IGenotickList)
@@ -325,14 +324,17 @@ ITYPE(SGenotickList, IGenotickList)
 #ifdef __cplusplus
 struct SGenotickTimePoints
 {
-	bool FindIndex(const TGenotickTimePoint* timePoint, TGenotickSize* index) const {
-		return m_functions.FindIndex(this, timePoint, index) == GenotickTrue ? true : false;
+	const TGenotickTimePoint* begin() const {
+		return Get(0);
 	}
-	const TGenotickTimePoint* GetElement(TGenotickSize index) const {
-		return m_functions.GetElement(this, index);
+	const TGenotickTimePoint* end() const {
+		return Get(0) + Size();
 	}
-	TGenotickSize GetElementCount() const {
-		return m_functions.GetElementCount(this);
+	const TGenotickTimePoint* Get(TGenotickSize index) const {
+		return m_functions.Get(this, index);
+	}
+	TGenotickSize Size() const {
+		return m_functions.Size(this);
 	}
 	void Release() {
 		return m_functions.Release(this);
@@ -345,11 +347,17 @@ protected:
 
 struct SGenotickPredictions
 {
-	EGenotickPrediction GetElement(TGenotickSize index) const {
-		return m_functions.GetElement(this, index);
+	const EGenotickPrediction* begin() const {
+		return Get(0);
 	}
-	TGenotickSize GetElementCount() const {
-		return m_functions.GetElementCount(this);
+	const EGenotickPrediction* end() const {
+		return Get(0) + Size();
+	}
+	const EGenotickPrediction* Get(TGenotickSize index) const {
+		return m_functions.Get(this, index);
+	}
+	TGenotickSize Size() const {
+		return m_functions.Size(this);
 	}
 	void Release() {
 		return m_functions.Release(this);
@@ -415,11 +423,17 @@ protected:
 
 struct SGenotickList
 {
-	IGenotick* GetElement(TGenotickSize index) const {
-		return m_functions.GetElement(this, index);
+	IGenotick* begin() const {
+		return Get(0);
 	}
-	TGenotickSize GetElementCount() const {
-		return m_functions.GetElementCount(this);
+	IGenotick* end() const {
+		return Get(0) + Size();
+	}
+	IGenotick* Get(TGenotickSize index) const {
+		return m_functions.Get(this, index);
+	}
+	TGenotickSize Size() const {
+		return m_functions.Size(this);
 	}
 	void Release() {
 		return m_functions.Release(this);

@@ -170,7 +170,7 @@ void RunGenotick(TGenotickInt32 sessionId)
 	g_result = g_pInstance->GetPredictions(g_pInstance, sessionId, g_assetData.assetName, &g_pPredictions);
 	printf("\nGetPredictions Error: %d", g_result);
 	if (g_pPredictions != NULL)
-		printf("\nPredictions Count: %d", g_pPredictions->GetElementCount(g_pPredictions));
+		printf("\nPredictions Count: %d", g_pPredictions->Size(g_pPredictions));
 	
 	g_result = g_pInstance->GetNewestTimePoint(g_pInstance, sessionId, &g_timePoint);
 	printf("\nGetNewestTimePoint Error: %d", g_result);
@@ -186,7 +186,7 @@ void TradePrediction()
 {
 	if (g_pPredictions != NULL)
 	{
-		const EGenotickPrediction* pPrediction = g_pPredictions->GetElement(g_pPredictions, Bar-1);
+		const EGenotickPrediction* pPrediction = g_pPredictions->Get(g_pPredictions, Bar-1);
 		const EGenotickPrediction prediction = *pPrediction;
 		printf("\nBar %d of %d: Prediction: %d", Bar, NumBars, prediction);
 		if (prediction != g_prevPrediction)

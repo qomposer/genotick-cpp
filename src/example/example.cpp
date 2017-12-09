@@ -109,16 +109,16 @@ void GenotickTestRun(IGenotick* pInstance, ETestRunFlag flags)
 	result = pInstance->RemoveSession(sessionId);
 	assert(result == EGenotickResult::Success);
 
-	for (TGenotickSize i = 0, c = pTimePoints->GetElementCount(); i < c; ++i)
+	for (TGenotickSize i = 0, c = pTimePoints->Size(); i < c; ++i)
 	{
-		const TGenotickTimePoint* pTimePoint = pTimePoints->GetElement(i);
+		const TGenotickTimePoint* pTimePoint = pTimePoints->Get(i);
 		pTimePoint = nullptr;
 	}
 
-	for (TGenotickSize i = 0, c = pPredictions->GetElementCount(); i < c; ++i)
+	for (TGenotickSize i = 0, c = pPredictions->Size(); i < c; ++i)
 	{
-		EGenotickPrediction prediction2 = pPredictions->GetElement(i);
-		prediction2 = EGenotickPrediction::Out;
+		const EGenotickPrediction* pPrediction = pPredictions->Get(i);
+		pPrediction = nullptr;
 	}
 	
 	if (flags & eTestRunFlag_IsNewThread)

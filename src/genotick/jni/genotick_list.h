@@ -26,11 +26,11 @@ public:
 		auto& mutableFunctions = const_cast<TInterfaceFunctions&>(m_functions);
 		util::nullify_object_debug(mutableFunctions);
 
-		mutableFunctions.GetElement = [](const TInterface* pThis, TGenotickSize index) {
-			return static_cast<const TThis*>(pThis)->GetElementInternal(index);
+		mutableFunctions.Get = [](const TInterface* pThis, TGenotickSize index) {
+			return static_cast<const TThis*>(pThis)->GetInternal(index);
 		};
-		mutableFunctions.GetElementCount = [](const TInterface* pThis) {
-			return static_cast<const TThis*>(pThis)->GetElementCountInternal();
+		mutableFunctions.Size = [](const TInterface* pThis) {
+			return static_cast<const TThis*>(pThis)->SizeInternal();
 		};
 		mutableFunctions.Release = [](TInterface* pThis) {
 			return static_cast<const TThis*>(pThis)->ReleaseInternal();

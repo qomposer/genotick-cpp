@@ -107,16 +107,16 @@ int main(int argc, char** argv)
 		result = pInstance->RemoveSession(pInstance, sessionId);
 		assert(result == GenotickResult_Success);
 
-		for (TGenotickSize i = 0, c = pTimePoints->GetElementCount(pTimePoints); i < c; ++i)
+		for (TGenotickSize i = 0, c = pTimePoints->Size(pTimePoints); i < c; ++i)
 		{
-			const TGenotickTimePoint* pTimePoint = pTimePoints->GetElement(pTimePoints, i);
+			const TGenotickTimePoint* pTimePoint = pTimePoints->Get(pTimePoints, i);
 			pTimePoint = 0;
 		}
 
-		for (TGenotickSize i = 0, c = pPredictions->GetElementCount(pPredictions); i < c; ++i)
+		for (TGenotickSize i = 0, c = pPredictions->Size(pPredictions); i < c; ++i)
 		{
-			EGenotickPrediction prediction2 = pPredictions->GetElement(pPredictions, i);
-			prediction2 = GenotickPrediction_Out;
+			const EGenotickPrediction* pPrediction = pPredictions->Get(pPredictions, i);
+			pPrediction = 0;
 		}
 
 		GENOTICK_SAFE_RELEASE(pTimePoints);

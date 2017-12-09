@@ -10,7 +10,7 @@ namespace jni {
 
 class CGenotickPredictions
 	: public IGenotickPredictions
-	, public CSimpleRemoteContainer<CGenotickPrediction, remote::CPredictions>
+	, public CSimpleRemoteContainer<EGenotickPrediction, remote::CPredictions>
 {
 private:
 	using TThis               = CGenotickPredictions;
@@ -27,16 +27,16 @@ public:
 			remoteContainerObject,
 			remoteContainer,
 			[&remoteElement](TNativeElement& nativeElement, const TRemoteElementObject& remoteElementObject)
-				{ nativeElement = TNativeElement::get_by_value(remoteElement.GetEnumValue(remoteElementObject)); })
+				{ nativeElement = CGenotickPrediction::get_by_value(remoteElement.GetEnumValue(remoteElementObject)); })
 	{
 		auto& mutableFunctions = const_cast<TInterfaceFunctions&>(m_functions);
 		util::nullify_object_debug(mutableFunctions);
 
-		mutableFunctions.GetElement = [](const TInterface* pThis, TGenotickSize index) -> EGenotickPrediction {
-			return static_cast<const TThis*>(pThis)->GetElementInternal(index);
+		mutableFunctions.Get = [](const TInterface* pThis, TGenotickSize index) {
+			return static_cast<const TThis*>(pThis)->GetPtrInternal(index);
 		};
-		mutableFunctions.GetElementCount = [](const TInterface* pThis) {
-			return static_cast<const TThis*>(pThis)->GetElementCountInternal();
+		mutableFunctions.Size = [](const TInterface* pThis) {
+			return static_cast<const TThis*>(pThis)->SizeInternal();
 		};
 		mutableFunctions.Release = [](TInterface* pThis) {
 			return static_cast<const TThis*>(pThis)->ReleaseInternal();

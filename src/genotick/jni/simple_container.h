@@ -42,33 +42,17 @@ protected:
 		AssignFunc(m_container[index], element);
 	}
 
-	inline TGenotickBoolean FindIndexInternal(TElementPtr pElement, TGenotickSize* pIndex) const
+	inline TElementPtr GetPtrInternal(TGenotickSize index) const
 	{
-		assert(pIndex != nullptr);
-		assert(pElement != nullptr);
-		const TConstIterator first = m_container.cbegin();
-		const TConstIterator last = m_container.cend();
-		const TConstIterator it = ::stl::binary_find(first, last, *pElement);
-		if (it != last)
-		{
-			const TDifferenceType index = std::distance(first, it);
-			*pIndex = static_cast<TGenotickSize>(index);
-			return GenotickTrue;
-		}
-		return GenotickFalse;
+		return &m_container.at(index);
 	}
 
-	inline TElementPtr GetElementPtrInternal(TGenotickSize index) const
-	{
-		return &m_container[index];
-	}
-
-	inline TElement GetElementInternal(TGenotickSize index) const
+	inline TElement GetInternal(TGenotickSize index) const
 	{
 		return m_container[index];
 	}
 
-	inline TGenotickSize GetElementCountInternal() const
+	inline TGenotickSize SizeInternal() const
 	{
 		return static_cast<TGenotickSize>(m_container.size());
 	}

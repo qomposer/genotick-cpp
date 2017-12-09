@@ -12,5 +12,8 @@
     <ClCompile Include="..\src\example\example.c">
       <Filter>src\example</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\example\GenotickZorro.c">
+      <Filter>src\example</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

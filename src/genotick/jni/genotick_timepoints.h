@@ -32,14 +32,11 @@ public:
 		auto& mutableFunctions = const_cast<TInterfaceFunctions&>(m_functions);
 		util::nullify_object_debug(mutableFunctions);
 
-		mutableFunctions.FindIndex = [](const TInterface* pThis, const TGenotickTimePoint* timePoint, TGenotickSize* pIndex) {
-			return static_cast<const TThis*>(pThis)->FindIndexInternal(timePoint, pIndex);
+		mutableFunctions.Get = [](const TInterface* pThis, TGenotickSize index) {
+			return static_cast<const TThis*>(pThis)->GetPtrInternal(index);
 		};
-		mutableFunctions.GetElement = [](const TInterface* pThis, TGenotickSize index) {
-			return static_cast<const TThis*>(pThis)->GetElementPtrInternal(index);
-		};
-		mutableFunctions.GetElementCount = [](const TInterface* pThis) {
-			return static_cast<const TThis*>(pThis)->GetElementCountInternal();
+		mutableFunctions.Size = [](const TInterface* pThis) {
+			return static_cast<const TThis*>(pThis)->SizeInternal();
 		};
 		mutableFunctions.Release = [](TInterface* pThis) {
 			return static_cast<const TThis*>(pThis)->ReleaseInternal();

@@ -47,9 +47,9 @@ inline EGenotickResult GenotickGetOrCreate(IGenotick** ppInstance, const TGenoti
 	{
 		assert(pList != 0);
 
-		if (pList->GetElementCount() > 0)
+		if (pList->Size() > 0)
 		{
-			*ppInstance = pList->GetElement(0);
+			*ppInstance = pList->Get(0);
 			pList->Release();
 			return EGenotickResult::Success;
 		}
@@ -234,9 +234,9 @@ inline EGenotickResult GenotickGetOrCreate(IGenotick** ppInstance, const TGenoti
 #ifndef ZORRO_LITE_C
 		assert(pList != 0);
 #endif
-		if (pList->GetElementCount(pList) > 0)
+		if (pList->Size(pList) > 0)
 		{
-			*ppInstance = pList->GetElement(pList, 0);
+			*ppInstance = pList->Get(pList, 0);
 			pList->Release(pList);
 			return GenotickResult_Success;
 		}
