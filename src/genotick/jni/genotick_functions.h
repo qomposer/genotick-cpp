@@ -29,7 +29,7 @@ public:
 		auto& mutableFunctions = const_cast<TInterfaceFunctions&>(m_functions);
 		util::nullify_object_debug(mutableFunctions);
 
-		mutableFunctions.GetInterfaceVersion = [](TInterface* pThis) {
+		mutableFunctions.GetInterfaceVersion = [](const TInterface* pThis) {
 			return static_cast<const TThis*>(pThis)->GetInterfaceVersion();
 		};
 		mutableFunctions.CreateSession = [](TInterface* pThis, TGenotickSessionId sessionId) {
@@ -41,7 +41,7 @@ public:
 		mutableFunctions.RemoveAllSessions = [](TInterface* pThis) {
 			return static_cast<const TThis*>(pThis)->RemoveAllSessions();
 		};
-		mutableFunctions.GetSettings = [](TInterface* pThis, TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) {
+		mutableFunctions.GetSettings = [](const TInterface* pThis, TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) {
 			return static_cast<const TThis*>(pThis)->GetSettings(sessionId, pSettings);
 		};
 		mutableFunctions.ChangeSettings = [](TInterface* pThis, TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings) {
@@ -53,16 +53,16 @@ public:
 		mutableFunctions.Start = [](TInterface* pThis, TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs) {
 			return static_cast<const TThis*>(pThis)->Start(sessionId, pArgs);
 		};
-		mutableFunctions.GetTimePoints = [](TInterface* pThis, TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) {
+		mutableFunctions.GetTimePoints = [](const TInterface* pThis, TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) {
 			return static_cast<const TThis*>(pThis)->GetTimePoints(sessionId, ppTimePoints);
 		};
-		mutableFunctions.GetPredictions = [](TInterface* pThis, TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) {
+		mutableFunctions.GetPredictions = [](const TInterface* pThis, TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) {
 			return static_cast<const TThis*>(pThis)->GetPredictions(sessionId, assetName, ppPredictions);
 		};
-		mutableFunctions.GetNewestTimePoint  = [](TInterface* pThis, TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) {
+		mutableFunctions.GetNewestTimePoint  = [](const TInterface* pThis, TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) {
 			return static_cast<const TThis*>(pThis)->GetNewestTimePoint(sessionId, pTimePoint);
 		};
-		mutableFunctions.GetNewestPrediction = [](TInterface* pThis, TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) {
+		mutableFunctions.GetNewestPrediction = [](const TInterface* pThis, TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) {
 			return static_cast<const TThis*>(pThis)->GetNewestPrediction(sessionId, assetName, pPrediction);
 		};
 		mutableFunctions.AttachCurrentThread = [](TInterface* pThis, TGenotickBoolean asDaemon) {

@@ -32,10 +32,10 @@ public:
 		auto& mutableFunctions = const_cast<TInterfaceFunctions&>(m_functions);
 		util::nullify_object_debug(mutableFunctions);
 
-		mutableFunctions.GetElement = [](TInterface* pThis, TGenotickSize index) -> EGenotickPrediction {
+		mutableFunctions.GetElement = [](const TInterface* pThis, TGenotickSize index) -> EGenotickPrediction {
 			return static_cast<const TThis*>(pThis)->GetElementInternal(index);
 		};
-		mutableFunctions.GetElementCount = [](TInterface* pThis) {
+		mutableFunctions.GetElementCount = [](const TInterface* pThis) {
 			return static_cast<const TThis*>(pThis)->GetElementCountInternal();
 		};
 		mutableFunctions.Release = [](TInterface* pThis) {

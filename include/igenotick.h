@@ -23,10 +23,12 @@
 #ifdef __cplusplus
 #define ZERO_INIT = {}
 #define FTHIS(type)               struct type*
+#define FTHISC(type)        const struct type*
 #define ITYPE(type, name) typedef struct type name;
 #else
 #define ZERO_INIT
 #define FTHIS(type)               const struct type##Functions*
+#define FTHISC(type)              const struct type##Functions*
 #define ITYPE(type, name) typedef const struct type##Functions name;
 #endif
 #ifdef ZORRO_LITE_C
@@ -277,35 +279,35 @@ typedef struct SGenotickCreationSettings TGenotickCreationSettings;
 
 struct SGenotickTimePointsFunctions
 {
-	TGenotickBoolean          FPTR(FindIndex)(FTHIS(SGenotickTimePoints), const TGenotickTimePoint* timePoint, TGenotickSize* pIndex);
-	const TGenotickTimePoint* FPTR(GetElement)(FTHIS(SGenotickTimePoints), TGenotickSize index);
-	TGenotickSize             FPTR(GetElementCount)(FTHIS(SGenotickTimePoints));
+	TGenotickBoolean          FPTR(FindIndex)(FTHISC(SGenotickTimePoints), const TGenotickTimePoint* timePoint, TGenotickSize* pIndex);
+	const TGenotickTimePoint* FPTR(GetElement)(FTHISC(SGenotickTimePoints), TGenotickSize index);
+	TGenotickSize             FPTR(GetElementCount)(FTHISC(SGenotickTimePoints));
 	void                      FPTR(Release)(FTHIS(SGenotickTimePoints));
 };
 ITYPE(SGenotickTimePoints, IGenotickTimePoints)
 
 struct SGenotickPredictionsFunctions
 {
-	EGenotickPrediction       FPTR(GetElement)(FTHIS(SGenotickPredictions), TGenotickSize index);
-	TGenotickSize             FPTR(GetElementCount)(FTHIS(SGenotickPredictions));
+	EGenotickPrediction       FPTR(GetElement)(FTHISC(SGenotickPredictions), TGenotickSize index);
+	TGenotickSize             FPTR(GetElementCount)(FTHISC(SGenotickPredictions));
 	void                      FPTR(Release)(FTHIS(SGenotickPredictions));
 };
 ITYPE(SGenotickPredictions, IGenotickPredictions)
 
 struct SGenotickFunctions
 {
-	TGenotickInt32  FPTR(GetInterfaceVersion)(FTHIS(SGenotick));
+	TGenotickInt32  FPTR(GetInterfaceVersion)(FTHISC(SGenotick));
 	EGenotickResult FPTR(CreateSession)(FTHIS(SGenotick), TGenotickSessionId sessionId);
 	EGenotickResult FPTR(RemoveSession)(FTHIS(SGenotick), TGenotickSessionId sessionId);
 	EGenotickResult FPTR(RemoveAllSessions)(FTHIS(SGenotick));
-	EGenotickResult FPTR(GetSettings)(FTHIS(SGenotick), TGenotickSessionId sessionId, TGenotickMainSettings* pSettings);
+	EGenotickResult FPTR(GetSettings)(FTHISC(SGenotick), TGenotickSessionId sessionId, TGenotickMainSettings* pSettings);
 	EGenotickResult FPTR(ChangeSettings)(FTHIS(SGenotick), TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings);
 	EGenotickResult FPTR(SetAssetData)(FTHIS(SGenotick), TGenotickSessionId sessionId, const TGenotickAssetData* pAssetData);
 	EGenotickResult FPTR(Start)(FTHIS(SGenotick), TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs);
-	EGenotickResult FPTR(GetTimePoints)(FTHIS(SGenotick), TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints);
-	EGenotickResult FPTR(GetPredictions)(FTHIS(SGenotick), TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions);
-	EGenotickResult FPTR(GetNewestTimePoint)(FTHIS(SGenotick), TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint);
-	EGenotickResult FPTR(GetNewestPrediction)(FTHIS(SGenotick), TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction);
+	EGenotickResult FPTR(GetTimePoints)(FTHISC(SGenotick), TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints);
+	EGenotickResult FPTR(GetPredictions)(FTHISC(SGenotick), TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions);
+	EGenotickResult FPTR(GetNewestTimePoint)(FTHISC(SGenotick), TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint);
+	EGenotickResult FPTR(GetNewestPrediction)(FTHISC(SGenotick), TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction);
 	EGenotickResult FPTR(AttachCurrentThread)(FTHIS(SGenotick), TGenotickBoolean asDaemon);
 	EGenotickResult FPTR(DetachCurrentThread)(FTHIS(SGenotick));
 	EGenotickResult FPTR(Release)(FTHIS(SGenotick));
@@ -314,8 +316,8 @@ ITYPE(SGenotick, IGenotick)
 
 struct SGenotickListFunctions
 {
-	IGenotick*    FPTR(GetElement)(FTHIS(SGenotickList), TGenotickSize index);
-	TGenotickSize FPTR(GetElementCount)(FTHIS(SGenotickList));
+	IGenotick*    FPTR(GetElement)(FTHISC(SGenotickList), TGenotickSize index);
+	TGenotickSize FPTR(GetElementCount)(FTHISC(SGenotickList));
 	void          FPTR(Release)(FTHIS(SGenotickList));
 };
 ITYPE(SGenotickList, IGenotickList)
@@ -323,13 +325,13 @@ ITYPE(SGenotickList, IGenotickList)
 #ifdef __cplusplus
 struct SGenotickTimePoints
 {
-	bool FindIndex(const TGenotickTimePoint* timePoint, TGenotickSize* index) {
+	bool FindIndex(const TGenotickTimePoint* timePoint, TGenotickSize* index) const {
 		return m_functions.FindIndex(this, timePoint, index) == GenotickTrue ? true : false;
 	}
-	const TGenotickTimePoint* GetElement(TGenotickSize index) {
+	const TGenotickTimePoint* GetElement(TGenotickSize index) const {
 		return m_functions.GetElement(this, index);
 	}
-	TGenotickSize GetElementCount() {
+	TGenotickSize GetElementCount() const {
 		return m_functions.GetElementCount(this);
 	}
 	void Release() {
@@ -343,10 +345,10 @@ protected:
 
 struct SGenotickPredictions
 {
-	EGenotickPrediction GetElement(TGenotickSize index) {
+	EGenotickPrediction GetElement(TGenotickSize index) const {
 		return m_functions.GetElement(this, index);
 	}
-	TGenotickSize GetElementCount() {
+	TGenotickSize GetElementCount() const {
 		return m_functions.GetElementCount(this);
 	}
 	void Release() {
@@ -360,7 +362,7 @@ protected:
 
 struct SGenotick
 {
-	TGenotickInt32 GetInterfaceVersion() {
+	TGenotickInt32 GetInterfaceVersion() const {
 		return m_functions.GetInterfaceVersion(this);
 	}
 	EGenotickResult CreateSession(TGenotickSessionId sessionId) {
@@ -372,7 +374,7 @@ struct SGenotick
 	EGenotickResult RemoveAllSessions() {
 		return m_functions.RemoveAllSessions(this);
 	}
-	EGenotickResult GetSettings(TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) {
+	EGenotickResult GetSettings(TGenotickSessionId sessionId, TGenotickMainSettings* pSettings) const {
 		return m_functions.GetSettings(this, sessionId, pSettings);
 	}
 	EGenotickResult ChangeSettings(TGenotickSessionId sessionId, const TGenotickMainSettings* pSettings) {
@@ -384,16 +386,16 @@ struct SGenotick
 	EGenotickResult Start(TGenotickSessionId sessionId, const TGenotickStartArgs* pArgs) {
 		return m_functions.Start(this, sessionId, pArgs);
 	}
-	EGenotickResult GetTimePoints(TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) {
+	EGenotickResult GetTimePoints(TGenotickSessionId sessionId, IGenotickTimePoints** ppTimePoints) const {
 		return m_functions.GetTimePoints(this, sessionId, ppTimePoints);
 	}
-	EGenotickResult GetPredictions(TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) {
+	EGenotickResult GetPredictions(TGenotickSessionId sessionId, const char* assetName, IGenotickPredictions** ppPredictions) const {
 		return m_functions.GetPredictions(this, sessionId, assetName, ppPredictions);
 	}
-	EGenotickResult GetNewestTimePoint(TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) {
+	EGenotickResult GetNewestTimePoint(TGenotickSessionId sessionId, TGenotickTimePoint* pTimePoint) const {
 		return m_functions.GetNewestTimePoint(this, sessionId, pTimePoint);
 	}
-	EGenotickResult GetNewestPrediction(TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) {
+	EGenotickResult GetNewestPrediction(TGenotickSessionId sessionId, const char* assetName, EGenotickPrediction* pPrediction) const {
 		return m_functions.GetNewestPrediction(this, sessionId, assetName, pPrediction);
 	}
 	EGenotickResult AttachCurrentThread(bool asDaemon) {
@@ -413,10 +415,10 @@ protected:
 
 struct SGenotickList
 {
-	IGenotick* GetElement(TGenotickSize index) {
+	IGenotick* GetElement(TGenotickSize index) const {
 		return m_functions.GetElement(this, index);
 	}
-	TGenotickSize GetElementCount() {
+	TGenotickSize GetElementCount() const {
 		return m_functions.GetElementCount(this);
 	}
 	void Release() {
@@ -457,6 +459,7 @@ GENOTICK_IMPORT_EXPORT EGenotickResult GENOTICK_CALL GenotickDestroyConsole();
 
 #undef ZERO_INIT
 #undef FTHIS
+#undef FTHISC
 #undef FPTR
 #undef ITYPE
 
