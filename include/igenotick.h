@@ -104,6 +104,7 @@ typedef struct SGenotickString TGenotickString;
 #define GenotickResult_ErrorInvalidSession   403
 #define GenotickResult_ErrorDuplicateSession 404
 #define GenotickResult_ErrorInsufficientData 405
+#define GenotickResult_ErrorMissingArgument  406
 
 #ifdef __cplusplus
 
@@ -179,6 +180,7 @@ enum class EGenotickResult : TGenotickInt32
 	ErrorInvalidSession   = GenotickResult_ErrorInvalidSession,
 	ErrorDuplicateSession = GenotickResult_ErrorDuplicateSession,
 	ErrorInsufficientData = GenotickResult_ErrorInsufficientData,
+	ErrorMissingArgument  = GenotickResult_ErrorMissingArgument,
 };
 
 #else
