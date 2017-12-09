@@ -1,7 +1,7 @@
 
 #include "console.h"
+#include <common/util_win.h>
 #include <iostream>
-#include <Windows.h>
 #include <cstdio>
 #include <cstdint>
 #include <io.h>

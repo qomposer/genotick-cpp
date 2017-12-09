@@ -117,21 +117,6 @@
     <ClInclude Include="..\src\genotick\jni\remote\weight_mode.h">
       <Filter>src\genotick\jni\remote</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\genotick_predictions.h">
-      <Filter>src\genotick\jni</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\genotick_timepoints.h">
-      <Filter>src\genotick\jni</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\simple_container.h">
-      <Filter>src\genotick\jni</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\simple_remote_container.h">
-      <Filter>src\genotick\jni</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\genotick\jni\genotick_list.h">
-      <Filter>src\genotick\jni</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\console.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -212,6 +197,12 @@
     </ClInclude>
     <ClInclude Include="..\..\jni.hpp\include\jni\wrapping.hpp">
       <Filter>src\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\array_buf.h">
+      <Filter>src\genotick\jni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\genotick\jni\array_functions.h">
+      <Filter>src\genotick\jni</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

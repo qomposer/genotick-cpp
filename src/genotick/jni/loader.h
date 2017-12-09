@@ -2,8 +2,8 @@
 #pragma once
 
 #include <genotick/jni/genotick.h>
+#include <common/util_win.h>
 #include <jni.h>
-#include <Windows.h>
 #include <vector>
 #include <memory>
 

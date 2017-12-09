@@ -3,7 +3,7 @@
 #include <genotick/jni/genotick.h>
 #include <genotick/jni/error.h>
 #include <genotick/jni/exceptions.h>
-#include <genotick/jni/genotick_list.h>
+#include <genotick/jni/array_buf.h>
 #include <common/util_win.h>
 #include <common/utf8.h>
 #include <cassert>
@@ -136,15 +136,19 @@ EGenotickResult CLoader::GenotickDestroyConsole()
 
 IGenotickList* CLoader::CreateGenotickList()
 {
-	TGenotickSize size = static_cast<TGenotickSize>(m_instancePtrs.size());
-	::genotick::jni::CGenotickList* pInstances = new ::genotick::jni::CGenotickList(size);
+	using TGenotickArray = std::vector<IGenotick*>;
+	using TGenotickArrayObject = CArrayFunctions<CArrayBuf<IGenotickList, TGenotickArray>>;
 
-	for (TGenotickSize index = 0; index < size; ++index)
+	const size_t size = m_instancePtrs.size();
+	TGenotickArray array(size);
+
+	for (size_t index = 0; index < size; ++index)
 	{
-		pInstances->Set(index, m_instancePtrs[index].get());
+		array[index] = m_instancePtrs[index].get();
 	}
 
-	return pInstances;
+	IGenotickList* pList = new TGenotickArrayObject(std::move(array));
+	return pList;
 }
 
 EGenotickResult CLoader::AddNewInstanceFor(JavaVM& javaVM)

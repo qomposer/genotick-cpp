@@ -2,8 +2,7 @@
 #include "genotick.h"
 #include <genotick/jni/loader.h>
 #include <genotick/jni/error.h>
-#include <genotick/jni/genotick_predictions.h>
-#include <genotick/jni/genotick_timepoints.h>
+#include <genotick/jni/array_buf.h>
 #include <cassert>
 
 #define MISMATCH_MESSAGE "Mismatching Data Type Found"
@@ -266,11 +265,28 @@ EGenotickResult CGenotick::GetTimePoints(TGenotickSessionId sessionId, IGenotick
 	try
 	{
 		const SThreadData& threadData = GetThreadData();
-		const remote::CTimePoints::TObject jniTimePoints = threadData.remoteMainInterface.getTimePoints(sessionId);
-		if (jniTimePoints.Get() == nullptr)
+		const remote::CTimePoints::TObject remoteArrayObject = threadData.remoteMainInterface.getTimePoints(sessionId);
+
+		if (remoteArrayObject.Get() == nullptr)
 			return EGenotickResult::ErrorInvalidSession;
 
-		*ppTimePoints = new CGenotickTimePoints(jniTimePoints, threadData.remoteTimePoints, threadData.remoteTimePoint);
+		using TGenotickArray = std::vector<TGenotickTimePoint>;
+		using TGenotickArrayObject = CArrayFunctions<CArrayBuf<IGenotickTimePoints, TGenotickArray>>;
+
+		const remote::CTimePoint& remoteArrayElement = threadData.remoteTimePoint;
+		const remote::CTimePoints& remoteArray = threadData.remoteTimePoints;
+		const TGenotickSize size = remoteArray.size(remoteArrayObject);
+
+		TGenotickArray array(size);
+
+		for (TGenotickSize index = 0; index < size; ++index)
+		{
+			remote::CTimePoint::TObject remoteArrayElementObject = remoteArray.get(remoteArrayObject, index);
+			array[index] = remoteArrayElement.getValue(remoteArrayElementObject);
+		}
+
+		*ppTimePoints = new TGenotickArrayObject(std::move(array));
+
 		return EGenotickResult::Success;
 	}
 	catch (const ::jni::PendingJavaException& exception)
@@ -292,11 +308,28 @@ EGenotickResult CGenotick::GetPredictions(TGenotickSessionId sessionId, const ch
 	{
 		const SThreadData& threadData = GetThreadData();
 		const ::jni::String jniAssetName = ::jni::Make<::jni::String>(threadData.javaEnv, assetName);
-		const remote::CPredictions::TObject jniPredictions = threadData.remoteMainInterface.getPredictions(sessionId, jniAssetName);
-		if (jniPredictions.Get() == nullptr)
+		const remote::CPredictions::TObject remoteArrayObject = threadData.remoteMainInterface.getPredictions(sessionId, jniAssetName);
+
+		if (remoteArrayObject.Get() == nullptr)
 			return EGenotickResult::ErrorInvalidSession;
 
-		*ppPredictions = new CGenotickPredictions(jniPredictions, threadData.remotePredictions, threadData.remotePrediction);
+		using TGenotickArray = std::vector<EGenotickPrediction>;
+		using TGenotickArrayObject = CArrayFunctions<CArrayBuf<IGenotickPredictions, TGenotickArray>>;
+
+		const remote::CPrediction& remoteArrayElement = threadData.remotePrediction;
+		const remote::CPredictions& remoteArray = threadData.remotePredictions;
+		const TGenotickSize size = remoteArray.size(remoteArrayObject);
+		
+		TGenotickArray array(size);
+
+		for (TGenotickSize index = 0; index < size; ++index)
+		{
+			remote::CPrediction::TObject remoteArrayElementObject = remoteArray.get(remoteArrayObject, index);
+			array[index] = CGenotickPrediction::get_by_value(remoteArrayElement.GetEnumValue(remoteArrayElementObject));
+		}
+		
+		*ppPredictions = new TGenotickArrayObject(std::move(array));
+
 		return EGenotickResult::Success;
 	}
 	catch (const ::jni::PendingJavaException& exception)

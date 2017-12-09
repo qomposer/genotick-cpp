@@ -4,7 +4,7 @@
 
 #ifdef GENOTICK_DLL
 
-#include <Windows.h>
+#include <common/util_win.h>
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
